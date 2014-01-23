@@ -39,6 +39,10 @@ def user():
     """
     return dict(form=auth())
 
+def map():
+
+    return dict()
+
 @cache.action()
 def download():
     """
