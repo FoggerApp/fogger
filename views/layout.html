@@ -152,8 +152,28 @@
   <script src="{{=URL('static','js/bootstrap.min.js')}}"></script>
   <script src="{{=URL('static','js/web2py_bootstrap.js')}}"></script>
   <script type="text/javascript"
-          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLThK-EkRGd31qEySlFxv5VH1B2tKJyBg&sensor=true">
-  <!--[if lt IE 7 ]>
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLThK-EkRGd31qEySlFxv5VH1B2tKJyBg&sensor=true"></script>
+
+  <!-- JASMINE TESTING ENVIRONMENT GOES HERE -->
+{{if 'test' in request.vars:}}
+  <link rel="shortcut icon" type="image/png" href="{{=URL('static', 'jasmine/lib/jasmine-2.0.0/jasmine_favicon.png')}}">
+  <link rel="stylesheet" type="text/css" href="{{=URL('static', 'jasmine/lib/jasmine-2.0.0/jasmine.css')}}">
+
+  <script type="text/javascript" src="{{=URL('static', 'jasmine/lib/jasmine-2.0.0/jasmine.js')}}"></script>
+  <script type="text/javascript" src="{{=URL('static', 'jasmine/lib/jasmine-2.0.0/jasmine-html.js')}}"></script>
+  <script type="text/javascript" src="{{=URL('static', 'jasmine/lib/jasmine-2.0.0/boot.js')}}"></script>
+
+  <!-- include SOURCE files
+  <script type="text/javascript" src="{{=URL('static', 'jasmine/src/Player.js')}}"></script>
+  <script type="text/javascript" src="{{=URL('static', 'jasmine/src/Song.js')}}"></script>
+  -->
+
+  <!-- include SPEC files -->
+  <script type="text/javascript" src="{{=URL('static', 'jasmine/spec/SpecHelper.js')}}"></script>
+  <script type="text/javascript" src="{{=URL('static', 'jasmine/spec/'+request.controller+'/'+request.function+'Spec.js')}}"></script>
+
+{{pass}}
+<!--[if lt IE 7 ]>
       <script src="{{=URL('static','js/dd_belatedpng.js')}}"></script>
       <script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
       <![endif]-->
