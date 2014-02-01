@@ -1,0 +1,48 @@
+{{extend 'layout.html'}}
+
+
+<!-- Profile and edit button ========================= -->
+{{response.write(
+	DIV(
+		H2(
+			'Profile',
+			_style="display: inline;"
+		),
+		A(
+			I(_class="icon-edit"),
+			_alt="edit",
+			_title="Edit",
+			_href=URL(c="default", f="user/profile"),
+			_class="btn profile-button"
+		)
+	)
+)}}
+
+{{response.write(
+	DIV(
+		DIV(
+			IMG(
+				_src=URL('static', '/images/rank1.png')
+			),
+			_style="float: left;"
+		),
+		DIV(
+			H4(
+				'Hello ',
+				auth.user.first_name,
+				' ',
+				auth.user.last_name,
+				' !',
+			),
+			H5(
+				'Level: 123121'
+			),
+			H5(
+				'Stats: 123121'
+			),
+			H5(
+				'Achievements: 123121'
+			),
+		)
+	)
+)}}
