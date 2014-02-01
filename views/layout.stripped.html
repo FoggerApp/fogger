@@ -1,4 +1,4 @@
-{{include "layout.head.html"}}
+{{include "layout.head.stripped.html"}}
   <!-- Navbar ================================================== -->
   <div class="navbar navbar-inverse">
 <!-- 
@@ -6,7 +6,7 @@
  -->
     <div class="navbar-inner">
       <div class="container">
-        {{is_mobile=request.user_agent().is_mobile}}
+        {{is_mobile=True}}
         <!-- the next tag is necessary for bootstrap menus, do not remove -->
         <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" style="{{='display:none;' if not is_mobile else ''}}">
           <span class="icon-bar"></span>
@@ -25,31 +25,8 @@
   </div><!--/top navbar -->
 
   <div class="container">
-
-    <section id="main" class="main row">
-        {{if left_sidebar_enabled:}}
-        <div class="span3 left-sidebar">
-            {{block left_sidebar}}
-            <h3>Left Sidebar</h3>
-            <p></p>
-            {{end}}
-        </div>
-        {{pass}}
-
-        <div class="{{=middle_columns}}">
             {{block center}}
             {{include}}
             {{end}}
-        </div>
-
-        {{if right_sidebar_enabled:}}
-        <div class="span3">
-            {{block right_sidebar}}
-            <h3>Right Sidebar</h3>
-            <p></p>
-            {{end}}
-        </div>
-        {{pass}}
-    </section><!--/main-->
 
 {{include "layout.foot.html"}}
