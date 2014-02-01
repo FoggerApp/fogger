@@ -2,7 +2,11 @@
 	width: 90px;
 }
 
-body, .container {
+body {
   padding: 0;
+  margin: 0;
+}
+
+.navbar {
   margin: 0;
 }
