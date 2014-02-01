@@ -71,7 +71,8 @@
     <div class="flash">{{=response.flash or ''}}</div>
     <div class="navbar-inner">
       <div class="container">
-        {{is_mobile=request.user_agent().is_mobile}}
+        {{#is_mobile=request.user_agent().is_mobile}}
+        {{is_mobile=True}}
         <!-- the next tag is necessary for bootstrap menus, do not remove -->
         <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" style="{{='display:none;' if not is_mobile else ''}}">
           <span class="icon-bar"></span>
