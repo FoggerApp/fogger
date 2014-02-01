@@ -9,12 +9,15 @@ $(function(){
   }
 
   /* request user location function */
+  var userLocation = null;
   var getLocation = function(pass) {
-    if (navigator.geolocation) {
+    if (userLocation != null) {
+      pass(userLocation);
+    } else if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(pos){
-        var uloc = new google.maps.LatLng(pos.coords.latitude,
+        userLocation = new google.maps.LatLng(pos.coords.latitude,
                                           pos.coords.longitude);
-        pass(uloc);
+        pass(userLocation);
       });
     } else {
       alert("Could not get user location!");
@@ -31,11 +34,11 @@ $(function(){
     });
   };
   
+  var userMarker = null;
   var placeUserMarker = function() {
     getLocation(function(uloc){
-      console.log("Placing marker", uloc, "on", map);
       if(map != null) {
-        var userMarker = new google.maps.Marker({
+        userMarker = new google.maps.Marker({
           position: uloc,
           map: map,
           title: 'You'
@@ -44,8 +47,13 @@ $(function(){
     });
   };
 
-  var getUserMarker = function() {
-    
+  var moveUserMarker = function() {
+    getLocation(function(uloc){
+      if(userMarker != null) {
+        userMarker.setPosition(uloc);
+      }
+      panToUserLoc();
+    });
   };
 
   /* Map Initialization Function */
@@ -74,5 +82,24 @@ $(function(){
   
   panToUserLoc();
   placeUserMarker();
+
+  /* User position changes event */
+  navigator.geolocation.watchPosition(function(){
+    var prevLocation = userLocation;
+
+    /* update userLocation */
+    getLocation(function(uloc){
+      /* Calculate distance between locations */
+      console.log(
+        'Distance betw prev location is ',
+        pointToDistance(uloc, prevLocation, 4),
+        'km.');
+    });
+
+    
+    /* update marker */
+    moveUserMarker();
+  });
+
 });
 
