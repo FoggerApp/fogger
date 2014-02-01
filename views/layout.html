@@ -45,6 +45,7 @@
   response.files.insert(1,URL('static','css/bootstrap.min.css'))
   response.files.insert(2,URL('static','css/bootstrap-responsive.min.css'))
   response.files.insert(3,URL('static','css/web2py_bootstrap.css'))
+  response.files.insert(3,URL('static','css/style.css'))
   }}
 
   {{include 'web2py_ajax.html'}}
@@ -68,7 +69,9 @@
 <body>
   <!-- Navbar ================================================== -->
   <div class="navbar navbar-inverse">
+<!-- 
     <div class="flash">{{=response.flash or ''}}</div>
+ -->
     <div class="navbar-inner">
       <div class="container">
         {{is_mobile=request.user_agent().is_mobile}}
@@ -96,11 +99,15 @@
         <div class="span12">
             <div class="page-header">
                 
+<!-- 
                 <image id="site-logo" src="{{=URL('static', '/images/fogger_logo.png')}}" />
-                <h1>
+ -->
+                <!-- 
+<h1>
                     {{=response.title}}
                     <small>{{=response.subtitle or ''}}</small>
                 </h1>
+ -->
             </div>
         </div>
 	{{pass}}

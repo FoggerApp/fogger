@@ -5,8 +5,8 @@
 ## Customize your APP title, subtitle and menus here
 #########################################################################
 
-response.logo = A(B('web',SPAN(2),'py'),XML('&trade;&nbsp;'),
-                  _class="brand",_href="http://www.web2py.com/")
+response.logo = A(IMG(_id='fogger-logo',_src=URL('static', '/images/logo.png'),_alt='Fogger'),
+                  _class="brand",_href=URL(c="default", f="index"))
 response.title = request.application.replace('_',' ').title()
 response.subtitle = ''
 
