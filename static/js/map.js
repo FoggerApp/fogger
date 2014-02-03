@@ -83,8 +83,9 @@ $(function(){
   panToUserLoc();
   placeUserMarker();
 
-  /* User position changes event */
-  navigator.geolocation.watchPosition(function(){
+
+  var verifyLocation = function(uloc) {
+    console.log("WATCHPOSITION called");
     var prevLocation = userLocation;
 
     /* update userLocation */
@@ -99,7 +100,10 @@ $(function(){
     
     /* update marker */
     moveUserMarker();
-  });
+  };
+
+  /* User position changes event */
+  navigator.geolocation.watchPosition(verifyLocation);
 
 });
 
