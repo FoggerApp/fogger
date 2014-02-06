@@ -37,7 +37,13 @@ def user():
         @auth.requires_permission('read','table name',record_id)
     to decorate functions that need access control
     """
+    if request.args[0] == "profile":
+        redirect(URL(c='default', f='profile'))
     return dict(form=auth())
+
+def map():
+
+    return dict()
 
 @cache.action()
 def download():
