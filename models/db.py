@@ -7,7 +7,7 @@
 db = DAL(conn_string, 
          pool_size=1, 
          check_reserved=['postgres'],
-         fake_migrate_all=True)
+         fake_migrate_all=False)
 
 ## by default give a view/generic.extension to all actions from localhost
 ## none otherwise. a pattern can be 'controller/function.extension'

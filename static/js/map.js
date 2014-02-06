@@ -9,7 +9,7 @@ $(function(){
   }
 
   /* request user location function */
-  var userLocation = null;
+  userLocation = null;
   var getLocation = function(pass) {
     if (userLocation != null) {
       pass(userLocation);
@@ -84,8 +84,9 @@ $(function(){
   placeUserMarker();
 
 
-  var verifyLocation = function(uloc) {
+  verifyLocation = function(uloc) {
     console.log("WATCHPOSITION called");
+    console.log("NEW LOCATION", uloc);
     var prevLocation = userLocation;
 
     /* update userLocation */
@@ -93,7 +94,7 @@ $(function(){
       /* Calculate distance between locations */
       console.log(
         'Distance betw prev location is ',
-        pointToDistance(uloc, prevLocation, 4),
+        pointToDistance(uloc, prevLocation, 8),
         'km.');
     });
 
@@ -103,7 +104,7 @@ $(function(){
   };
 
   /* User position changes event */
-  navigator.geolocation.watchPosition(verifyLocation);
+  //navigator.geolocation.watchPosition(verifyLocation);
 
 });
 
