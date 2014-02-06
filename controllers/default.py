@@ -41,6 +41,10 @@ def user():
         redirect(URL(c='default', f='profile'))
     return dict(form=auth())
 
+@auth.requires_login()
+def profile():
+    return dict()
+    
 def map():
 
     return dict()
