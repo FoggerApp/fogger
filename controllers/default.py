@@ -9,7 +9,7 @@
 ## - call exposes all registered services (none by default)
 #########################################################################
 
-
+@auth.requires_login()
 def index():
     """
     example action using the internationalization operator T and flash
@@ -18,6 +18,9 @@ def index():
     if you need a simple wiki simply replace the two lines below with:
     return auth.wiki()
     """
+    redirect(URL(c='default', f='map'))
+    return dict(form=auth())
+    
     response.flash = T("Welcome to web2py!")
     return dict(message=T('Hello World'))
 
@@ -37,14 +40,16 @@ def user():
         @auth.requires_permission('read','table name',record_id)
     to decorate functions that need access control
     """
-    if request.args[0] == "profile":
-        redirect(URL(c='default', f='profile'))
     return dict(form=auth())
+
+
+
 
 @auth.requires_login()
 def profile():
     return dict()
     
+@auth.requires_login()
 def map():
 
     return dict()
