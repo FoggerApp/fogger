@@ -5,8 +5,12 @@
 </script>
 <div id="map-canvas"></div>
 
-{{if 'test' in request.vars:}}
+{{if (('test' in request.vars)|('mock' in request.vars)):}}
   <script src="/fogger/static/js/navigator.js"></script>
+{{else:}}
+  <script>
+   window.fogger.navigator = navigator;
+  </script>
 {{pass}}
 
 <script src="/fogger/static/js/distance.js"></script>
@@ -16,15 +20,14 @@
   * load the navigator module and trigger 
   * the loading of this module 
   */
-  {{if 'test' in request.vars:}}
+  {{if 'mock' in request.vars:}}
     $(function(){
       fogger.navigator.init(function(){
-        fogger.map.init();
-        });
+        fogger.map.init();  
+      });
     });
   {{else:}}
     $(function(){
-      fogger.navigator = navigator;
       fogger.map.init();
     });
   {{pass}}
