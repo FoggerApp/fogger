@@ -7,7 +7,7 @@
   }
 
   /* PRIVATE variables */
-  var currentPosition = {
+  var position = {
     timestamp: null,
     coords: {
       latitude: null,
@@ -16,16 +16,23 @@
   };
 
   /* FUNCTIONS */
+  function getPosition() {
+    return position;
+  }
+
+  function setPosition(pos) {
+    position = pos;
+  }
   /* Set Current Position */
   function setCurrentPosition(pos) {
-    currentPosition.timestamp = pos.timestamp;
-    currentPosition.coords.latitude = pos.coords.latitude;
-    currentPosition.coords.longitude = pos.coords.longitude;
+    position.timestamp = pos.timestamp;
+    position.coords.latitude = pos.coords.latitude;
+    position.coords.longitude = pos.coords.longitude;
   }
 
   /* Get Current Position */
   function getCurrentPosition(success, error) {
-    if (currentPosition === null) {
+    if (position === null) {
       var err = {
         code: 0,
         message: "Could not get current position."
@@ -36,10 +43,10 @@
         error(err);
       }
     } else {
-      currentPosition.coords.latitude += 0.0001;
-      currentPosition.coords.longitude += 0.0001;
-      currentPosition.timestamp = new Date().getTime();
-      success(currentPosition);
+      position.coords.latitude += 0.0001;
+      position.coords.longitude += 0.0001;
+      position.timestamp = new Date().getTime();
+      success(position);
     }
   }
 
@@ -52,7 +59,7 @@
 
     setTimeout(function () {
       clearInterval(interval);
-    }, 10000);
+    }, 60000);
   }
 
   /* INIT */
@@ -81,6 +88,8 @@
       getCurrentPosition: getCurrentPosition,
       watchPosition: watchPosition
     },
+    getPosition: getPosition,
+    setPosition: setPosition,
     setCurrentPosition: setCurrentPosition
   };
 
