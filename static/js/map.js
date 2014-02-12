@@ -1,63 +1,112 @@
-$(function(){
-  /* init map */
-  var map = null;
+/* MAP MODULE */
+(function () {
+  "use strict";
 
-  /* set the width of the map function */
-  var reDim = function() {
-    $('#map-canvas').width($('#map-canvas').width());
-    $('#map-canvas').height(window.innerHeight - $('.navbar').height());
+  if (!window.hasOwnProperty("fogger")) {
+    throw new Error("Requires fogger global");
+  }
+
+  if (!window.fogger.hasOwnProperty("navigator")) {
+    throw new Error("Requires fogger navigator module");
+  }
+
+  /* PRIVATE variables */
+  var map = null,
+    userLocation = null,
+    userMarker = null;
+
+  /* FUNCTIONS */
+  function getMap() {
+    return map;
+  }
+
+  function getUserLocation() {
+    return userLocation;
+  }
+
+  function getUserMarker() {
+    return userMarker;
+  }
+
+  function setMap(m) {
+    map = m;
+  }
+
+  function setUserLocation(u) {
+    userLocation = u;
+  }
+
+  function setUserMarker(u) {
+    userMarker = u;
+  }
+
+  function coordsToLatLng(pos) {
+    return new google.maps.LatLng(pos.coords.latitude,
+      pos.coords.longitude);
   }
 
   /* request user location function */
-  userLocation = null;
-  var getLocation = function(pass) {
-    if (userLocation != null) {
+  function getLocation(pass) {
+    if (userLocation !== null) {
       pass(userLocation);
-    } else if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(pos){
-        userLocation = new google.maps.LatLng(pos.coords.latitude,
-                                          pos.coords.longitude);
+    } else if (fogger.navigator.geolocation) {
+      fogger.navigator.geolocation.getCurrentPosition(function (pos) {
+        userLocation = coordsToLatLng(pos);
         pass(userLocation);
       });
     } else {
       alert("Could not get user location!");
     }
-  };
+  }
 
-  var panToUserLoc = function() { 
-    getLocation(function(uloc){
-      if(map != null) {
+  function panToUserLoc() {
+    getLocation(function (uloc) {
+      if (map !== null) {
         map.panTo(uloc);
-      } else {
-        return null;
       }
     });
-  };
-  
-  var userMarker = null;
-  var placeUserMarker = function() {
-    getLocation(function(uloc){
-      if(map != null) {
-        userMarker = new google.maps.Marker({
-          position: uloc,
-          map: map,
-          title: 'You'
-          });
-      }
-    });
-  };
+  }
 
-  var moveUserMarker = function() {
-    getLocation(function(uloc){
-      if(userMarker != null) {
+  function moveUserMarker() {
+    getLocation(function (uloc) {
+      if (userMarker !== null) {
         userMarker.setPosition(uloc);
       }
       panToUserLoc();
     });
-  };
+  }
+
+  function updateLocation(pos) {
+    userLocation = coordsToLatLng(pos);
+    moveUserMarker();
+  }
+
+  function setEvents() {
+    fogger.navigator.geolocation.watchPosition(
+      updateLocation
+    );
+  }
+
+  /* set the width of the map function */
+  function reDim() {
+    $('#map-canvas').width($('#map-canvas').width());
+    $('#map-canvas').height(window.innerHeight - $('.navbar').height());
+  }
+
+  function placeUserMarker() {
+    getLocation(function (uloc) {
+      if (map !== null) {
+        userMarker = new google.maps.Marker({
+          position: uloc,
+          map: map,
+          title: 'You'
+        });
+      }
+    });
+  }
 
   /* Map Initialization Function */
-  function initialize() {
+  function initializeMap() {
     var mapOptions = {
       zoom: 17,
       panControl: false,
@@ -65,46 +114,43 @@ $(function(){
       streetViewControl: false,
       scaleControl: false,
       rotateControl: false,
-      overviewMapControl: false,
-
+      overviewMapControl: false
     };
     reDim();
     map = new google.maps.Map(document.getElementById("map-canvas"),
       mapOptions);
-    google.maps.event.addDomListener(map, 'idle', 
-            function(){console.log(map.getBounds())});
+    //To be implemented
+    //google.maps.event.addDomListener(map, 'idle', 
+    //        function (){console.log(map.getBounds())});
 
-    }
+  }
 
-  /* Events */
-  
-  google.maps.event.addDomListener(window, 'load', initialize);
-  
-  panToUserLoc();
-  placeUserMarker();
+  /* INIT */
+  function init() {
+    initializeMap();
+    panToUserLoc();
+    placeUserMarker();
+    setEvents();
+  }
 
-
-  verifyLocation = function(uloc) {
-    console.log("WATCHPOSITION called");
-    console.log("NEW LOCATION", uloc);
-    var prevLocation = userLocation;
-
-    /* update userLocation */
-    getLocation(function(uloc){
-      /* Calculate distance between locations */
-      console.log(
-        'Distance betw prev location is ',
-        pointToDistance(uloc, prevLocation, 8),
-        'km.');
-    });
-
-    
-    /* update marker */
-    moveUserMarker();
+  /* set GLOBAL namespace */
+  fogger.map = {
+    init: init,
+    getMap: getMap,
+    getUserLocation: getUserLocation,
+    getUserMarker: getUserMarker,
+    setMap: setMap,
+    setUserLocation: setUserLocation,
+    setUserMarker: setUserMarker,
+    setEvents: setEvents,
+    reDim: reDim,
+    getLocation: getLocation,
+    coordsToLatLng: coordsToLatLng,
+    panToUserLoc: panToUserLoc,
+    placeUserMarker: placeUserMarker,
+    moveUserMarker: moveUserMarker,
+    initializeMap: initializeMap,
+    updateLocation: updateLocation
   };
 
-  /* User position changes event */
-  //navigator.geolocation.watchPosition(verifyLocation);
-
-});
-
+}());
