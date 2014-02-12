@@ -1,7 +1,31 @@
 {{extend 'layout.html'}}
-
+<script>
+ /* create fogger namespace */
+  window.fogger = {};
+</script>
 <div id="map-canvas"></div>
+
+{{if 'test' in request.vars:}}
+  <script src="/fogger/static/js/mockGeo.js"></script>
+{{pass}}
 
 <script src="/fogger/static/js/distance.js"></script>
 <script src="/fogger/static/js/map.js"></script>
-
+<script>
+  /* 
+  * load the navigator module and trigger 
+  * the loading of this module 
+  */
+  {{if 'test' in request.vars:}}
+    $(function(){
+      fogger.navigator.init(function(){
+        fogger.map.init();
+        });
+    });
+  {{else:}}
+    $(function(){
+      fogger.navigator = navigator;
+      fogger.map.init();
+    });
+  {{pass}}
+</script>
