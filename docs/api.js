@@ -15,7 +15,8 @@ YUI.add("yuidoc-meta", function(Y) {
     "allModules": [
         {
             "displayName": "fogger",
-            "name": "fogger"
+            "name": "fogger",
+            "description": "Provides navigator functionality and simulates\nuser movement."
         },
         {
             "displayName": "Grunt",

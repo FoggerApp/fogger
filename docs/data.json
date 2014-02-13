@@ -104,7 +104,8 @@
             "namespaces": {},
             "tag": "module",
             "file": "static/js/navigator.js",
-            "line": 135,
+            "line": 1,
+            "description": "Provides navigator functionality and simulates\nuser movement.",
             "itemtype": "main"
         },
         "test": {
@@ -161,9 +162,8 @@
             "module": "fogger",
             "namespace": "",
             "file": "static/js/navigator.js",
-            "line": 135,
-            "description": "Sets initial position to the user's\nactual position.",
-            "is_constructor": 1
+            "line": 1,
+            "description": "Provides navigator functionality and simulates\nuser movement."
         },
         "MapSpec": {
             "name": "MapSpec",
@@ -442,7 +442,7 @@
         },
         {
             "file": "static/js/navigator.js",
-            "line": 16,
+            "line": 15,
             "description": "Object that is returned by \nnavigator.geolocation.getCurrentPosition()",
             "access": "private",
             "tagname": "position",
@@ -452,7 +452,7 @@
         },
         {
             "file": "static/js/navigator.js",
-            "line": 32,
+            "line": 31,
             "description": "Gets position.",
             "itemtype": "method",
             "name": "getPosition",
@@ -464,7 +464,7 @@
         },
         {
             "file": "static/js/navigator.js",
-            "line": 41,
+            "line": 40,
             "description": "Sets position.",
             "itemtype": "method",
             "name": "setPosition",
@@ -480,7 +480,7 @@
         },
         {
             "file": "static/js/navigator.js",
-            "line": 50,
+            "line": 49,
             "description": "Takes a Geolocation object and parses\nit to update position.",
             "itemtype": "method",
             "name": "setCurrentPosition",
@@ -496,7 +496,16 @@
         },
         {
             "file": "static/js/navigator.js",
-            "line": 140,
+            "line": 111,
+            "description": "Sets initial position to the user's\nactual position.",
+            "itemtype": "method",
+            "name": "init",
+            "class": "navigator",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/navigator.js",
+            "line": 135,
             "description": "Indicates wether the module uses mock coords.",
             "itemtype": "property",
             "name": "mock",
@@ -796,7 +805,7 @@
         },
         {
             "message": "Missing item type\nObject that is returned by \nnavigator.geolocation.getCurrentPosition()",
-            "line": " static/js/navigator.js:16"
+            "line": " static/js/navigator.js:15"
         },
         {
             "message": "Missing item type\nCreated and copyrighted by Massimo Di Pierro <massimo.dipierro@gmail.com>\n   (MIT license)  \nExample:\n<script src=\"share.js\"></script>",

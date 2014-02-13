@@ -4,7 +4,6 @@
  *
  * @module fogger 
  * @class navigator
- * @main navigator
  */
 (function () {
   "use strict";
@@ -112,8 +111,7 @@
   /**
   * Sets initial position to the user's
   * actual position.
-  * @class navigator
-  * @constructor
+  * @method init
   */
   function init(success, error) {
     navigator.geolocation.getCurrentPosition(
@@ -132,10 +130,7 @@
     );
   }
 
-  /**
-  * @module fogger
-  * @class navigator
-  */
+  /* set the global namespace */
   fogger.navigator = {
     /**
     * Indicates wether the module uses mock coords.
