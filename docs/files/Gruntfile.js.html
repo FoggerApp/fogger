@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>static/js/distance.js - Fogger</title>
+    <title>Gruntfile.js - Fogger</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -88,54 +88,88 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: static/js/distance.js</h1>
+                        <h1 class="file-heading">File: Gruntfile.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
-/*                                                                                                */
-/*  Simple node js module to get distance between two coordinates.                                */
-/*                                                                                                */
-/*  Code transformed from Chris Veness example code - please refer to his website for licensing   */
-/*  questions.                                                                                    */
-/*                                                                                                */
-/*                                                                                                */
-/*  Latitude/longitude spherical geodesy formulae &amp; scripts (c) Chris Veness 2002-2011            */
-/*   - www.movable-type.co.uk/scripts/latlong.html                                                */
-/*                                                                                                */
-/*                                                                                                */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
+/**
+ * This Gruntfile specifies commands for our fogger project.
+ * 
+ * Running jasmine tests
+ * ---------------------
+ * Current the jasmine test command is not working because
+ * our application runs on web2py. This would require a complex
+ * headless environment that we might implement for the next iteration.
+ * For now, tests can be run by navigating to a page and adding &quot;test=1&quot;
+ * as a GET URL parameter.
+ *
+ * @module Grunt
+ */
+module.exports = function(grunt) {
 
+    /**
+     * @class GruntConfiguration
+     */
+    grunt.initConfig({
+
+      	/**
+         * Reads the package.json file.
+         * @property pkg 
+         */
+        pkg: grunt.file.readJSON(&#x27;package.json&#x27;),
+
+       /**
+        * Generates documentation for javascript source code,
+        * test code and grunt file
+        * @property yuidoc
+        */
+        yuidoc: {
+            compile: {
+                name: &#x27;&lt;%= pkg.name %&gt;&#x27;,
+                description: &#x27;&lt;%= pkg.description %&gt;&#x27;,
+                version: &#x27;&lt;%= pkg.version %&gt;&#x27;,
+                options: {
+                    paths: [&#x27;static/js&#x27;, &#x27;.&#x27;],
+                    outdir: &#x27;docs&#x27;
+                }
+            }
+       },
+
+       /**
+        * Attempts to run jasmine tests, but requires a headless
+        * environment.
+        * @property jasmine
+        */
+       jasmine: {
+            compile: {
+                src: &#x27;static/js/*.js&#x27;,
+                options: {
+                    specs: &#x27;static/jasmine/spec/**/*Spec.js&#x27;,
+                    keepRunner: true
+                }
+            }
+        },
+
+        /**
+         * Removes the docs folder and everything else generate by
+         * this Gruntfile.
+         * @property clean
+         */
+        clean:
+            [&#x27;docs&#x27;]
+
+
+    });
  
+    // Load the plugins
+    grunt.loadNpmTasks(&#x27;grunt-contrib-yuidoc&#x27;);
+    grunt.loadNpmTasks(&#x27;grunt-contrib-jasmine&#x27;);
+    grunt.loadNpmTasks(&#x27;grunt-contrib-uglify&#x27;);
+    grunt.loadNpmTasks(&#x27;grunt-contrib-clean&#x27;);
 
-/** Converts numeric degrees to radians */
-if(typeof(Number.prototype.toRad) === &quot;undefined&quot;) {
-    Number.prototype.toRad = function () {
-        return this * Math.PI / 180;
-    }
-}
+    // Default task(s).
+    grunt.registerTask(&#x27;default&#x27;, [&#x27;yuidoc&#x27;, &#x27;jasmine&#x27;, &#x27;uglify&#x27;]);
 
-// start and end are objects with latitude and longitude
-//decimals (default 2) is number of decimals in the output
-//return is distance in kilometers. 
-pointToDistance = function(start, end, decimals) {
-    decimals = decimals || 2;
-    var earthRadius = 6371; // km
-    lat1 = parseFloat(start.lat());
-    lat2 = parseFloat(end.lat());
-    lon1 = parseFloat(start.lng());
-    lon2 = parseFloat(end.lng());
-
-    var dLat = (lat2 - lat1).toRad();
-    var dLon = (lon2 - lon1).toRad();
-    var lat1 = lat1.toRad();
-    var lat2 = lat2.toRad();
-
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = earthRadius * c;
-    return Math.round(d * Math.pow(10, decimals)) / Math.pow(10, decimals);
 };
 
     </pre>

@@ -22,7 +22,6 @@
         "static/js/navigator.js": {
             "name": "static/js/navigator.js",
             "modules": {
-                "navigator": 1,
                 "fogger": 1
             },
             "classes": {
@@ -37,21 +36,34 @@
             "classes": {},
             "fors": {},
             "namespaces": {}
+        },
+        ".grunt/grunt-contrib-jasmine/boot.js": {
+            "name": ".grunt/grunt-contrib-jasmine/boot.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "static/jasmine/lib/jasmine-2.0.0/boot.js": {
+            "name": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "Gruntfile.js": {
+            "name": "Gruntfile.js",
+            "modules": {
+                "Grunt": 1
+            },
+            "classes": {
+                "GruntConfiguration": 1
+            },
+            "fors": {},
+            "namespaces": {}
         }
     },
     "modules": {
-        "navigator": {
-            "name": "navigator",
-            "submodules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {},
-            "tag": "main",
-            "file": "static/js/navigator.js",
-            "line": 1,
-            "description": "Provides navigator functionality and simulates\nuser movement.",
-            "itemtype": "main"
-        },
         "fogger": {
             "name": "fogger",
             "submodules": {},
@@ -62,7 +74,21 @@
             "namespaces": {},
             "tag": "module",
             "file": "static/js/navigator.js",
-            "line": 135
+            "line": 135,
+            "itemtype": "main"
+        },
+        "Grunt": {
+            "name": "Grunt",
+            "submodules": {},
+            "classes": {
+                "GruntConfiguration": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "Gruntfile.js",
+            "line": 16,
+            "description": "This Gruntfile specifies commands for our fogger project.\n\nRunning jasmine tests\n---------------------\nCurrent the jasmine test command is not working because\nour application runs on web2py. This would require a complex\nheadless environment that we might implement for the next iteration.\nFor now, tests can be run by navigating to a page and adding \"test=1\"\nas a GET URL parameter."
         }
     },
     "classes": {
@@ -80,6 +106,19 @@
             "line": 135,
             "description": "Sets initial position to the user's\nactual position.",
             "is_constructor": 1
+        },
+        "GruntConfiguration": {
+            "name": "GruntConfiguration",
+            "shortname": "GruntConfiguration",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Grunt",
+            "namespace": "",
+            "file": "Gruntfile.js",
+            "line": 16
         }
     },
     "classitems": [
@@ -102,7 +141,7 @@
             "tagname": "position",
             "type": "Geolocation",
             "class": "navigator",
-            "module": "navigator"
+            "module": "fogger"
         },
         {
             "file": "static/js/navigator.js",
@@ -114,7 +153,7 @@
                 "description": "position"
             },
             "class": "navigator",
-            "module": "navigator"
+            "module": "fogger"
         },
         {
             "file": "static/js/navigator.js",
@@ -130,7 +169,7 @@
                 }
             ],
             "class": "navigator",
-            "module": "navigator"
+            "module": "fogger"
         },
         {
             "file": "static/js/navigator.js",
@@ -146,7 +185,7 @@
                 }
             ],
             "class": "navigator",
-            "module": "navigator"
+            "module": "fogger"
         },
         {
             "file": "static/js/navigator.js",
@@ -163,8 +202,268 @@
             "file": "static/js/share.js",
             "line": 1,
             "description": "Created and copyrighted by Massimo Di Pierro <massimo.dipierro@gmail.com>\n   (MIT license)  \nExample:\n<script src=\"share.js\"></script>",
-            "class": "",
+            "class": "GruntConfiguration",
             "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 1,
+            "description": "Starting with version 2.0, this file \"boots\" Jasmine, performing all of the necessary initialization before executing the loaded environment and all of a project's specs. This file should be loaded after `jasmine.js`, but before any project source files or spec files are loaded. Thus this file can also be used to customize Jasmine for a project.\n\nIf a project is using Jasmine via the standalone distribution, this file can be customized directly. If a project is using Jasmine via the [Ruby gem][jasmine-gem], this file can be copied into the support directory via `jasmine copy_boot_js`. Other environments (e.g., Python) will have different mechanisms.\n\nThe location of `boot.js` can be specified and/or overridden in `jasmine.yml`.\n\n[jasmine-gem]: http://github.com/pivotal/jasmine-gem",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 13,
+            "description": "## Require &amp; Instantiate\n\nRequire Jasmine's core files. Specifically, this requires and attaches all of Jasmine's code to the `jasmine` reference.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 20,
+            "description": "Since this is being run in a browser and the results should populate to an HTML page, require the HTML-specific Jasmine code, injecting the same reference.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 25,
+            "description": "Create the Jasmine environment. This is used to run all specs in a project.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 30,
+            "description": "## The Global Interface\n\nBuild up the functions that will be exposed as the Jasmine public interface. A project can customize, rename or alias any of these functions as desired, provided the implementation remains unchanged.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 77,
+            "description": "Add all of the Jasmine global/public interface to the proper global, so a project can use the public interface directly. For example, calling `describe` in specs instead of `jasmine.getEnv().describe`.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 86,
+            "description": "Expose the interface for adding custom equality testers.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 93,
+            "description": "Expose the interface for adding custom expectation matchers",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 100,
+            "description": "Expose the mock interface for the JavaScript timeout functions",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 107,
+            "description": "## Runner Parameters\n\nMore browser specific code - wrap the query string in an object and to allow for getting/setting parameters from the runner user interface.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 120,
+            "description": "## Reporters\nThe `HtmlReporter` builds all of the HTML UI for the runner page. This reporter paints the dots, stars, and x's for specs, as well as all spec names and all failures (if any).",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 133,
+            "description": "The `jsApiReporter` also receives spec results, and is used by any environment that needs to extract the results  from JavaScript.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 139,
+            "description": "Filter which specs will be run by matching the start of the full name against the `spec` query param.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 150,
+            "description": "Setting up timing functions to be able to be overridden. Certain browsers (Safari, IE 8, phantomjs) require this hack.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 158,
+            "description": "## Execution\n\nReplace the browser window's `onload`, ensure it's called, and then run all of the loaded specs. This includes initializing the `HtmlReporter` instance and then executing the loaded Jasmine environment. All of this will happen after all of the specs are loaded.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": ".grunt/grunt-contrib-jasmine/boot.js",
+            "line": 173,
+            "description": "Helper function for readability above.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 1,
+            "description": "Starting with version 2.0, this file \"boots\" Jasmine, performing all of the necessary initialization before executing the loaded environment and all of a project's specs. This file should be loaded after `jasmine.js`, but before any project source files or spec files are loaded. Thus this file can also be used to customize Jasmine for a project.\n\nIf a project is using Jasmine via the standalone distribution, this file can be customized directly. If a project is using Jasmine via the [Ruby gem][jasmine-gem], this file can be copied into the support directory via `jasmine copy_boot_js`. Other environments (e.g., Python) will have different mechanisms.\n\nThe location of `boot.js` can be specified and/or overridden in `jasmine.yml`.\n\n[jasmine-gem]: http://github.com/pivotal/jasmine-gem",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 13,
+            "description": "## Require &amp; Instantiate\n\nRequire Jasmine's core files. Specifically, this requires and attaches all of Jasmine's code to the `jasmine` reference.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 20,
+            "description": "Since this is being run in a browser and the results should populate to an HTML page, require the HTML-specific Jasmine code, injecting the same reference.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 25,
+            "description": "Create the Jasmine environment. This is used to run all specs in a project.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 30,
+            "description": "## The Global Interface\n\nBuild up the functions that will be exposed as the Jasmine public interface. A project can customize, rename or alias any of these functions as desired, provided the implementation remains unchanged.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 77,
+            "description": "Add all of the Jasmine global/public interface to the proper global, so a project can use the public interface directly. For example, calling `describe` in specs instead of `jasmine.getEnv().describe`.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 86,
+            "description": "Expose the interface for adding custom equality testers.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 93,
+            "description": "Expose the interface for adding custom expectation matchers",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 100,
+            "description": "Expose the mock interface for the JavaScript timeout functions",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 107,
+            "description": "## Runner Parameters\n\nMore browser specific code - wrap the query string in an object and to allow for getting/setting parameters from the runner user interface.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 120,
+            "description": "## Reporters\nThe `HtmlReporter` builds all of the HTML UI for the runner page. This reporter paints the dots, stars, and x's for specs, as well as all spec names and all failures (if any).",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 133,
+            "description": "The `jsApiReporter` also receives spec results, and is used by any environment that needs to extract the results  from JavaScript.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 139,
+            "description": "Filter which specs will be run by matching the start of the full name against the `spec` query param.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 150,
+            "description": "Setting up timing functions to be able to be overridden. Certain browsers (Safari, IE 8, phantomjs) require this hack.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 158,
+            "description": "## Execution\n\nReplace the browser window's `onload`, ensure it's called, and then run all of the loaded specs. This includes initializing the `HtmlReporter` instance and then executing the loaded Jasmine environment. All of this will happen after all of the specs are loaded.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
+            "line": 173,
+            "description": "Helper function for readability above.",
+            "class": "GruntConfiguration",
+            "module": "fogger"
+        },
+        {
+            "file": "Gruntfile.js",
+            "line": 21,
+            "description": "Reads the package.json file.",
+            "itemtype": "property",
+            "name": "pkg",
+            "class": "GruntConfiguration",
+            "module": "Grunt"
+        },
+        {
+            "file": "Gruntfile.js",
+            "line": 27,
+            "description": "Generates documentation for javascript source code,\ntest code and grunt file",
+            "itemtype": "property",
+            "name": "yuidoc",
+            "class": "GruntConfiguration",
+            "module": "Grunt"
+        },
+        {
+            "file": "Gruntfile.js",
+            "line": 44,
+            "description": "Attempts to run jasmine tests, but requires a headless\nenvironment.",
+            "itemtype": "property",
+            "name": "jasmine",
+            "class": "GruntConfiguration",
+            "module": "Grunt"
+        },
+        {
+            "file": "Gruntfile.js",
+            "line": 59,
+            "description": "Removes the docs folder and everything else generate by\nthis Gruntfile.",
+            "itemtype": "property",
+            "name": "clean",
+            "class": "GruntConfiguration",
+            "module": "Grunt"
         }
     ],
     "warnings": [
@@ -183,6 +482,134 @@
         {
             "message": "Missing item type\nCreated and copyrighted by Massimo Di Pierro <massimo.dipierro@gmail.com>\n   (MIT license)  \nExample:\n<script src=\"share.js\"></script>",
             "line": " static/js/share.js:1"
+        },
+        {
+            "message": "Missing item type\nStarting with version 2.0, this file \"boots\" Jasmine, performing all of the necessary initialization before executing the loaded environment and all of a project's specs. This file should be loaded after `jasmine.js`, but before any project source files or spec files are loaded. Thus this file can also be used to customize Jasmine for a project.\n\nIf a project is using Jasmine via the standalone distribution, this file can be customized directly. If a project is using Jasmine via the [Ruby gem][jasmine-gem], this file can be copied into the support directory via `jasmine copy_boot_js`. Other environments (e.g., Python) will have different mechanisms.\n\nThe location of `boot.js` can be specified and/or overridden in `jasmine.yml`.\n\n[jasmine-gem]: http://github.com/pivotal/jasmine-gem",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:1"
+        },
+        {
+            "message": "Missing item type\n## Require &amp; Instantiate\n\nRequire Jasmine's core files. Specifically, this requires and attaches all of Jasmine's code to the `jasmine` reference.",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:13"
+        },
+        {
+            "message": "Missing item type\nSince this is being run in a browser and the results should populate to an HTML page, require the HTML-specific Jasmine code, injecting the same reference.",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:20"
+        },
+        {
+            "message": "Missing item type\nCreate the Jasmine environment. This is used to run all specs in a project.",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:25"
+        },
+        {
+            "message": "Missing item type\n## The Global Interface\n\nBuild up the functions that will be exposed as the Jasmine public interface. A project can customize, rename or alias any of these functions as desired, provided the implementation remains unchanged.",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:30"
+        },
+        {
+            "message": "Missing item type\nAdd all of the Jasmine global/public interface to the proper global, so a project can use the public interface directly. For example, calling `describe` in specs instead of `jasmine.getEnv().describe`.",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:77"
+        },
+        {
+            "message": "Missing item type\nExpose the interface for adding custom equality testers.",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:86"
+        },
+        {
+            "message": "Missing item type\nExpose the interface for adding custom expectation matchers",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:93"
+        },
+        {
+            "message": "Missing item type\nExpose the mock interface for the JavaScript timeout functions",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:100"
+        },
+        {
+            "message": "Missing item type\n## Runner Parameters\n\nMore browser specific code - wrap the query string in an object and to allow for getting/setting parameters from the runner user interface.",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:107"
+        },
+        {
+            "message": "Missing item type\n## Reporters\nThe `HtmlReporter` builds all of the HTML UI for the runner page. This reporter paints the dots, stars, and x's for specs, as well as all spec names and all failures (if any).",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:120"
+        },
+        {
+            "message": "Missing item type\nThe `jsApiReporter` also receives spec results, and is used by any environment that needs to extract the results  from JavaScript.",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:133"
+        },
+        {
+            "message": "Missing item type\nFilter which specs will be run by matching the start of the full name against the `spec` query param.",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:139"
+        },
+        {
+            "message": "Missing item type\nSetting up timing functions to be able to be overridden. Certain browsers (Safari, IE 8, phantomjs) require this hack.",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:150"
+        },
+        {
+            "message": "Missing item type\n## Execution\n\nReplace the browser window's `onload`, ensure it's called, and then run all of the loaded specs. This includes initializing the `HtmlReporter` instance and then executing the loaded Jasmine environment. All of this will happen after all of the specs are loaded.",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:158"
+        },
+        {
+            "message": "Missing item type\nHelper function for readability above.",
+            "line": " .grunt/grunt-contrib-jasmine/boot.js:173"
+        },
+        {
+            "message": "Missing item type\nStarting with version 2.0, this file \"boots\" Jasmine, performing all of the necessary initialization before executing the loaded environment and all of a project's specs. This file should be loaded after `jasmine.js`, but before any project source files or spec files are loaded. Thus this file can also be used to customize Jasmine for a project.\n\nIf a project is using Jasmine via the standalone distribution, this file can be customized directly. If a project is using Jasmine via the [Ruby gem][jasmine-gem], this file can be copied into the support directory via `jasmine copy_boot_js`. Other environments (e.g., Python) will have different mechanisms.\n\nThe location of `boot.js` can be specified and/or overridden in `jasmine.yml`.\n\n[jasmine-gem]: http://github.com/pivotal/jasmine-gem",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:1"
+        },
+        {
+            "message": "Missing item type\n## Require &amp; Instantiate\n\nRequire Jasmine's core files. Specifically, this requires and attaches all of Jasmine's code to the `jasmine` reference.",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:13"
+        },
+        {
+            "message": "Missing item type\nSince this is being run in a browser and the results should populate to an HTML page, require the HTML-specific Jasmine code, injecting the same reference.",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:20"
+        },
+        {
+            "message": "Missing item type\nCreate the Jasmine environment. This is used to run all specs in a project.",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:25"
+        },
+        {
+            "message": "Missing item type\n## The Global Interface\n\nBuild up the functions that will be exposed as the Jasmine public interface. A project can customize, rename or alias any of these functions as desired, provided the implementation remains unchanged.",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:30"
+        },
+        {
+            "message": "Missing item type\nAdd all of the Jasmine global/public interface to the proper global, so a project can use the public interface directly. For example, calling `describe` in specs instead of `jasmine.getEnv().describe`.",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:77"
+        },
+        {
+            "message": "Missing item type\nExpose the interface for adding custom equality testers.",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:86"
+        },
+        {
+            "message": "Missing item type\nExpose the interface for adding custom expectation matchers",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:93"
+        },
+        {
+            "message": "Missing item type\nExpose the mock interface for the JavaScript timeout functions",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:100"
+        },
+        {
+            "message": "Missing item type\n## Runner Parameters\n\nMore browser specific code - wrap the query string in an object and to allow for getting/setting parameters from the runner user interface.",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:107"
+        },
+        {
+            "message": "Missing item type\n## Reporters\nThe `HtmlReporter` builds all of the HTML UI for the runner page. This reporter paints the dots, stars, and x's for specs, as well as all spec names and all failures (if any).",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:120"
+        },
+        {
+            "message": "Missing item type\nThe `jsApiReporter` also receives spec results, and is used by any environment that needs to extract the results  from JavaScript.",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:133"
+        },
+        {
+            "message": "Missing item type\nFilter which specs will be run by matching the start of the full name against the `spec` query param.",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:139"
+        },
+        {
+            "message": "Missing item type\nSetting up timing functions to be able to be overridden. Certain browsers (Safari, IE 8, phantomjs) require this hack.",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:150"
+        },
+        {
+            "message": "Missing item type\n## Execution\n\nReplace the browser window's `onload`, ensure it's called, and then run all of the loaded specs. This includes initializing the `HtmlReporter` instance and then executing the loaded Jasmine environment. All of this will happen after all of the specs are loaded.",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:158"
+        },
+        {
+            "message": "Missing item type\nHelper function for readability above.",
+            "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:173"
         }
     ]
 }
