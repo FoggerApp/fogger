@@ -53,7 +53,9 @@
         },
         "static/jasmine/spec/default/mapSpec.js": {
             "name": "static/jasmine/spec/default/mapSpec.js",
-            "modules": {},
+            "modules": {
+                "test": 1
+            },
             "classes": {
                 "MapSpec": 1
             },
@@ -62,9 +64,7 @@
         },
         "static/jasmine/spec/default/userSpec.js": {
             "name": "static/jasmine/spec/default/userSpec.js",
-            "modules": {
-                "test": 1
-            },
+            "modules": {},
             "classes": {
                 "UserSpec": 1
             },
@@ -88,20 +88,20 @@
             "name": "fogger",
             "submodules": {},
             "classes": {
-                "navigator": 1,
-                "MapSpec": 1
+                "navigator": 1
             },
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "static/jasmine/spec/default/mapSpec.js",
-            "line": 1,
+            "file": "static/js/navigator.js",
+            "line": 135,
             "itemtype": "main"
         },
         "test": {
             "name": "test",
             "submodules": {},
             "classes": {
+                "MapSpec": 1,
                 "UserSpec": 1
             },
             "fors": {},
@@ -149,7 +149,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "fogger",
+            "module": "test",
             "namespace": "",
             "file": "static/jasmine/spec/default/mapSpec.js",
             "line": 1
