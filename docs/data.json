@@ -19,6 +19,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "static/js/map.js": {
+            "name": "static/js/map.js",
+            "modules": {},
+            "classes": {
+                "map": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "static/js/navigator.js": {
             "name": "static/js/navigator.js",
             "modules": {
@@ -88,6 +97,7 @@
             "name": "fogger",
             "submodules": {},
             "classes": {
+                "map": 1,
                 "navigator": 1
             },
             "fors": {},
@@ -126,6 +136,20 @@
         }
     },
     "classes": {
+        "map": {
+            "name": "map",
+            "shortname": "map",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "fogger",
+            "namespace": "",
+            "file": "static/js/map.js",
+            "line": 1,
+            "description": "Provides the google map layout that show the user location."
+        },
         "navigator": {
             "name": "navigator",
             "shortname": "navigator",
@@ -186,12 +210,235 @@
             "file": "static/js/dd_belatedpng.js",
             "line": 1,
             "description": "DD_belatedPNG: Adds IE6 support: PNG images for CSS background-image and HTML <IMG/>.\nAuthor: Drew Diller\nEmail: drew.diller@gmail.com\nURL: http://www.dillerdesign.com/experiment/DD_belatedPNG/\nVersion: 0.0.8a\nLicensed under the MIT License: http://dillerdesign.com/experiment/DD_belatedPNG/#license\n\nExample usage:\nDD_belatedPNG.fix('.png_bg'); // argument is a CSS selector\nDD_belatedPNG.fixPng( someNode ); // argument is an HTMLDomElement",
-            "class": "navigator"
+            "class": "map"
         },
         {
             "file": "static/js/distance.js",
             "line": 17,
-            "class": "navigator"
+            "class": "map"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 21,
+            "access": "private",
+            "tagname": "map",
+            "type": "google.maps.Map",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 27,
+            "description": "Object that is returned by \nnavigator.geolocation.getCurrentPosition()",
+            "access": "private",
+            "tagname": "userLocation",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 38,
+            "description": "Gets the map.",
+            "itemtype": "method",
+            "name": "getMap",
+            "return": {
+                "description": "map",
+                "type": "google.maps.Map"
+            },
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 47,
+            "description": "Gets user location.",
+            "itemtype": "method",
+            "name": "getUserLocation",
+            "return": {
+                "description": "userLocation",
+                "type": "google.maps.LatLng"
+            },
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 56,
+            "description": "Gets user marker.",
+            "itemtype": "method",
+            "name": "getUserMarker",
+            "return": {
+                "description": "userMarker",
+                "type": "google.maps.Marker"
+            },
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 65,
+            "description": "Sets the map.",
+            "itemtype": "method",
+            "name": "setMap",
+            "params": [
+                {
+                    "name": "m",
+                    "description": "",
+                    "type": "google.maps.Map"
+                }
+            ],
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 74,
+            "description": "Sets the user location.",
+            "itemtype": "method",
+            "name": "setUserLocation",
+            "params": [
+                {
+                    "name": "u",
+                    "description": "",
+                    "type": "google.maps.LatLng"
+                }
+            ],
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 83,
+            "description": "Sets the user marker.",
+            "itemtype": "method",
+            "name": "setUserMarker",
+            "params": [
+                {
+                    "name": "u",
+                    "description": "",
+                    "type": "google.maps.Marker"
+                }
+            ],
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 92,
+            "description": "Conventing the google object to latitude and longitude.",
+            "itemtype": "method",
+            "name": "setUserMarker",
+            "params": [
+                {
+                    "name": "pos",
+                    "description": "",
+                    "type": "Position"
+                }
+            ],
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 102,
+            "description": "Gets the user location.",
+            "itemtype": "method",
+            "name": "getLocation",
+            "params": [
+                {
+                    "name": "pass",
+                    "description": "",
+                    "type": "google.maps.LatLng"
+                }
+            ],
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 120,
+            "description": "Pans the map to the user current location.",
+            "itemtype": "method",
+            "name": "panToUserLoc",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 132,
+            "description": "Moves the user marker on the map.",
+            "itemtype": "method",
+            "name": "moveUserMarker",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 145,
+            "description": "Updates the user location.",
+            "itemtype": "method",
+            "name": "updateLocation",
+            "params": [
+                {
+                    "name": "pos",
+                    "description": "",
+                    "type": "Position"
+                }
+            ],
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 155,
+            "description": "Sets events for the map module.",
+            "itemtype": "method",
+            "name": "setEvents",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 166,
+            "description": "Sets the width and height of the map.",
+            "itemtype": "method",
+            "name": "reDim",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 175,
+            "description": "Places the user marker on the map.",
+            "itemtype": "method",
+            "name": "placeUserMarker",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 191,
+            "description": "Initializes the map",
+            "itemtype": "method",
+            "name": "initializeMap",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 214,
+            "description": "Initializes the map module.",
+            "itemtype": "method",
+            "name": "init",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 225,
+            "description": "Sets the glopal name space",
+            "class": "map",
+            "module": "fogger"
         },
         {
             "file": "static/js/navigator.js",
@@ -534,6 +781,18 @@
         {
             "message": "Missing item type",
             "line": " static/js/distance.js:17"
+        },
+        {
+            "message": "Missing item type",
+            "line": " static/js/map.js:21"
+        },
+        {
+            "message": "Missing item type\nObject that is returned by \nnavigator.geolocation.getCurrentPosition()",
+            "line": " static/js/map.js:27"
+        },
+        {
+            "message": "Missing item type\nSets the glopal name space",
+            "line": " static/js/map.js:225"
         },
         {
             "message": "Missing item type\nObject that is returned by \nnavigator.geolocation.getCurrentPosition()",
