@@ -51,6 +51,26 @@
             "fors": {},
             "namespaces": {}
         },
+        "static/jasmine/spec/default/mapSpec.js": {
+            "name": "static/jasmine/spec/default/mapSpec.js",
+            "modules": {},
+            "classes": {
+                "MapSpec": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "static/jasmine/spec/default/userSpec.js": {
+            "name": "static/jasmine/spec/default/userSpec.js",
+            "modules": {
+                "test": 1
+            },
+            "classes": {
+                "UserSpec": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "Gruntfile.js": {
             "name": "Gruntfile.js",
             "modules": {
@@ -68,13 +88,27 @@
             "name": "fogger",
             "submodules": {},
             "classes": {
-                "navigator": 1
+                "navigator": 1,
+                "MapSpec": 1
             },
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "static/js/navigator.js",
-            "line": 135,
+            "file": "static/jasmine/spec/default/mapSpec.js",
+            "line": 1,
+            "itemtype": "main"
+        },
+        "test": {
+            "name": "test",
+            "submodules": {},
+            "classes": {
+                "UserSpec": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "static/jasmine/spec/default/userSpec.js",
+            "line": 6,
             "itemtype": "main"
         },
         "Grunt": {
@@ -106,6 +140,32 @@
             "line": 135,
             "description": "Sets initial position to the user's\nactual position.",
             "is_constructor": 1
+        },
+        "MapSpec": {
+            "name": "MapSpec",
+            "shortname": "MapSpec",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "fogger",
+            "namespace": "",
+            "file": "static/jasmine/spec/default/mapSpec.js",
+            "line": 1
+        },
+        "UserSpec": {
+            "name": "UserSpec",
+            "shortname": "UserSpec",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "test",
+            "namespace": "",
+            "file": "static/jasmine/spec/default/userSpec.js",
+            "line": 6
         },
         "GruntConfiguration": {
             "name": "GruntConfiguration",
@@ -202,231 +262,231 @@
             "file": "static/js/share.js",
             "line": 1,
             "description": "Created and copyrighted by Massimo Di Pierro <massimo.dipierro@gmail.com>\n   (MIT license)  \nExample:\n<script src=\"share.js\"></script>",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 1,
             "description": "Starting with version 2.0, this file \"boots\" Jasmine, performing all of the necessary initialization before executing the loaded environment and all of a project's specs. This file should be loaded after `jasmine.js`, but before any project source files or spec files are loaded. Thus this file can also be used to customize Jasmine for a project.\n\nIf a project is using Jasmine via the standalone distribution, this file can be customized directly. If a project is using Jasmine via the [Ruby gem][jasmine-gem], this file can be copied into the support directory via `jasmine copy_boot_js`. Other environments (e.g., Python) will have different mechanisms.\n\nThe location of `boot.js` can be specified and/or overridden in `jasmine.yml`.\n\n[jasmine-gem]: http://github.com/pivotal/jasmine-gem",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 13,
             "description": "## Require &amp; Instantiate\n\nRequire Jasmine's core files. Specifically, this requires and attaches all of Jasmine's code to the `jasmine` reference.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 20,
             "description": "Since this is being run in a browser and the results should populate to an HTML page, require the HTML-specific Jasmine code, injecting the same reference.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 25,
             "description": "Create the Jasmine environment. This is used to run all specs in a project.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 30,
             "description": "## The Global Interface\n\nBuild up the functions that will be exposed as the Jasmine public interface. A project can customize, rename or alias any of these functions as desired, provided the implementation remains unchanged.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 77,
             "description": "Add all of the Jasmine global/public interface to the proper global, so a project can use the public interface directly. For example, calling `describe` in specs instead of `jasmine.getEnv().describe`.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 86,
             "description": "Expose the interface for adding custom equality testers.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 93,
             "description": "Expose the interface for adding custom expectation matchers",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 100,
             "description": "Expose the mock interface for the JavaScript timeout functions",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 107,
             "description": "## Runner Parameters\n\nMore browser specific code - wrap the query string in an object and to allow for getting/setting parameters from the runner user interface.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 120,
             "description": "## Reporters\nThe `HtmlReporter` builds all of the HTML UI for the runner page. This reporter paints the dots, stars, and x's for specs, as well as all spec names and all failures (if any).",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 133,
             "description": "The `jsApiReporter` also receives spec results, and is used by any environment that needs to extract the results  from JavaScript.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 139,
             "description": "Filter which specs will be run by matching the start of the full name against the `spec` query param.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 150,
             "description": "Setting up timing functions to be able to be overridden. Certain browsers (Safari, IE 8, phantomjs) require this hack.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 158,
             "description": "## Execution\n\nReplace the browser window's `onload`, ensure it's called, and then run all of the loaded specs. This includes initializing the `HtmlReporter` instance and then executing the loaded Jasmine environment. All of this will happen after all of the specs are loaded.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": ".grunt/grunt-contrib-jasmine/boot.js",
             "line": 173,
             "description": "Helper function for readability above.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 1,
             "description": "Starting with version 2.0, this file \"boots\" Jasmine, performing all of the necessary initialization before executing the loaded environment and all of a project's specs. This file should be loaded after `jasmine.js`, but before any project source files or spec files are loaded. Thus this file can also be used to customize Jasmine for a project.\n\nIf a project is using Jasmine via the standalone distribution, this file can be customized directly. If a project is using Jasmine via the [Ruby gem][jasmine-gem], this file can be copied into the support directory via `jasmine copy_boot_js`. Other environments (e.g., Python) will have different mechanisms.\n\nThe location of `boot.js` can be specified and/or overridden in `jasmine.yml`.\n\n[jasmine-gem]: http://github.com/pivotal/jasmine-gem",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 13,
             "description": "## Require &amp; Instantiate\n\nRequire Jasmine's core files. Specifically, this requires and attaches all of Jasmine's code to the `jasmine` reference.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 20,
             "description": "Since this is being run in a browser and the results should populate to an HTML page, require the HTML-specific Jasmine code, injecting the same reference.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 25,
             "description": "Create the Jasmine environment. This is used to run all specs in a project.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 30,
             "description": "## The Global Interface\n\nBuild up the functions that will be exposed as the Jasmine public interface. A project can customize, rename or alias any of these functions as desired, provided the implementation remains unchanged.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 77,
             "description": "Add all of the Jasmine global/public interface to the proper global, so a project can use the public interface directly. For example, calling `describe` in specs instead of `jasmine.getEnv().describe`.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 86,
             "description": "Expose the interface for adding custom equality testers.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 93,
             "description": "Expose the interface for adding custom expectation matchers",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 100,
             "description": "Expose the mock interface for the JavaScript timeout functions",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 107,
             "description": "## Runner Parameters\n\nMore browser specific code - wrap the query string in an object and to allow for getting/setting parameters from the runner user interface.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 120,
             "description": "## Reporters\nThe `HtmlReporter` builds all of the HTML UI for the runner page. This reporter paints the dots, stars, and x's for specs, as well as all spec names and all failures (if any).",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 133,
             "description": "The `jsApiReporter` also receives spec results, and is used by any environment that needs to extract the results  from JavaScript.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 139,
             "description": "Filter which specs will be run by matching the start of the full name against the `spec` query param.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 150,
             "description": "Setting up timing functions to be able to be overridden. Certain browsers (Safari, IE 8, phantomjs) require this hack.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 158,
             "description": "## Execution\n\nReplace the browser window's `onload`, ensure it's called, and then run all of the loaded specs. This includes initializing the `HtmlReporter` instance and then executing the loaded Jasmine environment. All of this will happen after all of the specs are loaded.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {
             "file": "static/jasmine/lib/jasmine-2.0.0/boot.js",
             "line": 173,
             "description": "Helper function for readability above.",
-            "class": "GruntConfiguration",
+            "class": "MapSpec",
             "module": "fogger"
         },
         {

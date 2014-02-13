@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Gruntfile.js - Fogger</title>
+    <title>static/jasmine/spec/default/userSpec.js - Fogger</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -94,89 +94,71 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: Gruntfile.js</h1>
+                        <h1 class="file-heading">File: static/jasmine/spec/default/userSpec.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * This Gruntfile specifies commands for our fogger project.
- * 
- * Running jasmine tests
- * ---------------------
- * Current the jasmine test command is not working because
- * our application runs on web2py. This would require a complex
- * headless environment that we might implement for the next iteration.
- * For now, tests can be run by navigating to a page and adding &quot;test=1&quot;
- * as a GET URL parameter.
- *
- * @module Grunt
+ * @module test
+ * @main
+*/
+
+/**
+ * @class UserSpec
  */
-module.exports = function(grunt) {
-
-    /**
-     * @class GruntConfiguration
-     */
-    grunt.initConfig({
-
-      	/**
-         * Reads the package.json file.
-         * @property pkg 
-         */
-        pkg: grunt.file.readJSON(&#x27;package.json&#x27;),
-
-       /**
-        * Generates documentation for javascript source code,
-        * test code and grunt file
-        * @property yuidoc
-        */
-        yuidoc: {
-            compile: {
-                name: &#x27;&lt;%= pkg.name %&gt;&#x27;,
-                description: &#x27;&lt;%= pkg.description %&gt;&#x27;,
-                version: &#x27;&lt;%= pkg.version %&gt;&#x27;,
-                options: {
-                    paths: [&#x27;static/js&#x27;, &#x27;.&#x27;],
-                    outdir: &#x27;docs&#x27;
-                }
-            }
-       },
-
-       /**
-        * Attempts to run jasmine tests, but requires a headless
-        * environment.
-        * @property jasmine
-        */
-       jasmine: {
-            compile: {
-                src: &#x27;static/js/*.js&#x27;,
-                options: {
-                    specs: &#x27;static/jasmine/spec/**/*Spec.js&#x27;,
-                    keepRunner: true
-                }
-            }
-        },
-
-        /**
-         * Removes the docs folder and everything else generate by
-         * this Gruntfile.
-         * @property clean
-         */
-        clean:
-            [&#x27;docs&#x27;]
-
-
-    });
- 
-    // Load the plugins
-    grunt.loadNpmTasks(&#x27;grunt-contrib-yuidoc&#x27;);
-    grunt.loadNpmTasks(&#x27;grunt-contrib-jasmine&#x27;);
-    grunt.loadNpmTasks(&#x27;grunt-contrib-uglify&#x27;);
-    grunt.loadNpmTasks(&#x27;grunt-contrib-clean&#x27;);
-
-    // Default task(s).
-    grunt.registerTask(&#x27;default&#x27;, [&#x27;yuidoc&#x27;, &#x27;jasmine&#x27;, &#x27;uglify&#x27;]);
-
+var path = function(){
+  var loc = window.location.pathname.split(&quot;/&quot;);
+  return {
+      app: loc.length &gt; 1? loc[1]: null,
+      controller: loc.length &gt; 2? loc[2]: null,
+      function: loc.length &gt; 3? loc[3]: null,
+      args: loc.length &gt; 4? loc.slice(4): null
+      };
 };
+
+describe(&quot;index()&quot;, function(){
+  it(&quot;URL&quot;, function(){
+    var loc = path();
+    expect(loc.app).toBe(&quot;fogger&quot;);    
+    expect(loc.controller).toBe(&quot;default&quot;);    
+    expect(loc.function).toBe(&quot;user&quot;);
+    expect(loc.args.length&gt;0).toEqual(true);
+    if(loc.args[0]==&quot;login&quot;) {
+      /* inject username and password*/
+      $(&#x27;#auth_user_username&#x27;).val(&quot;testuser&quot;);
+      $(&#x27;#auth_user_password&#x27;).val(&quot;testpass&quot;);
+      expect($(&#x27;#auth_user_username&#x27;).val())
+        .toBe(&quot;testuser&quot;);
+      expect($(&#x27;#auth_user_password&#x27;).val())
+        .toBe(&quot;testpass&quot;);
+      
+      /* trigger login form submit */
+      $(&#x27;#web2py_user_form input[type=&quot;submit&quot;]&#x27;).trigger(&#x27;click&#x27;);
+      
+    } else if(loc.args[0]==&quot;register&quot;) { 
+      /* inject form data */
+      $(&#x27;#auth_user_first_name&#x27;).val(&quot;Joe&quot;);
+      $(&#x27;#auth_user_last_name&#x27;).val(&quot;Smith&quot;);
+      $(&#x27;#auth_user_email&#x27;).val(&quot;unknown@hotmail.com&quot;);
+      $(&#x27;#auth_user_username&#x27;).val(&quot;testuser&quot;);
+      $(&#x27;#auth_user_password&#x27;).val(&quot;testpass&quot;);
+      $(&#x27;.password&#x27;).val(&quot;testpass&quot;);
+      
+      expect($(&#x27;#auth_user_first_name&#x27;).val()).toBe(&quot;Joe&quot;);
+      expect($(&#x27;#auth_user_last_name&#x27;).val()).toBe(&quot;Smith&quot;);
+      expect($(&#x27;#auth_user_email&#x27;).val()).toBe(&quot;unknown@hotmail.com&quot;);
+      expect($(&#x27;#auth_user_username&#x27;).val()).toBe(&quot;testuser&quot;);
+      expect($(&#x27;#auth_user_password&#x27;).val()).toBe(&quot;testpass&quot;);
+
+      $(&#x27;#web2py_user_form input[type=&quot;submit&quot;]&#x27;).trigger(&#x27;click&#x27;);
+
+
+
+    } else {
+      throw new Error(&quot;Undefined function.&quot;);
+    }
+  });
+});
 
     </pre>
 </div>
