@@ -9,18 +9,16 @@ module.exports = function(grunt) {
                 description: '<%= pkg.description %>',
                 version: '<%= pkg.version %>',
                 options: {
-                    paths: 'src',
+                    paths: 'static/js',
                     outdir: 'docs'
                 }
             }
        },
         jasmine: {
             compile: {
-                src: 'src/**/*.js',
+                src: 'static/js/*.js',
                 options: {
-                    specs: 'test/*Spec.js',
-                    template: 'test.tmpl',
-                    helpers: 'test/helpers/*.js',
+                    specs: 'static/jasmine/spec/**/*Spec.js',
                     keepRunner: true
                 }
             }

@@ -1,4 +1,11 @@
-/* NAVIGATOR MODULE */
+/**
+ * Provides navigator functionality and simulates
+ * user movement.
+ *
+ * @module navigator
+ * @class navigator
+ * @main navigator
+ */
 (function () {
   "use strict";
 
@@ -6,7 +13,13 @@
     throw new Error("Requires fogger global");
   }
 
-  /* PRIVATE variables */
+  /**
+  * Object that is returned by 
+  * navigator.geolocation.getCurrentPosition()
+  *
+  * @private position
+  * @type Geolocation
+  */
   var position = {
     timestamp: null,
     coords: {
@@ -16,21 +29,46 @@
   };
 
   /* FUNCTIONS */
+  /**
+  * Gets position.
+  * @method getPosition
+  * @return position
+  */
   function getPosition() {
     return position;
   }
 
+  /**
+  * Sets position.
+  * @method setPosition
+  * @param {Geolocation} pos
+  */
   function setPosition(pos) {
     position = pos;
   }
-  /* Set Current Position */
+
+  /**
+   * Takes a Geolocation object and parses
+   * it to update position.
+   * @method setCurrentPosition
+   * @param {Geolocation} pos
+   */
   function setCurrentPosition(pos) {
     position.timestamp = pos.timestamp;
     position.coords.latitude = pos.coords.latitude;
     position.coords.longitude = pos.coords.longitude;
   }
 
-  /* Get Current Position */
+  /* 
+  * Mocks a navigator call by incrementing the
+  * position coords
+  * @method getCurrentPosition
+  * @param {callback} success Callback to execute
+  * on success.
+  * @param {callback} error Callback to execute on 
+  * failure to retrieve geolocation.
+  * @async
+  */
   function getCurrentPosition(success, error) {
     if (position === null) {
       var err = {
@@ -50,7 +88,16 @@
     }
   }
 
-  /* Watch Position */
+  /* 
+  * Mocks a navigator call by incrementing the
+  * position coords at an interval.
+  * @method watchPosition
+  * @param {callback} success Callback to execute
+  * on success for each interval.
+  * @param {callback} error Callback to execute on 
+  * failure to retrieve geolocation.
+  * @async
+  */
   function watchPosition(success, error, options) {
     getCurrentPosition(success, error, options);
     var interval = setInterval(function () {
@@ -62,7 +109,12 @@
     }, 60000);
   }
 
-  /* INIT */
+  /**
+  * Sets initial position to the user's
+  * actual position.
+  * @class navigator
+  * @constructor
+  */
   function init(success, error) {
     navigator.geolocation.getCurrentPosition(
       function (uloc) {
@@ -80,8 +132,17 @@
     );
   }
 
-  /* set GLOBAL namespace */
+  /**
+  * @module fogger
+  * @class navigator
+  */
   fogger.navigator = {
+    /**
+    * Indicates wether the module uses mock coords.
+    * @property mock
+    * @type boolean
+    * @default true
+    */
     mock: true,
     init: init,
     geolocation: {

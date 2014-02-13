@@ -1,7 +1,7 @@
 {
   "name": "Fogger",
   "description": "CSCI 3130 Fogger Application Group 3",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "devDependencies": {
     "grunt": "~0.4.2",
