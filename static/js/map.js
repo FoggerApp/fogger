@@ -16,22 +16,22 @@
     throw new Error("Requires fogger navigator module");
   }
 
-  
-
   /**
   * @private map
   * @type google.maps.Map
   */
   var map = null,
-  
+
     /**
     * Object that is returned by 
     * navigator.geolocation.getCurrentPosition()
     * @private userLocation
-    */  
+    */
     userLocation = null,
-    
-	//@private userMarker    
+
+    /**
+    * @private userMarker
+    */
     userMarker = null;
 
   /* FUNCTIONS */
@@ -70,7 +70,7 @@
   function setMap(m) {
     map = m;
   }
-  
+
   /**
   * Sets the user location.
   * @method setUserLocation
@@ -162,7 +162,6 @@
     );
   }
 
-  /* set the width of the map function */
   /**
   * Sets the width and height of the map.
   * @method reDim
@@ -192,7 +191,7 @@
   * Initializes the map
   * @method initializeMap
   */
-    function initializeMap() {
+  function initializeMap() {
     var mapOptions = {
       zoom: 17,
       panControl: false,
@@ -208,7 +207,6 @@
     //To be implemented
     //google.maps.event.addDomListener(map, 'idle', 
     //        function (){console.log(map.getBounds())});
-
   }
 
   /**
@@ -221,7 +219,7 @@
     placeUserMarker();
     setEvents();
   }
-  
+
   /**
   * Sets the glopal name space
   */
