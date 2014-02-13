@@ -2,7 +2,7 @@
  * Provides navigator functionality and simulates
  * user movement.
  *
- * @module navigator
+ * @module fogger 
  * @class navigator
  * @main navigator
  */
