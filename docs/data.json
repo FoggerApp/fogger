@@ -1,0 +1,188 @@
+{
+    "project": {
+        "name": "Fogger",
+        "description": "CSCI 3130 Fogger Application Group 3",
+        "version": "0.1.0"
+    },
+    "files": {
+        "static/js/dd_belatedpng.js": {
+            "name": "static/js/dd_belatedpng.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "static/js/distance.js": {
+            "name": "static/js/distance.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "static/js/navigator.js": {
+            "name": "static/js/navigator.js",
+            "modules": {
+                "navigator": 1,
+                "fogger": 1
+            },
+            "classes": {
+                "navigator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "static/js/share.js": {
+            "name": "static/js/share.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "navigator": {
+            "name": "navigator",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "static/js/navigator.js",
+            "line": 1,
+            "description": "Provides navigator functionality and simulates\nuser movement.",
+            "itemtype": "main"
+        },
+        "fogger": {
+            "name": "fogger",
+            "submodules": {},
+            "classes": {
+                "navigator": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "static/js/navigator.js",
+            "line": 135
+        }
+    },
+    "classes": {
+        "navigator": {
+            "name": "navigator",
+            "shortname": "navigator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "fogger",
+            "namespace": "",
+            "file": "static/js/navigator.js",
+            "line": 135,
+            "description": "Sets initial position to the user's\nactual position.",
+            "is_constructor": 1
+        }
+    },
+    "classitems": [
+        {
+            "file": "static/js/dd_belatedpng.js",
+            "line": 1,
+            "description": "DD_belatedPNG: Adds IE6 support: PNG images for CSS background-image and HTML <IMG/>.\nAuthor: Drew Diller\nEmail: drew.diller@gmail.com\nURL: http://www.dillerdesign.com/experiment/DD_belatedPNG/\nVersion: 0.0.8a\nLicensed under the MIT License: http://dillerdesign.com/experiment/DD_belatedPNG/#license\n\nExample usage:\nDD_belatedPNG.fix('.png_bg'); // argument is a CSS selector\nDD_belatedPNG.fixPng( someNode ); // argument is an HTMLDomElement",
+            "class": "navigator"
+        },
+        {
+            "file": "static/js/distance.js",
+            "line": 17,
+            "class": "navigator"
+        },
+        {
+            "file": "static/js/navigator.js",
+            "line": 16,
+            "description": "Object that is returned by \nnavigator.geolocation.getCurrentPosition()",
+            "access": "private",
+            "tagname": "position",
+            "type": "Geolocation",
+            "class": "navigator",
+            "module": "navigator"
+        },
+        {
+            "file": "static/js/navigator.js",
+            "line": 32,
+            "description": "Gets position.",
+            "itemtype": "method",
+            "name": "getPosition",
+            "return": {
+                "description": "position"
+            },
+            "class": "navigator",
+            "module": "navigator"
+        },
+        {
+            "file": "static/js/navigator.js",
+            "line": 41,
+            "description": "Sets position.",
+            "itemtype": "method",
+            "name": "setPosition",
+            "params": [
+                {
+                    "name": "pos",
+                    "description": "",
+                    "type": "Geolocation"
+                }
+            ],
+            "class": "navigator",
+            "module": "navigator"
+        },
+        {
+            "file": "static/js/navigator.js",
+            "line": 50,
+            "description": "Takes a Geolocation object and parses\nit to update position.",
+            "itemtype": "method",
+            "name": "setCurrentPosition",
+            "params": [
+                {
+                    "name": "pos",
+                    "description": "",
+                    "type": "Geolocation"
+                }
+            ],
+            "class": "navigator",
+            "module": "navigator"
+        },
+        {
+            "file": "static/js/navigator.js",
+            "line": 140,
+            "description": "Indicates wether the module uses mock coords.",
+            "itemtype": "property",
+            "name": "mock",
+            "type": "boolean",
+            "default": "true",
+            "class": "navigator",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/share.js",
+            "line": 1,
+            "description": "Created and copyrighted by Massimo Di Pierro <massimo.dipierro@gmail.com>\n   (MIT license)  \nExample:\n<script src=\"share.js\"></script>",
+            "class": "",
+            "module": "fogger"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type\nDD_belatedPNG: Adds IE6 support: PNG images for CSS background-image and HTML <IMG/>.\nAuthor: Drew Diller\nEmail: drew.diller@gmail.com\nURL: http://www.dillerdesign.com/experiment/DD_belatedPNG/\nVersion: 0.0.8a\nLicensed under the MIT License: http://dillerdesign.com/experiment/DD_belatedPNG/#license\n\nExample usage:\nDD_belatedPNG.fix('.png_bg'); // argument is a CSS selector\nDD_belatedPNG.fixPng( someNode ); // argument is an HTMLDomElement",
+            "line": " static/js/dd_belatedpng.js:1"
+        },
+        {
+            "message": "Missing item type",
+            "line": " static/js/distance.js:17"
+        },
+        {
+            "message": "Missing item type\nObject that is returned by \nnavigator.geolocation.getCurrentPosition()",
+            "line": " static/js/navigator.js:16"
+        },
+        {
+            "message": "Missing item type\nCreated and copyrighted by Massimo Di Pierro <massimo.dipierro@gmail.com>\n   (MIT license)  \nExample:\n<script src=\"share.js\"></script>",
+            "line": " static/js/share.js:1"
+        }
+    ]
+}

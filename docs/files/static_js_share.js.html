@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>static/js/share.js - Fogger</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title="Fogger"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.1.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/navigator.html">navigator</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/fogger.html">fogger</a></li>
+            
+                <li><a href="../modules/navigator.html">navigator</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: static/js/share.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+
+   Created and copyrighted by Massimo Di Pierro &lt;massimo.dipierro@gmail.com&gt;
+   (MIT license)  
+
+   Example:
+
+   &lt;script src=&quot;share.js&quot;&gt;&lt;/script&gt;
+
+**/
+
+jQuery(function(){
+	var script_source = jQuery(&#x27;script[src*=&quot;share.js&quot;]&#x27;).attr(&#x27;src&#x27;);
+        var params = function(name,default_value) {
+            var match = RegExp(&#x27;[?&amp;]&#x27; + name + &#x27;=([^&amp;]*)&#x27;).exec(script_source);
+            return match &amp;&amp; decodeURIComponent(match[1].replace(/\+/g, &#x27; &#x27;))||default_value;
+        }
+	var path = params(&#x27;static&#x27;,&#x27;social&#x27;);
+	var url = encodeURIComponent(window.location.href);
+	var host =  window.location.hostname;
+	var title = escape(jQuery(&#x27;title&#x27;).text());
+	var twit = &#x27;http://twitter.com/home?status=&#x27;+title+&#x27;%20&#x27;+url;
+	var facebook = &#x27;http://www.facebook.com/sharer.php?u=&#x27;+url;
+	var gplus = &#x27;https://plus.google.com/share?url=&#x27;+url;
+	var tbar = &#x27;&lt;div id=&quot;socialdrawer&quot;&gt;&lt;span&gt;Share&lt;br/&gt;&lt;/span&gt;&lt;div id=&quot;sicons&quot;&gt;&lt;a href=&quot;&#x27;+twit+&#x27;&quot; id=&quot;twit&quot; title=&quot;Share on twitter&quot;&gt;&lt;img src=&quot;&#x27;+path+&#x27;/twitter.png&quot;  alt=&quot;Share on Twitter&quot; width=&quot;32&quot; height=&quot;32&quot; /&gt;&lt;/a&gt;&lt;a href=&quot;&#x27;+facebook+&#x27;&quot; id=&quot;facebook&quot; title=&quot;Share on Facebook&quot;&gt;&lt;img src=&quot;&#x27;+path+&#x27;/facebook.png&quot;  alt=&quot;Share on facebook&quot; width=&quot;32&quot; height=&quot;32&quot; /&gt;&lt;/a&gt;&lt;a href=&quot;&#x27;+gplus+&#x27;&quot; id=&quot;gplus&quot; title=&quot;Share on Google Plus&quot;&gt;&lt;img src=&quot;&#x27;+path+&#x27;/gplus-32.png&quot;  alt=&quot;Share on Google Plus&quot; width=&quot;32&quot; height=&quot;32&quot; /&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;&#x27;;	
+	// Add the share tool bar.
+	jQuery(&#x27;body&#x27;).append(tbar); 
+	var st = jQuery(&#x27;#socialdrawer&#x27;);
+	st.css({&#x27;opacity&#x27;:&#x27;.7&#x27;,&#x27;z-index&#x27;:&#x27;3000&#x27;,&#x27;background&#x27;:&#x27;#FFF&#x27;,&#x27;border&#x27;:&#x27;solid 1px #666&#x27;,&#x27;border-width&#x27;:&#x27; 1px 0 0 1px&#x27;,&#x27;height&#x27;:&#x27;20px&#x27;,&#x27;width&#x27;:&#x27;40px&#x27;,&#x27;position&#x27;:&#x27;fixed&#x27;,&#x27;bottom&#x27;:&#x27;0&#x27;,&#x27;right&#x27;:&#x27;0&#x27;,&#x27;padding&#x27;:&#x27;2px 5px&#x27;,&#x27;overflow&#x27;:&#x27;hidden&#x27;,&#x27;-webkit-border-top-left-radius&#x27;:&#x27; 12px&#x27;,&#x27;-moz-border-radius-topleft&#x27;:&#x27; 12px&#x27;,&#x27;border-top-left-radius&#x27;:&#x27; 12px&#x27;,&#x27;-moz-box-shadow&#x27;:&#x27; -3px -3px 3px rgba(0,0,0,0.5)&#x27;,&#x27;-webkit-box-shadow&#x27;:&#x27; -3px -3px 3px rgba(0,0,0,0.5)&#x27;,&#x27;box-shadow&#x27;:&#x27; -3px -3px 3px rgba(0,0,0,0.5)&#x27;});
+	jQuery(&#x27;#socialdrawer a&#x27;).css({&#x27;float&#x27;:&#x27;left&#x27;,&#x27;width&#x27;:&#x27;32px&#x27;,&#x27;margin&#x27;:&#x27;3px 2px 2px 2px&#x27;,&#x27;padding&#x27;:&#x27;0&#x27;,&#x27;cursor&#x27;:&#x27;pointer&#x27;});
+	jQuery(&#x27;#socialdrawer span&#x27;).css({&#x27;float&#x27;:&#x27;left&#x27;,&#x27;margin&#x27;:&#x27;2px 3px&#x27;,&#x27;text-shadow&#x27;:&#x27; 1px 1px 1px #FFF&#x27;,&#x27;color&#x27;:&#x27;#444&#x27;,&#x27;font-size&#x27;:&#x27;12px&#x27;,&#x27;line-height&#x27;:&#x27;1em&#x27;});
+        jQuery(&#x27;#socialdrawer img&#x27;).hide();
+	// hover
+	st.click(function(){
+		jQuery(this).animate({height:&#x27;40px&#x27;, width:&#x27;160px&#x27;, opacity: 0.95}, 300);
+		jQuery(&#x27;#socialdrawer img&#x27;).show();
+	    });
+	//leave
+	st.mouseleave(function(){ 
+	    st.animate({height:&#x27;20px&#x27;, width: &#x27;40px&#x27;, opacity: .7}, 300); 
+	    jQuery(&#x27;#socialdrawer img&#x27;).hide();
+	    return false;
+	    }  );
+    });
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

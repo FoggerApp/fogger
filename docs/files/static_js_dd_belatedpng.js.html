@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>static/js/dd_belatedpng.js - Fogger</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title="Fogger"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.1.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/navigator.html">navigator</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/fogger.html">fogger</a></li>
+            
+                <li><a href="../modules/navigator.html">navigator</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: static/js/dd_belatedpng.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+* DD_belatedPNG: Adds IE6 support: PNG images for CSS background-image and HTML &lt;IMG/&gt;.
+* Author: Drew Diller
+* Email: drew.diller@gmail.com
+* URL: http://www.dillerdesign.com/experiment/DD_belatedPNG/
+* Version: 0.0.8a
+* Licensed under the MIT License: http://dillerdesign.com/experiment/DD_belatedPNG/#license
+*
+* Example usage:
+* DD_belatedPNG.fix(&#x27;.png_bg&#x27;); // argument is a CSS selector
+* DD_belatedPNG.fixPng( someNode ); // argument is an HTMLDomElement
+**/
+var DD_belatedPNG={ns:&quot;DD_belatedPNG&quot;,imgSize:{},delay:10,nodesFixed:0,createVmlNameSpace:function(){if(document.namespaces&amp;&amp;!document.namespaces[this.ns]){document.namespaces.add(this.ns,&quot;urn:schemas-microsoft-com:vml&quot;)}},createVmlStyleSheet:function(){var b,a;b=document.createElement(&quot;style&quot;);b.setAttribute(&quot;media&quot;,&quot;screen&quot;);document.documentElement.firstChild.insertBefore(b,document.documentElement.firstChild.firstChild);if(b.styleSheet){b=b.styleSheet;b.addRule(this.ns+&quot;\\:*&quot;,&quot;{behavior:url(#default#VML)}&quot;);b.addRule(this.ns+&quot;\\:shape&quot;,&quot;position:absolute;&quot;);b.addRule(&quot;img.&quot;+this.ns+&quot;_sizeFinder&quot;,&quot;behavior:none; border:none; position:absolute; z-index:-1; top:-10000px; visibility:hidden;&quot;);this.screenStyleSheet=b;a=document.createElement(&quot;style&quot;);a.setAttribute(&quot;media&quot;,&quot;print&quot;);document.documentElement.firstChild.insertBefore(a,document.documentElement.firstChild.firstChild);a=a.styleSheet;a.addRule(this.ns+&quot;\\:*&quot;,&quot;{display: none !important;}&quot;);a.addRule(&quot;img.&quot;+this.ns+&quot;_sizeFinder&quot;,&quot;{display: none !important;}&quot;)}},readPropertyChange:function(){var b,c,a;b=event.srcElement;if(!b.vmlInitiated){return}if(event.propertyName.search(&quot;background&quot;)!=-1||event.propertyName.search(&quot;border&quot;)!=-1){DD_belatedPNG.applyVML(b)}if(event.propertyName==&quot;style.display&quot;){c=(b.currentStyle.display==&quot;none&quot;)?&quot;none&quot;:&quot;block&quot;;for(a in b.vml){if(b.vml.hasOwnProperty(a)){b.vml[a].shape.style.display=c}}}if(event.propertyName.search(&quot;filter&quot;)!=-1){DD_belatedPNG.vmlOpacity(b)}},vmlOpacity:function(b){if(b.currentStyle.filter.search(&quot;lpha&quot;)!=-1){var a=b.currentStyle.filter;a=parseInt(a.substring(a.lastIndexOf(&quot;=&quot;)+1,a.lastIndexOf(&quot;)&quot;)),10)/100;b.vml.color.shape.style.filter=b.currentStyle.filter;b.vml.image.fill.opacity=a}},handlePseudoHover:function(a){setTimeout(function(){DD_belatedPNG.applyVML(a)},1)},fix:function(a){if(this.screenStyleSheet){var c,b;c=a.split(&quot;,&quot;);for(b=0;b&lt;c.length;b++){this.screenStyleSheet.addRule(c[b],&quot;behavior:expression(DD_belatedPNG.fixPng(this))&quot;)}}},applyVML:function(a){a.runtimeStyle.cssText=&quot;&quot;;this.vmlFill(a);this.vmlOffsets(a);this.vmlOpacity(a);if(a.isImg){this.copyImageBorders(a)}},attachHandlers:function(i){var d,c,g,e,b,f;d=this;c={resize:&quot;vmlOffsets&quot;,move:&quot;vmlOffsets&quot;};if(i.nodeName==&quot;A&quot;){e={mouseleave:&quot;handlePseudoHover&quot;,mouseenter:&quot;handlePseudoHover&quot;,focus:&quot;handlePseudoHover&quot;,blur:&quot;handlePseudoHover&quot;};for(b in e){if(e.hasOwnProperty(b)){c[b]=e[b]}}}for(f in c){if(c.hasOwnProperty(f)){g=function(){d[c[f]](i)};i.attachEvent(&quot;on&quot;+f,g)}}i.attachEvent(&quot;onpropertychange&quot;,this.readPropertyChange)},giveLayout:function(a){a.style.zoom=1;if(a.currentStyle.position==&quot;static&quot;){a.style.position=&quot;relative&quot;}},copyImageBorders:function(b){var c,a;c={borderStyle:true,borderWidth:true,borderColor:true};for(a in c){if(c.hasOwnProperty(a)){b.vml.color.shape.style[a]=b.currentStyle[a]}}},vmlFill:function(e){if(!e.currentStyle){return}else{var d,f,g,b,a,c;d=e.currentStyle}for(b in e.vml){if(e.vml.hasOwnProperty(b)){e.vml[b].shape.style.zIndex=d.zIndex}}e.runtimeStyle.backgroundColor=&quot;&quot;;e.runtimeStyle.backgroundImage=&quot;&quot;;f=true;if(d.backgroundImage!=&quot;none&quot;||e.isImg){if(!e.isImg){e.vmlBg=d.backgroundImage;e.vmlBg=e.vmlBg.substr(5,e.vmlBg.lastIndexOf(&#x27;&quot;)&#x27;)-5)}else{e.vmlBg=e.src}g=this;if(!g.imgSize[e.vmlBg]){a=document.createElement(&quot;img&quot;);g.imgSize[e.vmlBg]=a;a.className=g.ns+&quot;_sizeFinder&quot;;a.runtimeStyle.cssText=&quot;behavior:none; position:absolute; left:-10000px; top:-10000px; border:none; margin:0; padding:0;&quot;;c=function(){this.width=this.offsetWidth;this.height=this.offsetHeight;g.vmlOffsets(e)};a.attachEvent(&quot;onload&quot;,c);a.src=e.vmlBg;a.removeAttribute(&quot;width&quot;);a.removeAttribute(&quot;height&quot;);document.body.insertBefore(a,document.body.firstChild)}e.vml.image.fill.src=e.vmlBg;f=false}e.vml.image.fill.on=!f;e.vml.image.fill.color=&quot;none&quot;;e.vml.color.shape.style.backgroundColor=d.backgroundColor;e.runtimeStyle.backgroundImage=&quot;none&quot;;e.runtimeStyle.backgroundColor=&quot;transparent&quot;},vmlOffsets:function(d){var h,n,a,e,g,m,f,l,j,i,k;h=d.currentStyle;n={W:d.clientWidth+1,H:d.clientHeight+1,w:this.imgSize[d.vmlBg].width,h:this.imgSize[d.vmlBg].height,L:d.offsetLeft,T:d.offsetTop,bLW:d.clientLeft,bTW:d.clientTop};a=(n.L+n.bLW==1)?1:0;e=function(b,p,q,c,s,u){b.coordsize=c+&quot;,&quot;+s;b.coordorigin=u+&quot;,&quot;+u;b.path=&quot;m0,0l&quot;+c+&quot;,0l&quot;+c+&quot;,&quot;+s+&quot;l0,&quot;+s+&quot; xe&quot;;b.style.width=c+&quot;px&quot;;b.style.height=s+&quot;px&quot;;b.style.left=p+&quot;px&quot;;b.style.top=q+&quot;px&quot;};e(d.vml.color.shape,(n.L+(d.isImg?0:n.bLW)),(n.T+(d.isImg?0:n.bTW)),(n.W-1),(n.H-1),0);e(d.vml.image.shape,(n.L+n.bLW),(n.T+n.bTW),(n.W),(n.H),1);g={X:0,Y:0};if(d.isImg){g.X=parseInt(h.paddingLeft,10)+1;g.Y=parseInt(h.paddingTop,10)+1}else{for(j in g){if(g.hasOwnProperty(j)){this.figurePercentage(g,n,j,h[&quot;backgroundPosition&quot;+j])}}}d.vml.image.fill.position=(g.X/n.W)+&quot;,&quot;+(g.Y/n.H);m=h.backgroundRepeat;f={T:1,R:n.W+a,B:n.H,L:1+a};l={X:{b1:&quot;L&quot;,b2:&quot;R&quot;,d:&quot;W&quot;},Y:{b1:&quot;T&quot;,b2:&quot;B&quot;,d:&quot;H&quot;}};if(m!=&quot;repeat&quot;||d.isImg){i={T:(g.Y),R:(g.X+n.w),B:(g.Y+n.h),L:(g.X)};if(m.search(&quot;repeat-&quot;)!=-1){k=m.split(&quot;repeat-&quot;)[1].toUpperCase();i[l[k].b1]=1;i[l[k].b2]=n[l[k].d]}if(i.B&gt;n.H){i.B=n.H}d.vml.image.shape.style.clip=&quot;rect(&quot;+i.T+&quot;px &quot;+(i.R+a)+&quot;px &quot;+i.B+&quot;px &quot;+(i.L+a)+&quot;px)&quot;}else{d.vml.image.shape.style.clip=&quot;rect(&quot;+f.T+&quot;px &quot;+f.R+&quot;px &quot;+f.B+&quot;px &quot;+f.L+&quot;px)&quot;}},figurePercentage:function(d,c,f,a){var b,e;e=true;b=(f==&quot;X&quot;);switch(a){case&quot;left&quot;:case&quot;top&quot;:d[f]=0;break;case&quot;center&quot;:d[f]=0.5;break;case&quot;right&quot;:case&quot;bottom&quot;:d[f]=1;break;default:if(a.search(&quot;%&quot;)!=-1){d[f]=parseInt(a,10)/100}else{e=false}}d[f]=Math.ceil(e?((c[b?&quot;W&quot;:&quot;H&quot;]*d[f])-(c[b?&quot;w&quot;:&quot;h&quot;]*d[f])):parseInt(a,10));if(d[f]%2===0){d[f]++}return d[f]},fixPng:function(c){c.style.behavior=&quot;none&quot;;var g,b,f,a,d;if(c.nodeName==&quot;BODY&quot;||c.nodeName==&quot;TD&quot;||c.nodeName==&quot;TR&quot;){return}c.isImg=false;if(c.nodeName==&quot;IMG&quot;){if(c.src.toLowerCase().search(/\.png$/)!=-1){c.isImg=true;c.style.visibility=&quot;hidden&quot;}else{return}}else{if(c.currentStyle.backgroundImage.toLowerCase().search(&quot;.png&quot;)==-1){return}}g=DD_belatedPNG;c.vml={color:{},image:{}};b={shape:{},fill:{}};for(a in c.vml){if(c.vml.hasOwnProperty(a)){for(d in b){if(b.hasOwnProperty(d)){f=g.ns+&quot;:&quot;+d;c.vml[a][d]=document.createElement(f)}}c.vml[a].shape.stroked=false;c.vml[a].shape.appendChild(c.vml[a].fill);c.parentNode.insertBefore(c.vml[a].shape,c)}}c.vml.image.shape.fillcolor=&quot;none&quot;;c.vml.image.fill.type=&quot;tile&quot;;c.vml.color.fill.on=false;g.attachHandlers(c);g.giveLayout(c);g.giveLayout(c.offsetParent);c.vmlInitiated=true;g.applyVML(c)}};try{document.execCommand(&quot;BackgroundImageCache&quot;,false,true)}catch(r){}DD_belatedPNG.createVmlNameSpace();DD_belatedPNG.createVmlStyleSheet();
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
