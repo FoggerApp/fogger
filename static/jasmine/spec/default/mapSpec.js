@@ -1,3 +1,7 @@
+/**
+ * @class MapSpec
+ */
+
 describe("default/map view import test", function () {
 
   it("loads the fogger global", function () {

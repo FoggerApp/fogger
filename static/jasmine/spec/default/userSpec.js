@@ -1,3 +1,11 @@
+/**
+ * @module test
+ * @main
+*/
+
+/**
+ * @class UserSpec
+ */
 var path = function(){
   var loc = window.location.pathname.split("/");
   return {
