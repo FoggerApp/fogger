@@ -2,6 +2,21 @@
  * @module test
  * @class MapSpec
  */
+describe("check svg circles", function(){
+    it("create circle", function(){
+        var svg = d3.select("#map-canvas-container").insert("svg", ":first-child")
+            .attr("id", "userCircle")
+            .attr("width", "100")
+            .attr("height", "100");
+        svg.append("circle")
+            .attr("cx", "50")
+            .attr("cy", "50")
+            .attr("r", "40")
+            .attr("stroke", "black")
+            .attr("stroke-width", "3")
+            .attr("fill", "red");
+    });
+});
 describe("check d3 library", function() {
     it("imports d3 library", function() {
         expect(typeof d3).not.toBe("undefined");
