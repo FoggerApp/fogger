@@ -2,7 +2,17 @@
  * @module test
  * @class MapSpec
  */
-
+describe("check d3 library", function() {
+    it("imports d3 library", function() {
+        expect(typeof d3).not.toBe("undefined");
+    });
+    it("uses d3 library", function() {
+        d3.select("#map-canvas").attr("test", "true");
+        var d3Test = false;
+        d3Test = document.getElementById("map-canvas").getAttribute("test");
+        expect(d3Test).toBe("true");
+    });
+});
 describe("default/map view import test", function () {
 
   it("loads the fogger global", function () {
