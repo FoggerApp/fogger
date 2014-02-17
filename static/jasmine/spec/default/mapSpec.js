@@ -2,6 +2,38 @@
  * @module test
  * @class MapSpec
  */
+describe("RestAPI test", function () {
+  it("accesses RESTful API", function (done) {
+     $.get("http://127.0.0.1:8000/fogger/default/api.json")
+     .done(function(d, txt, xhr)
+         {
+//              console.log(d, txt, xhr);
+             expect(d.errors.length).toEqual(0);
+             expect(txt).toEqual("success");
+             done();
+         })
+         .fail(function () 
+        {
+            throw new Error("API taking too long");
+            done();
+        });
+   });
+  it("gets the user location RESTful API", function (done) {
+     $.get("http://127.0.0.1:8000/fogger/default/api.json/location")
+     .done(function(d, txt, xhr)
+         {
+//              console.log(d, txt, xhr);
+             expect(d.errors.length).toEqual(0);
+             expect(txt).toEqual("success");
+             done();
+         })
+         .fail(function () 
+        {
+            throw new Error("API taking too long");
+            done();
+        });
+   });
+});
 
 describe("default/map view import test", function () {
 

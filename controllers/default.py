@@ -24,6 +24,55 @@ def index():
     response.flash = T("Welcome to web2py!")
     return dict(message=T('Hello World'))
 
+@request.restful()
+def api():
+    def GET(*args,**vars):
+            
+        # GET /default/api/location/uid
+        #                  arg0     arg1
+        if not len(request.args) > 1:
+            return dict(content=None, errors=['Invalid request arguments.'])
+        
+        if request.args[0] == "location":
+            uid=request.args[1]
+            return dict(content=dict(
+                      url=URL(),
+                      locations=db(db.geolocation.uid==uid).select()),
+                      errors=[], 
+                    )
+    def POST(*args,**vars):
+        # Import JSON parser
+        import gluon.contrib.simplejson as json
+
+        if not len(request.args) > 0:
+            return dict(content=None, errors=['Invalid request arguments.'])
+        
+        if request.args[0] == "location":
+
+            # Get HTML request body
+            body = request.body.read()
+
+            # Parse the body
+            body = json.loads(body)
+
+            uid=body['uid']
+            latitute=body['loc']['lat']
+            longtitute=body['loc']['lng']
+        
+            return dict(content = dict(
+                                    locations = db(
+                                      db.geolocation.insert(uid=uid,loc=geoPoint(latitute, longtitute))
+                                    )
+                                  )
+                                ) 
+        else:
+            return dict(content=None, errors=['Invalid database object.'])
+        
+    def PUT(*args,**vars):
+        return dict()
+    def DELETE(*args,**vars):
+        return dict()
+    return locals()
 
 def user():
     """
