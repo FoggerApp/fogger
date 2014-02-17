@@ -1,3 +1,4 @@
+from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
 ## if SSL/HTTPS is properly configured and you want all HTTP requests to
 ## be redirected to HTTPS, uncomment the line below:
 # request.requires_https()
