@@ -20,33 +20,46 @@ def index():
     """
     redirect(URL(c='default', f='map'))
     return dict(form=auth())
-    
+
     response.flash = T("Welcome to web2py!")
     return dict(message=T('Hello World'))
 
 @request.restful()
 def api():
+    from gluon.dal import geoPoint, geoLine, geoPolygon
     def GET(*args,**vars):
-            
-        # GET /default/api/location/uid
-        #                  arg0     arg1
-        if not len(request.args) > 1:
-            return dict(content=None, errors=['Invalid request arguments.'])
-        
+
+        # GET /default/api/location/uid?nelat=...&...
+        #                   arg0   arg1 vars['nelat']
+        if len(request.args) > 2:
+            return dict(content=None, errors=['Invalid request arguments. Too many arguments'])
+        if len(request.args)<=1:
+            return dict(content=None, errors=['Invalid request arguments. Too few arguments: Specify User ID ie location/1'])
+
         if request.args[0] == "location":
             uid=request.args[1]
-            return dict(content=dict(
-                      url=URL(),
-                      locations=db(db.geolocation.uid==uid).select()),
-                      errors=[], 
+            if "nelat" in request.vars and "nelng" in request.vars and "swlat" in request.vars and "swlng" in request.vars:
+                nelat=float(request.vars["nelat"])
+                nelng=float(request.vars["nelng"])
+                swlat=float(request.vars["swlat"])
+                swlng=float(request.vars["swlng"])
+                sp=db.geolocation.loc
+                polygon=geoPolygon((swlat, swlng),(nelat, swlng),(nelat, nelng),(swlat, nelng),(swlat, swlng))
+                contains=sp.st_within(polygon)
+                return dict(content=dict(
+                          url=URL(),
+                          locations=db((db.geolocation.uid==uid)&(contains)).select(db.geolocation.ALL)),
+                          errors=[]
                     )
+            return dict(content=None, errors=['Invalid amount of variables.'])
     def POST(*args,**vars):
         # Import JSON parser
         import gluon.contrib.simplejson as json
+         # POST /default/api/location/
+        #                    arg0
+        if len(request.args) > 1:
+            return dict(content=None, errors=['Invalid request arguments. Too many arguments'])
 
-        if not len(request.args) > 0:
-            return dict(content=None, errors=['Invalid request arguments.'])
-        
         if request.args[0] == "location":
 
             # Get HTML request body
@@ -58,16 +71,16 @@ def api():
             uid=body['uid']
             latitute=body['loc']['lat']
             longtitute=body['loc']['lng']
-        
+
             return dict(content = dict(
-                                    locations = db(
+                                    id =
                                       db.geolocation.insert(uid=uid,loc=geoPoint(latitute, longtitute))
-                                    )
+                                    ),
+                                  errors=[]
                                   )
-                                ) 
         else:
             return dict(content=None, errors=['Invalid database object.'])
-        
+
     def PUT(*args,**vars):
         return dict()
     def DELETE(*args,**vars):
@@ -97,7 +110,7 @@ def user():
 @auth.requires_login()
 def profile():
     return dict()
-    
+
 @auth.requires_login()
 def map():
 
