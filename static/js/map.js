@@ -187,17 +187,6 @@
    */
   function updateLocation(pos) {
     userLocation = coordsToLatLng(pos);
-
-    //Contact API
-    postUserLocation(data, function(d) {
-      console.log("POST loc success", d);
-    });
-    getLocationsInBound(fogger.user.id, function(d){
-      //TODO SET MASK
-      console.log("GET locs in bounds", d);
-    });
-
-    moveUserMarker();
     /* TODO: update the graphic */
     //fogger.graphics.clearMask()
     //Construct data object
@@ -208,8 +197,16 @@
         lng: getUserLocation().lng()
       }
     };
+    //Contact API
+    postUserLocation(data, function(d) {
+      console.log("POST loc success", d);
+    });
+    getLocationsInBound(fogger.user.id, function(d){
+      //TODO SET MASK
+      console.log("GET locs in bounds", d);
+    });
 
-
+    moveUserMarker();
   }
 
   /**

@@ -47,9 +47,9 @@ def api():
                 polygon=geoPolygon((swlat, swlng),(nelat, swlng),(nelat, nelng),(swlat, nelng),(swlat, swlng))
                 contains=sp.st_within(polygon)
                 return dict(content=dict(
-                          url=URL(),
-                          locations=db((db.geolocation.uid==uid)&(contains)).select(db.geolocation.ALL)),
-                          errors=[]
+                                         url=URL(),
+                                         locations=db((db.geolocation.uid==uid)&(contains)).select(db.geolocation.ALL)),
+                    errors=[]
                     )
             return dict(content=None, errors=['Invalid amount of variables.'])
     def POST(*args,**vars):
@@ -73,17 +73,22 @@ def api():
             longtitute=body['loc']['lng']
 
             # Check counts the points within a certain range
-            check = db().count()
-            
+            dist = db.geolocation.loc.st_distance(geoPoint(latitute, longtitute))
+            check = db(dist<0.001).select(db.geolocation.ALL, dist.with_alias("dist"))
+
             result = None
-            if check == 0:
+            if len(check) == 0:
                 result = db.geolocation.insert(uid=uid,loc=geoPoint(latitute, longtitute))
+            else:
+                return dict(content = check.as_list(),
+                        errors=[]
+                        )
 
             return dict(content = dict(
-                                    id = result
-                                    ),
-                                  errors=[]
-                                  )
+                                       id = result
+                                       ),
+                        errors=[]
+                        )
         else:
             return dict(content=None, errors=['Invalid database object.'])
 
