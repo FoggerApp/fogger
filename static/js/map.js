@@ -87,11 +87,7 @@
    * @param  {callback} fail
    */
   function getLocationsInBound(uid, success, fail) {
-    $.get(fogger.api + 'location/' + fogger.user.id
-      + '?nelat=' + map.getBounds().getNorthEast().lat() 
-      + '&nelng=' + map.getBounds().getNorthEast().lng()
-      + '&swlat=' + map.getBounds().getSouthWest().lat() 
-      + '&swlng=' + map.getBounds().getSouthWest().lng())
+    $.get(fogger.api + 'location/' + fogger.user.id + '?nelat=' + map.getBounds().getNorthEast().lat() + '&nelng=' + map.getBounds().getNorthEast().lng() + '&swlat=' + map.getBounds().getSouthWest().lat() + '&swlng=' + map.getBounds().getSouthWest().lng())
       .done(success)
       .fail(fail);
   }
@@ -188,18 +184,6 @@
   function updateLocation(pos) {
     userLocation = coordsToLatLng(pos);
 
-    //Contact API
-    postUserLocation(data, function(d) {
-      console.log("POST loc success", d);
-    });
-    getLocationsInBound(fogger.user.id, function(d){
-      //TODO SET MASK
-      console.log("GET locs in bounds", d);
-    });
-
-    moveUserMarker();
-    /* TODO: update the graphic */
-    //fogger.graphics.clearMask()
     //Construct data object
     var data = {
       uid: fogger.user.id,
@@ -208,18 +192,48 @@
         lng: getUserLocation().lng()
       }
     };
+    
+    //Get map bounds
+    var ne = fogger.map.getMap().getBounds().getNorthEast();
+    var sw = fogger.map.getMap().getBounds().getSouthWest();
+    //Create the North West coordidate
+    var org = {
+      lat: ne.lat(),
+      lng: sw.lng()
+    };
+    //Calculate delta lat and delta lng
+    var dLng = ne.lng() - sw.lng();
+    var dLat = sw.lat() - ne.lat();
 
+    //Contact API
+    postUserLocation(data, function(d) {
+      console.log("POST loc success", d);
+    });
+    getLocationsInBound(fogger.user.id, function(d) {
+      fogger.graphics.clearMask();
+      fogger.graphics.setMask(d, org, dLng, dLat);
+      console.log("GET locs in bounds", d);
+    });
 
+    moveUserMarker();
   }
 
   /**
    * Sets events for the map module.
-   * @method f
+   * @method setEvents
    */
   function setEvents() {
     fogger.navigator.geolocation.watchPosition(
       updateLocation
     );
+  }
+
+  /**
+   * Add map event.
+   * @method addEvent()
+   */
+  function addMapEvent(event, callback) {
+    google.maps.event.addDomListenerOnce(map, event, callback);
   }
 
   /**
@@ -272,7 +286,7 @@
    */
   function init() {
     initializeMap();
-    google.maps.event.addDomListenerOnce(map, 'idle', function () {
+    google.maps.event.addDomListenerOnce(map, 'idle', function() {
       panToUserLoc();
       placeUserMarker();
       setEvents();
@@ -291,6 +305,7 @@
     setUserLocation: setUserLocation,
     setUserMarker: setUserMarker,
     setEvents: setEvents,
+    addMapEvent: addMapEvent,
     reDim: reDim,
     getLocation: getLocation,
     coordsToLatLng: coordsToLatLng,
