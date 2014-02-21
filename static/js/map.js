@@ -192,6 +192,7 @@
         lng: getUserLocation().lng()
       }
     };
+
     
     //Get map bounds
     var ne = fogger.map.getMap().getBounds().getNorthEast();
