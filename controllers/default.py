@@ -72,9 +72,15 @@ def api():
             latitute=body['loc']['lat']
             longtitute=body['loc']['lng']
 
+            # Check counts the points within a certain range
+            check = db().count()
+            
+            result = None
+            if check == 0:
+                result = db.geolocation.insert(uid=uid,loc=geoPoint(latitute, longtitute))
+
             return dict(content = dict(
-                                    id =
-                                      db.geolocation.insert(uid=uid,loc=geoPoint(latitute, longtitute))
+                                    id = result
                                     ),
                                   errors=[]
                                   )
