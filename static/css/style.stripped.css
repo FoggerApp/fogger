@@ -1,7 +1,10 @@
 #fogger-logo {
 	width: 90px;
 }
-
+#map-mask{
+	position:absolute;
+	z-index:1000;
+}
 body {
   padding: 0;
   margin: 0;

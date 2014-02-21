@@ -18,6 +18,66 @@
           done();
         });
     });
+describe("check svg circles", function(){
+    it("create circle", function(){
+        
+      var fakeData = { content: [],
+          errors: [] };
+
+      function generateFakeContents() {
+          var ne = fogger.map.getBounds().getNorthEast();
+          var sw = fogger.map.getBounds().getSouthWest();
+          var org = {lat: ne.lat(), lng: sw.lng()};
+          var width = ne.lng() - sw.lng();
+          var height = ne.lat() - sw.lat();
+          
+          for (var i = 0; i < 10; i++) {
+              var loc = { loc: {lat: org.lng + Math.random() * width, 
+                                lng: org.lat + Math.random() * height}, uid: 1 };
+              fakeData.content.push(loc);
+          }
+      }
+
+      generateFakeContents();
+
+      fogger.graphics.setMask(fakeData);
+
+
+        // var svg = d3.select("#map-canvas-container").insert("svg", ":first-child")
+        //     .attr("id", "userCircle")
+        //     .attr("width", "100")
+        //     .attr("height", "100");
+        // svg.append("circle")
+        //     .attr("cx", "50")
+        //     .attr("cy", "50")
+        //     .attr("r", "40")
+        //     .attr("stroke", "black")
+        //     .attr("stroke-width", "3")
+        //     .attr("fill", "red");
+    });
+});
+describe("check d3 library", function() {
+    it("imports d3 library", function() {
+        expect(typeof d3).not.toBe("undefined");
+    });
+    it("uses d3 library", function() {
+        d3.select("#map-canvas").attr("test", "true");
+        var d3Test = false;
+        d3Test = document.getElementById("map-canvas").getAttribute("test");
+        expect(d3Test).toBe("true");
+    });
+});
+describe("default/map view import test", function () {
+
+  it("loads the fogger global", function () {
+    expect(typeof fogger).toBe('object');
+  });
+  
+  it("loads the mock navigator module", function () {
+    expect(typeof fogger.navigator).toBe('object');
+    expect(typeof fogger.navigator.mock).toBe('boolean');
+    expect(fogger.navigator.mock).toBe(true);
+>>>>>>> 5fb1c3a156ad3c08f70071c84395f4a0c48e8a76
   });
 
   describe("RestAPI test Post", function () {
