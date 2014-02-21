@@ -228,4 +228,13 @@ describe("default/map view map module test", function() {
       });
   });
 
+  it("posts the user's current position", function(done){
+    fogger.map.postCurrentPosition(function(d){
+      expect(d).toBe(false);
+      done();
+    }, function(){
+      expect(true).toBe(false);
+    });
+  });
+
 });
