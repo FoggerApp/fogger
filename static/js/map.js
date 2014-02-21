@@ -87,7 +87,11 @@
    * @param  {callback} fail
    */
   function getLocationsInBound(uid, success, fail) {
-    $.get(fogger.api + 'location/' + data.uid + '?nelat=' + map.getBounds().getNorthEast().lat() + '&nelng=' + map.getBounds().getNorthEast().lng() + '&swlat=' + map.getBounds().getSouthWest().lat() + '&swlat=' + map.getBounds().getSouthWest().lng())
+    $.get(fogger.api + 'location/' + fogger.user.id
+      + '?nelat=' + map.getBounds().getNorthEast().lat() 
+      + '&nelng=' + map.getBounds().getNorthEast().lng()
+      + '&swlat=' + map.getBounds().getSouthWest().lat() 
+      + '&swlng=' + map.getBounds().getSouthWest().lng())
       .done(success)
       .fail(fail);
   }
@@ -101,7 +105,7 @@
    * @param  {callback} fail
    */
   function postUserLocation(data, success, fail) {
-    $.post(fogger.api + 'location', data)
+    $.post(fogger.api + 'location', JSON.stringify(data))
       .done(success)
       .fail(fail);
   }
@@ -183,12 +187,28 @@
    */
   function updateLocation(pos) {
     userLocation = coordsToLatLng(pos);
+
+    //Contact API
+    postUserLocation(data, function(d) {
+      console.log("POST loc success", d);
+    });
+    getLocationsInBound(fogger.user.id, function(d){
+      //TODO SET MASK
+      console.log("GET locs in bounds", d);
+    });
+
     moveUserMarker();
     /* TODO: update the graphic */
-    fogger.graphics.clearMask()
-    postUserLocation(function(data) {
-      fogger.graphics.setMask(data);
-    });
+    //fogger.graphics.clearMask()
+    //Construct data object
+    var data = {
+      uid: fogger.user.id,
+      loc: {
+        lat: getUserLocation().lat(),
+        lng: getUserLocation().lng()
+      }
+    };
+
 
   }
 
@@ -225,7 +245,6 @@
         });
       }
     });
-    console.log("bounds", map.getBounds());
   }
 
   /**
@@ -245,11 +264,6 @@
     reDim();
     map = new google.maps.Map(document.getElementById("map-canvas"),
       mapOptions);
-    //To be implemented
-    google.maps.event.addDomListener(map, 'idle',
-      function() {
-        console.log(map.getBounds().getNorthEast())
-      });
   }
 
   /**
@@ -258,9 +272,11 @@
    */
   function init() {
     initializeMap();
-    panToUserLoc();
-    placeUserMarker();
-    setEvents();
+    google.maps.event.addDomListenerOnce(map, 'idle', function () {
+      panToUserLoc();
+      placeUserMarker();
+      setEvents();
+    });
   }
 
   /**
@@ -282,7 +298,8 @@
     placeUserMarker: placeUserMarker,
     moveUserMarker: moveUserMarker,
     initializeMap: initializeMap,
-    updateLocation: updateLocation
+    updateLocation: updateLocation,
+    getLocationsInBound: getLocationsInBound
   };
 
 }());
