@@ -26,7 +26,6 @@ def index():
 
 @request.restful()
 def api():
-    from gluon.dal import geoPoint, geoLine, geoPolygon
     def GET(*args,**vars):
 
         # GET /default/api/location/uid?nelat=...&...
