@@ -20,10 +20,78 @@ def index():
     """
     redirect(URL(c='default', f='map'))
     return dict(form=auth())
-    
+
     response.flash = T("Welcome to web2py!")
     return dict(message=T('Hello World'))
 
+@request.restful()
+def api():
+    from gluon.dal import geoPoint, geoLine, geoPolygon
+    def GET(*args,**vars):
+
+        # GET /default/api/location/uid?nelat=...&...
+        #                   arg0   arg1 vars['nelat']
+        if len(request.args) > 2:
+            return dict(content=None, errors=['Invalid request arguments. Too many arguments'])
+        if len(request.args)<=1:
+            return dict(content=None, errors=['Invalid request arguments. Too few arguments: Specify User ID ie location/1'])
+
+        if request.args[0] == "location":
+            uid=request.args[1]
+            if "nelat" in request.vars and "nelng" in request.vars and "swlat" in request.vars and "swlng" in request.vars:
+                nelat=float(request.vars["nelat"])
+                nelng=float(request.vars["nelng"])
+                swlat=float(request.vars["swlat"])
+                swlng=float(request.vars["swlng"])
+                sp=db.geolocation.loc
+                polygon=geoPolygon((swlat, swlng),(nelat, swlng),(nelat, nelng),(swlat, nelng),(swlat, swlng))
+                contains=sp.st_within(polygon)
+                return dict(content=dict(
+                          url=URL(),
+                          locations=db((db.geolocation.uid==uid)&(contains)).select(db.geolocation.ALL)),
+                          errors=[]
+                    )
+            return dict(content=None, errors=['Invalid amount of variables.'])
+    def POST(*args,**vars):
+        # Import JSON parser
+        import gluon.contrib.simplejson as json
+         # POST /default/api/location/
+        #                    arg0
+        if len(request.args) > 1:
+            return dict(content=None, errors=['Invalid request arguments. Too many arguments'])
+
+        if request.args[0] == "location":
+
+            # Get HTML request body
+            body = request.body.read()
+
+            # Parse the body
+            body = json.loads(body)
+
+            uid=body['uid']
+            latitute=body['loc']['lat']
+            longtitute=body['loc']['lng']
+
+            # Check counts the points within a certain range
+            check = db().count()
+            
+            result = None
+            if check == 0:
+                result = db.geolocation.insert(uid=uid,loc=geoPoint(latitute, longtitute))
+
+            return dict(content = dict(
+                                    id = result
+                                    ),
+                                  errors=[]
+                                  )
+        else:
+            return dict(content=None, errors=['Invalid database object.'])
+
+    def PUT(*args,**vars):
+        return dict()
+    def DELETE(*args,**vars):
+        return dict()
+    return locals()
 
 def user():
     """
@@ -48,7 +116,7 @@ def user():
 @auth.requires_login()
 def profile():
     return dict()
-    
+
 @auth.requires_login()
 def map():
 
