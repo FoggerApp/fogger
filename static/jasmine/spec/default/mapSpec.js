@@ -237,7 +237,7 @@
 
     it("posts the user's current position", function(done){
       fogger.map.postCurrentPosition(function(d){
-        expect(d).toBe(false);
+        expect(d.content.id > 0).toBe(true);
         done();
       }, function(){
         expect(true).toBe(false);
