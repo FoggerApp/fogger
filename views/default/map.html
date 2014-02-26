@@ -29,13 +29,16 @@
   {{if 'mock' in request.vars:}}
     $(function(){
       fogger.navigator.init(function(){
-        fogger.map.init();  
+        fogger.graphics.init(function(){
+          fogger.map.init();  
+        });
       });
     });
   {{else:}}
     $(function(){
-      fogger.map.init();
-      fogger.graphics.init();
+      fogger.graphics.init(function(){
+        fogger.map.init();  
+      });
     });
   {{pass}}
 </script>

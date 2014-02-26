@@ -18,7 +18,7 @@
 
   /**
    * @private map
-   * @type google.maps.Map
+   * @type {google.maps.Map}
    */
   var map = null,
 
@@ -198,7 +198,7 @@
     var ne = fogger.map.getMap().getBounds().getNorthEast();
     var sw = fogger.map.getMap().getBounds().getSouthWest();
     //Create the North West coordidate
-    var org = {
+    var nw = {
       lat: ne.lat(),
       lng: sw.lng()
     };
@@ -211,9 +211,9 @@
       console.log("POST loc success", d);
     });
     getLocationsInBound(fogger.user.id, function(d) {
-      fogger.graphics.clearMask();
-      fogger.graphics.setMask(d, org, dLng, dLat);
-      console.log("GET locs in bounds", d);
+      //fogger.graphics.clearMask();
+      console.log("SET MASK", d, nw, dLng, dLat);
+      fogger.graphics.setMask(d.content.locations, nw, dLng, dLat);
     });
 
     moveUserMarker();

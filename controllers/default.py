@@ -31,26 +31,56 @@ def api():
         # GET /default/api/location/uid?nelat=...&...
         #                   arg0   arg1 vars['nelat']
         if len(request.args) > 2:
-            return dict(content=None, errors=['Invalid request arguments. Too many arguments'])
+            return dict(
+                    content=None, 
+                    errors=['Invalid request arguments. Too many arguments']
+                    )
         if len(request.args)<=1:
-            return dict(content=None, errors=['Invalid request arguments. Too few arguments: Specify User ID ie location/1'])
+            return dict(
+                    content=None, 
+                    errors=['Invalid request arguments. Too few arguments: Specify User ID ie location/1']
+                    )
 
         if request.args[0] == "location":
             uid=request.args[1]
-            if "nelat" in request.vars and "nelng" in request.vars and "swlat" in request.vars and "swlng" in request.vars:
+            if ("nelat" in request.vars 
+                    and "nelng" in request.vars 
+                    and "swlat" in request.vars 
+                    and "swlng" in request.vars
+                    ):
                 nelat=float(request.vars["nelat"])
                 nelng=float(request.vars["nelng"])
                 swlat=float(request.vars["swlat"])
                 swlng=float(request.vars["swlng"])
                 sp=db.geolocation.loc
-                polygon=geoPolygon((swlat, swlng),(nelat, swlng),(nelat, nelng),(swlat, nelng),(swlat, swlng))
+                splat = sp.st_x().with_alias('lat')
+                splng = sp.st_y().with_alias('lng')
+                polygon=geoPolygon(
+                        (swlat, swlng),
+                        (nelat, swlng),
+                        (nelat, nelng),
+                        (swlat, nelng),
+                        (swlat, swlng)
+                        )
                 contains=sp.st_within(polygon)
-                return dict(content=dict(
-                                         url=URL(),
-                                         locations=db((db.geolocation.uid==uid)&(contains)).select(db.geolocation.ALL)),
-                    errors=[]
+                return dict(
+                        content=dict(
+                            url=URL(),
+                            locations=db(
+                                (db.geolocation.uid==uid)&(contains)
+                                ).select(
+                                    db.geolocation.id,
+                                    db.geolocation.uid,
+                                    splat, 
+                                    splng)
+                            ),
+                        errors=[]
                     )
-            return dict(content=None, errors=['Invalid amount of variables.'])
+            return dict(
+                    content=None, 
+                    errors=['Invalid amount of variables.']
+                    )
+
     def POST(*args,**vars):
         # Import JSON parser
         import gluon.contrib.simplejson as json
