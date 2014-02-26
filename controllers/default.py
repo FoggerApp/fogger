@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 # this file is released under public domain and you can use without limitations
 
-#########################################################################
-## This is a sample controller
-## - index is the default action of any application
-## - user is required for authentication and authorization
-## - download is for downloading files uploaded in the db (does streaming)
-## - call exposes all registered services (none by default)
-#########################################################################
+#
+# This is a sample controller
+# - index is the default action of any application
+# - user is required for authentication and authorization
+# - download is for downloading files uploaded in the db (does streaming)
+# - call exposes all registered services (none by default)
+#
+
 
 @auth.requires_login()
 def index():
@@ -24,64 +25,66 @@ def index():
     response.flash = T("Welcome to web2py!")
     return dict(message=T('Hello World'))
 
+
 @request.restful()
 def api():
-    def GET(*args,**vars):
+    def GET(*args, **vars):
 
         # GET /default/api/location/uid?nelat=...&...
         #                   arg0   arg1 vars['nelat']
         if len(request.args) > 2:
             return dict(
-                    content=None, 
-                    errors=['Invalid request arguments. Too many arguments']
-                    )
-        if len(request.args)<=1:
+                content=None,
+                errors=['Invalid request arguments. Too many arguments']
+            )
+        if len(request.args) <= 1:
             return dict(
-                    content=None, 
-                    errors=['Invalid request arguments. Too few arguments: Specify User ID ie location/1']
-                    )
+                content=None,
+                errors=[
+                    'Invalid request arguments. Too few arguments: Specify User ID ie location/1']
+            )
 
         if request.args[0] == "location":
-            uid=request.args[1]
-            if ("nelat" in request.vars 
-                    and "nelng" in request.vars 
-                    and "swlat" in request.vars 
+            uid = request.args[1]
+            if ("nelat" in request.vars
+                    and "nelng" in request.vars
+                    and "swlat" in request.vars
                     and "swlng" in request.vars
                     ):
-                nelat=float(request.vars["nelat"])
-                nelng=float(request.vars["nelng"])
-                swlat=float(request.vars["swlat"])
-                swlng=float(request.vars["swlng"])
-                sp=db.geolocation.loc
+                nelat = float(request.vars["nelat"])
+                nelng = float(request.vars["nelng"])
+                swlat = float(request.vars["swlat"])
+                swlng = float(request.vars["swlng"])
+                sp = db.geolocation.loc
                 splat = sp.st_x().with_alias('lat')
                 splng = sp.st_y().with_alias('lng')
-                polygon=geoPolygon(
-                        (swlat, swlng),
-                        (nelat, swlng),
-                        (nelat, nelng),
-                        (swlat, nelng),
-                        (swlat, swlng)
-                        )
-                contains=sp.st_within(polygon)
+                polygon = geoPolygon(
+                    (swlat, swlng),
+                    (nelat, swlng),
+                    (nelat, nelng),
+                    (swlat, nelng),
+                    (swlat, swlng)
+                )
+                contains = sp.st_within(polygon)
                 return dict(
-                        content=dict(
-                            url=URL(),
-                            locations=db(
-                                (db.geolocation.uid==uid)&(contains)
-                                ).select(
-                                    db.geolocation.id,
-                                    db.geolocation.uid,
-                                    splat, 
-                                    splng)
-                            ),
-                        errors=[]
-                    )
+                    content=dict(
+                        url=URL(),
+                        locations=db(
+                            (db.geolocation.uid == uid) & (contains)
+                        ).select(
+                            db.geolocation.id,
+                            db.geolocation.uid,
+                            splat,
+                            splng)
+                    ),
+                    errors=[]
+                )
             return dict(
-                    content=None, 
-                    errors=['Invalid amount of variables.']
-                    )
+                content=None,
+                errors=['Invalid amount of variables.']
+            )
 
-    def POST(*args,**vars):
+    def POST(*args, **vars):
         # Import JSON parser
         import gluon.contrib.simplejson as json
          # POST /default/api/location/
@@ -97,35 +100,40 @@ def api():
             # Parse the body
             body = json.loads(body)
 
-            uid=body['uid']
-            latitute=body['loc']['lat']
-            longtitute=body['loc']['lng']
+            uid = body['uid']
+            latitute = body['loc']['lat']
+            longtitute = body['loc']['lng']
 
             # Check counts the points within a certain range
-            dist = db.geolocation.loc.st_distance(geoPoint(latitute, longtitute))
-            check = db(dist<0.001).select(db.geolocation.ALL, dist.with_alias("dist"))
+            dist = db.geolocation.loc.st_distance(
+                geoPoint(latitute, longtitute))
+            check = db(dist < 0.001).select(
+                db.geolocation.ALL, dist.with_alias("dist"))
 
             result = None
             if len(check) == 0:
-                result = db.geolocation.insert(uid=uid,loc=geoPoint(latitute, longtitute))
+                result = db.geolocation.insert(
+                    uid=uid, loc=geoPoint(latitute, longtitute))
             else:
-                return dict(content = check.as_list(),
-                        errors=[]
-                        )
+                return dict(content=check.as_list(),
+                            errors=[]
+                            )
 
-            return dict(content = dict(
-                                       id = result
-                                       ),
-                        errors=[]
-                        )
+            return dict(content=dict(
+                id=result
+            ),
+                errors=[]
+            )
         else:
             return dict(content=None, errors=['Invalid database object.'])
 
-    def PUT(*args,**vars):
+    def PUT(*args, **vars):
         return dict()
-    def DELETE(*args,**vars):
+
+    def DELETE(*args, **vars):
         return dict()
     return locals()
+
 
 def user():
     """
@@ -145,16 +153,16 @@ def user():
     return dict(form=auth())
 
 
-
-
 @auth.requires_login()
 def profile():
     return dict()
+
 
 @auth.requires_login()
 def map():
 
     return dict()
+
 
 @cache.action()
 def download():
