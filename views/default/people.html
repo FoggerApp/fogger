@@ -1,0 +1,12 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+<h3>Frenemies</h3>
+<ul class="nav nav-tabs nav-stacked">
+{{for p in people:}}
+	<li class="list-group-item"><a href="{{=URL(c='default', f='person', args=[p.id])}}">{{=p.username.title()}}</a></li>
+{{pass}}
+</ul>
+<h5 style="margin-left: auto;
+    margin-right: auto;
+    width: 6em">- The End - </h5>

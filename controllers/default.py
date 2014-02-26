@@ -157,10 +157,29 @@ def user():
 def profile():
     return dict()
 
+@auth.requires_login()
+def person():
+    if len(request.args) > 0:
+        uid = request.args[0]
+    else:
+        session.flash = "Invalid User ID."
+        redirect(URL(f='profile'))
+    person = db.auth_user[uid]
+    gen = local_import('title_generator')
+    person.username += ' ' + gen.generate()
+    return dict(person=person)
+
+@auth.requires_login()
+def people():
+    gen = local_import('title_generator', reload=True)
+    people=db(db.auth_user.id>0).select()
+    for p in people:
+        p.username = p.username + ' ' + gen.generate()
+    return dict(people=people)
+
 
 @auth.requires_login()
 def map():
-
     return dict()
 
 
