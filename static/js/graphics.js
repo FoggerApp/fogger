@@ -61,7 +61,6 @@
         width: width,
         height: height
       };
-    console.log(o, mapBound, svgFrame);
     mask.selectAll("circle").remove();
     var circ = mask.selectAll("circle")
       .data(d);
@@ -69,7 +68,6 @@
       	.append("circle")
       	.attr("r", radius)
 	    .attr("cx", function(d) {
-	      console.log(d);
 	      return scale(d, o, mapBound, svgFrame).x;
 	    })
        .attr("cy", function(d) {
