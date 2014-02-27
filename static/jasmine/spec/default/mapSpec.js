@@ -5,7 +5,6 @@
 (function() {
     "use strict";
 
-
     /**
      *
      * Resfult API Tests
@@ -93,8 +92,9 @@
       it("loads the mock navigator module", function() {
         expect(typeof fogger.navigator).toBe('object');
         expect(typeof fogger.navigator.mock).toBe('boolean');
-        expect(fogger.navigator.mock).toBe(true); >>> >>> > 5fb1c3a156ad3c08f70071c84395f4a0c48e8a76
+        expect(fogger.navigator.mock).toBe(true);
       });
+    });
 
       describe("RestAPI test Post", function() {
         it("posts the user location to the database", function(done) {

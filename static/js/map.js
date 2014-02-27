@@ -208,11 +208,8 @@
 
     //Contact API
     postUserLocation(data, function(d) {
-      console.log("POST loc success", d);
     });
     getLocationsInBound(fogger.user.id, function(d) {
-      //fogger.graphics.clearMask();
-      console.log("SET MASK", d, nw, dLng, dLat);
       fogger.graphics.setMask(d.content.locations, nw, dLng, dLat);
     });
 
