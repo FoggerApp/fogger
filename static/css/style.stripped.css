@@ -3,6 +3,7 @@
 }
 #map-mask{
 	position:absolute;
+	pointer-events:none;
 	z-index:1000;
 }
 body {

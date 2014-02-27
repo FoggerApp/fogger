@@ -197,14 +197,13 @@
     //Get map bounds
     var ne = fogger.map.getMap().getBounds().getNorthEast();
     var sw = fogger.map.getMap().getBounds().getSouthWest();
-    //Create the North West coordidate
-    var nw = {
-      lat: ne.lat(),
-      lng: sw.lng()
-    };
-    //Calculate delta lat and delta lng
-    var dLng = ne.lng() - sw.lng();
-    var dLat = sw.lat() - ne.lat();
+    
+    //Get the North West coordidate
+    var nw = getNorthWest();
+    
+    //Get delta lat and delta lng
+    var dLng = deltaLng();
+    var dLat = deltaLat();
 
     //Contact API
     postUserLocation(data, function(d) {
@@ -224,8 +223,34 @@
     fogger.navigator.geolocation.watchPosition(
       updateLocation
     );
+    google.maps.event.addListener(fogger.map, "center_change", function(){
+      fogger.graphics.updateCPos(getNorthWest(), deltaLng(), deltaLat());
+    });
   }
-
+  function getNorthWest() {
+    //Get map bounds
+    var ne = fogger.map.getMap().getBounds().getNorthEast();
+    var sw = fogger.map.getMap().getBounds().getSouthWest();
+    //Create the North West coordidate
+    return {
+      lat: ne.lat(),
+      lng: sw.lng()
+    };
+  }
+  function deltaLng() {
+    //Get map bounds
+    var ne = fogger.map.getMap().getBounds().getNorthEast();
+    var sw = fogger.map.getMap().getBounds().getSouthWest();
+    //Calculate delta lng
+    return ne.lng() - sw.lng();
+  }
+  function deltaLat() {
+    //Get map bounds
+    var ne = fogger.map.getMap().getBounds().getNorthEast();
+    var sw = fogger.map.getMap().getBounds().getSouthWest();
+    //Calculate delta lat
+    return sw.lat() - ne.lat();
+  }
   /**
    * Add map event.
    * @method addEvent()
