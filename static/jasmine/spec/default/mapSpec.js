@@ -32,6 +32,15 @@
      * Graphics Module Tests
      *
      */
+    describe("check svg rectangle", function() {
+       it("creates rectangle", function() {
+          d3.select("#map-mask")
+          .append('rect')
+          .attr("width", $('#map-canvas').width())
+          .attr("height", $('#map-canvas').height());
+       });
+    });
+    
     describe("check svg circles", function() {
       it("creates circles", function() {
 
