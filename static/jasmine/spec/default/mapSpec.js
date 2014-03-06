@@ -32,12 +32,21 @@
      * Graphics Module Tests
      *
      */
-    describe("check svg rectangle", function() {
-       it("creates rectangle", function() {
-          d3.select("#map-mask")
-          .append('rect')
-          .attr("width", $('#map-canvas').width())
-          .attr("height", $('#map-canvas').height());
+    describe("test 3.a", function() {
+       it("creates a rectangle", function() {
+          expect($('#map-mask').length).toBe(1);
+          expect($('#map-mask rect').length).toBe(1);
+          expect($('#map-mask rect').first().attr('width'))
+            .toBe($('#map-mask').attr('width'));
+          expect($('#map-mask rect').first().attr('height'))
+            .toBe($('#map-mask').attr('height'));
+       });
+    });
+
+    describe("test 3.b, 3.c, 3.d", function() {
+       it("", function() {
+          expect($('#map-mask clipPath').length).toBe(1);
+          expect($('#map-mask clipPath').children().length).toBeGreaterThan(0);
        });
     });
     
