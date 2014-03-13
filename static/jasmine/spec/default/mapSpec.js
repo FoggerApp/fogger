@@ -14,13 +14,11 @@
       it("accesses RESTful API", function(done) {
         $.get("/fogger/default/api.json/location/1?nelat=60&nelng=60&swlat=40&swlng=40")
           .done(function(d, txt) {
-            //              console.log(d, txt, xhr);
-            expect(d.errors.length).toEqual(0);
             expect(txt).toEqual("success");
             done();
           })
           .fail(function() {
-            expect("").toBe("API taking too long");
+            expect("").toBe("API failed callback executed.");
             done();
           });
       });
@@ -32,12 +30,18 @@
      * Graphics Module Tests
      *
      */
-    describe("check svg rectangle", function() {
-       it("creates rectangle", function() {
-          d3.select("#map-mask")
-          .append('rect')
-          .attr("width", $('#map-canvas').width())
-          .attr("height", $('#map-canvas').height());
+    describe("test 3.a", function() {
+       it("creates a rectangle", function() {
+          expect($('#map-mask').length).toBe(1);
+          expect(window.innerHeight - $('.navbar').height())
+            .toBe($('#map-mask').attr('height'));
+       });
+    });
+
+    describe("test 3.b, 3.c, 3.d", function() {
+       it("", function() {
+          expect($('#map-mask clipPath').length).toBe(1);
+          expect($('#map-mask clipPath').children().length).toBeGreaterThan(0);
        });
     });
     
