@@ -131,7 +131,7 @@ def api():
                 geoPoint(latitute, longtitute))
             check = db(
 				(dist < 0.001)
-				& db.geolocation.uid==auth.user.id
+				& (db.geolocation.uid==auth.user.id)
 			).select(
                 db.geolocation.ALL, dist.with_alias("dist")
 			)

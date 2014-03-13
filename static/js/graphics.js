@@ -81,6 +81,7 @@
         var coord = scale(d[i], o, mapBound, svgFrame);
         ctx.arc(coord.x, coord.y, radius, 0, 2 * Math.PI);
     }
+    ctx.arc(width/2, height/2, radius, 0, 2 * Math.PI);
     ctx.fill();
   }
 
