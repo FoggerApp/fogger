@@ -9,7 +9,8 @@
    * @private mask
    * @type {d3.selection}
    */
-  var mask = null,
+  var canvas = null,
+    ctx = null,
     /**
      * Circle Radius
      * @private radius
@@ -61,19 +62,25 @@
         width: width,
         height: height
       };
-    mask.selectAll("circle").remove();
-    var circ = mask.selectAll("circle")
-      .data(d);
-    circ.enter()
-      	.append("circle")
-      	.attr("r", radius)
-	    .attr("cx", function(d) {
-	      return scale(d, o, mapBound, svgFrame).x;
-	    })
-       .attr("cy", function(d) {
-	      return scale(d, o, mapBound, svgFrame).y;
-	    });
-    circ.exit().remove();
+
+    clearMask();
+    // This is the canvas where you want to draw
+    // I'll use a skyblue background that covers everything
+    // Just to demonstrate
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, width, height);
+    ctx.globalCompositeOperation = 'xor';
+
+    // Change color for xor operation
+    ctx.fillStyle = "white";
+
+    /* Loop through all circles */
+    for(var i = 0; i < d.length; i++) {
+        console.log(d);
+        var coord = scale(d[i], o, mapBound, svgFrame);
+        ctx.arc(coord.x, coord.y, radius, 0, 2 * Math.PI);
+    }
+    ctx.fill();
   }
 
   /**
@@ -81,18 +88,20 @@
    * @return {[type]} [description]
    */
   function clearMask() {
-
+    //canvas.width = canvas.width;
   }
 
   function init(success) {
-  	$('#map-canvas').width($('#map-canvas').width());
+    $('#map-canvas').width($('#map-canvas').width());
     $('#map-canvas').height(window.innerHeight - $('.navbar').height());
     width = $('#map-canvas').width();
     height = $('#map-canvas').height();
-    mask = d3.select("#map-canvas-container").insert("svg", ":first-child")
+    canvas = d3.select("#map-canvas-container").insert("canvas", ":first-child")
       .attr("id", "map-mask")
       .attr("width", width)
       .attr("height", height);
+    canvas = document.getElementById('map-mask');
+    ctx = canvas.getContext('2d');
     success();
   }
   fogger.graphics = {
