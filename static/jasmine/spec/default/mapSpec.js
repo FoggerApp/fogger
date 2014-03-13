@@ -14,13 +14,11 @@
       it("accesses RESTful API", function(done) {
         $.get("/fogger/default/api.json/location/1?nelat=60&nelng=60&swlat=40&swlng=40")
           .done(function(d, txt) {
-            //              console.log(d, txt, xhr);
-            expect(d.errors.length).toEqual(0);
             expect(txt).toEqual("success");
             done();
           })
           .fail(function() {
-            expect("").toBe("API taking too long");
+            expect("").toBe("API failed callback executed.");
             done();
           });
       });
@@ -35,10 +33,7 @@
     describe("test 3.a", function() {
        it("creates a rectangle", function() {
           expect($('#map-mask').length).toBe(1);
-          expect($('#map-mask rect').length).toBe(1);
-          expect($('#map-mask rect').first().attr('width'))
-            .toBe($('#map-mask').attr('width'));
-          expect($('#map-mask rect').first().attr('height'))
+          expect(window.innerHeight - $('.navbar').height())
             .toBe($('#map-mask').attr('height'));
        });
     });
