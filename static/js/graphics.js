@@ -16,7 +16,7 @@
      * @private radius
      * @type {Integer}
      */
-    radius = 100,
+    radius = 150,
     /**
      * @private height
      * @type {Float}
@@ -67,13 +67,14 @@
     // This is the canvas where you want to draw
     // I'll use a skyblue background that covers everything
     // Just to demonstrate
+    
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, width, height);
-    ctx.globalCompositeOperation = 'xor';
+    ctx.fill();
 
     // Change color for xor operation
     ctx.fillStyle = "white";
-
+    ctx.globalCompositeOperation = 'xor';
     /* Loop through all circles */
     for(var i = 0; i < d.length; i++) {
         console.log(d);
@@ -88,7 +89,7 @@
    * @return {[type]} [description]
    */
   function clearMask() {
-    //canvas.width = canvas.width;
+    canvas.width = canvas.width;
   }
 
   function init(success) {
