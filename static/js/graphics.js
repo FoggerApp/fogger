@@ -64,24 +64,27 @@
       };
 
     clearMask();
-    // This is the canvas where you want to draw
-    // I'll use a skyblue background that covers everything
-    // Just to demonstrate
-    
+
+    // Create rectangle
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, width, height);
     ctx.fill();
+    
+    ctx.globalCompositeOperation = 'destination-out';
+    
+    // sets blur properties
+    ctx.translate(-width, 0);
+    ctx.shadowOffsetX = width;    
+    ctx.shadowOffsetY = 0;
+    ctx.shadowColor = 'black'; 
+    ctx.shadowBlur = 200; // there is artifacting at 40
 
-    // Change color for xor operation
-    ctx.fillStyle = "white";
-    ctx.globalCompositeOperation = 'xor';
     /* Loop through all circles */
     for(var i = 0; i < d.length; i++) {
         console.log(d);
         var coord = scale(d[i], o, mapBound, svgFrame);
         ctx.arc(coord.x, coord.y, radius, 0, 2 * Math.PI);
     }
-    ctx.arc(width/2, height/2, radius, 0, 2 * Math.PI);
     ctx.fill();
   }
 
