@@ -16,7 +16,7 @@
      * @private radius
      * @type {Integer}
      */
-    radius = 150,
+    radius = 80,
     /**
      * @private height
      * @type {Float}
@@ -71,20 +71,22 @@
     ctx.fill();
     
     ctx.globalCompositeOperation = 'destination-out';
-    
     // sets blur properties
     ctx.translate(-width, 0);
     ctx.shadowOffsetX = width;    
     ctx.shadowOffsetY = 0;
     ctx.shadowColor = 'black'; 
-    ctx.shadowBlur = 200; // there is artifacting at 40
+    ctx.shadowBlur = 100; 
 
     /* Loop through all circles */
+    ctx.beginPath();
     for(var i = 0; i < d.length; i++) {
         console.log(d);
         var coord = scale(d[i], o, mapBound, svgFrame);
         ctx.arc(coord.x, coord.y, radius, 0, 2 * Math.PI);
+        ctx.moveTo(coord.x, coord.y);
     }
+    ctx.arc(width/2, height/2, radius, 0, 2 * Math.PI);
     ctx.fill();
   }
 
