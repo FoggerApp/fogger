@@ -5,8 +5,8 @@ from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
 
 ## Connection string is specified in /models/config.py
 #  DO NOT add /models/config.py to git
-db = DAL(conn_string, 
-         pool_size=1, 
+db = DAL(conn_string,
+         pool_size=1,
          check_reserved=['postgres'],
          fake_migrate_all=False)
 
@@ -71,9 +71,12 @@ use_janrain(auth, filename='private/janrain.key')
 #########################################################################
 
 # User geolocation table
-db.define_table('geolocation', 
+db.define_table('geolocation',
     Field('uid', 'reference auth_user'),
-    Field('loc', 'geometry()')
+    Field('loc', 'geometry()'),
+    Field('created_on', 'datetime',
+          default=request.now, update=request.now, writable=False)
     )
+
 
 # auth.enable_record_versioning(db)
