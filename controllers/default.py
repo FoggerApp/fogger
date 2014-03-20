@@ -130,15 +130,19 @@ def api():
             # Check counts the points within a certain range
             dist = db.geolocation.loc.st_distance(
                 geoPoint(latitute, longtitute))
-            check = db(dist < 0.001).select(
-                db.geolocation.ALL, dist.with_alias("dist"))
+            check = db(
+				(dist < 0.001)
+				& (db.geolocation.uid==auth.user.id)
+			).select(
+                db.geolocation.ALL, dist.with_alias("dist")
+			)
 
             result = None
             if len(check) == 0:
                 result = db.geolocation.insert(
                     uid=uid, loc=geoPoint(latitute, longtitute))
             else:
-                return dict(content=check.as_list(),
+                return dict(content=None,
                             errors=[]
                             )
 

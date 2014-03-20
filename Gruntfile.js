@@ -63,8 +63,6 @@ module.exports = function(grunt) {
          */
         clean:
             ['docs']
-
-
     });
  
     // Load the plugins
@@ -74,6 +72,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
 
     // Default task(s).
-    grunt.registerTask('default', ['yuidoc', 'jasmine', 'uglify']);
+    grunt.registerTask('default', ['yuidoc', 'jasmine']);
 
 };
