@@ -74,7 +74,7 @@ use_janrain(auth, filename='private/janrain.key')
 db.define_table('geolocation',
     Field('uid', 'reference auth_user'),
     Field('loc', 'geometry()'),
-    Field('created_on', 'datetime',
+    Field('created', 'datetime',
           default=request.now, update=request.now, writable=False)
     )
 

@@ -96,6 +96,7 @@ def api():
                         .select(
                             db.geolocation.id,
                             db.geolocation.uid,
+                            db.geolocation.created,
                             splat,
                             splng)
                     ),
