@@ -5,14 +5,14 @@ from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
 
 ## Connection string is specified in /models/config.py
 #  DO NOT add /models/config.py to git
-db = DAL(conn_string, 
-         pool_size=1, 
+db = DAL(conn_string,
+         pool_size=1,
          check_reserved=['postgres'],
          fake_migrate_all=False)
 
 ## by default give a view/generic.extension to all actions from localhost
 ## none otherwise. a pattern can be 'controller/function.extension'
-response.generic_patterns = ['*'] if request.is_local else []
+response.generic_patterns = ['*']
 
 ## (optional) optimize handling of static files
 # response.optimize_css = 'concat,minify,inline'
@@ -71,9 +71,12 @@ use_janrain(auth, filename='private/janrain.key')
 #########################################################################
 
 # User geolocation table
-db.define_table('geolocation', 
+db.define_table('geolocation',
     Field('uid', 'reference auth_user'),
-    Field('loc', 'geometry()')
+    Field('loc', 'geometry()'),
+    Field('created', 'datetime',
+          default=request.now, update=request.now, writable=False)
     )
+
 
 # auth.enable_record_versioning(db)

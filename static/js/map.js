@@ -61,7 +61,6 @@
   function getUserMarker() {
     return userMarker;
   }
-
   /**
    * Sets the map.
    * @method setMap
@@ -91,7 +90,16 @@
       .done(success)
       .fail(fail);
   }
-
+  /**
+   * GET all locations from database within the map's bounds.
+   * @param  {callback} success
+   * @param  {callback} fail
+   */
+  function getAllLocationsInBound(success, fail) {
+    $.get(fogger.api + 'location' + '?nelat=' + map.getBounds().getNorthEast().lat() + '&nelng=' + map.getBounds().getNorthEast().lng() + '&swlat=' + map.getBounds().getSouthWest().lat() + '&swlng=' + map.getBounds().getSouthWest().lng())
+      .done(success)
+      .fail(fail);
+  }
   /**
    * POST given location to the RESTful api.
    * Data must have the following form:
@@ -193,7 +201,7 @@
       }
     };
 
-    
+
     //Get map bounds
     var ne = fogger.map.getMap().getBounds().getNorthEast();
     var sw = fogger.map.getMap().getBounds().getSouthWest();
