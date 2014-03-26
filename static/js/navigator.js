@@ -58,6 +58,21 @@
     position.coords.longitude = pos.coords.longitude;
   }
 
+  function randomDirection(){
+    return Math.PI * Math.random();
+  }
+
+  function randomNumSteps(){
+    return 15 * Math.random() + 5;
+  }
+
+  function polarToCartesian(a, r){
+    return {
+      x: r * Math.cos(a),
+      y: r * Math.sin(a)
+    }
+  }
+
   /* 
   * Mocks a navigator call by incrementing the
   * position coords
@@ -68,6 +83,9 @@
   * failure to retrieve geolocation.
   * @async
   */
+  var numSteps = randomNumSteps();
+  var currStep = 0;
+  var direction = randomDirection();
   function getCurrentPosition(success, error) {
     if (position === null) {
       var err = {
@@ -80,8 +98,16 @@
         error(err);
       }
     } else {
-      position.coords.latitude += 0.0001;
-      position.coords.longitude += 0.0001;
+      if(currStep > numSteps){
+        currStep = 0;
+        numSteps = randomNumSteps();
+        direction = randomDirection();
+      }
+      console.log(numSteps, currStep, direction);
+      var coord = polarToCartesian(direction, 0.0001);
+      position.coords.latitude += coord.y;
+      position.coords.longitude += coord.x;
+      currStep++;
       position.timestamp = new Date().getTime();
       success(position);
     }
@@ -101,11 +127,11 @@
     getCurrentPosition(success, error, options);
     var interval = setInterval(function () {
       getCurrentPosition(success, error, options);
-    }, 920);
+    }, 800);
 
-    setTimeout(function () {
-      clearInterval(interval);
-    }, 60000);
+    // setTimeout(function () {
+    //   clearInterval(interval);
+    // }, 60000);
   }
 
   /**
