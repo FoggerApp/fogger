@@ -43,6 +43,20 @@
 <!-- 
   <script src="{{=URL('static','js/share.js',vars=dict(static=URL('static','images')))}}"></script>
  -->
-
+	<div id="bottom-menu" class="navbar navbar-default navbar-fixed-bottom">
+		<ul  class="nav nav-pills nav-center">
+		  <li class="active"><a href="{{=URL(c='default', f='people')}}"><image class="nav-icon" src="{{=URL('static', '/images/people-icon.png')}}"></a></li>
+		  <li class="active"><a href="{{=URL(c='default', f='index')}}"><image class="nav-icon" src="{{=URL('static', '/images/map-icon.png')}}"></a></li>
+		  <li class="dropdown">
+			<a id="drop6" class="remove-hover" role="button" data-toggle="dropdown" href="#"><image class="nav-icon" src="{{=URL('static', '/images/profile-icon.png')}}"></a>
+			<ul id="menu3" class="dropdown-menu" role="menu" aria-labelledby="drop6">
+			  <li role="presentation"><a role="menuitem" tabindex="-1" href="{{=URL(c='default', f='profile')}}">Profile</a></li>
+			  <li role="presentation"><a role="menuitem" tabindex="-1" href="{{=URL(c='default', f='user/change_password')}}">Password</a></li>
+			  <li role="presentation" class="divider"></li>
+			  <li role="presentation"><a role="menuitem" tabindex="-1" href="{{=URL(c='default', f='user/logout')}}">logout</a></li>
+			</ul>
+		  </li>
+		</ul>
+	</div>
 </body>
 </html>
