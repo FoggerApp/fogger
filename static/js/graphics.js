@@ -103,7 +103,17 @@
         ctx.moveTo(coord.x, coord.y);
     }
     ctx.fill();
-    ctx.save();
+
+    ctx.shadowOffsetX = 0;    
+    ctx.shadowOffsetY = 0;
+    ctx.shadowColor = undefined; 
+    ctx.shadowBlur = undefined;
+    //rectangle to cover offset circles
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.translate(-radius, -radius);
+    ctx.fillStyle = "blue";
+    ctx.fillRect(0, 0, 2 * radius + width, 2 * radius + width);
+
   }
 
   /**
