@@ -290,13 +290,16 @@
    * Initializes the map module.
    * @method init
    */
-  function init() {
+  function init(callback) {
     initializeMap();
     google.maps.event.addDomListenerOnce(map, 'idle', function() {
       panToUserLoc();
       placeUserMarker();
       setEvents();
     });
+    if(callback !== undefined) {
+      callback();
+    }
   }
 
   /**
@@ -320,7 +323,8 @@
     moveUserMarker: moveUserMarker,
     initializeMap: initializeMap,
     updateLocation: updateLocation,
-    getLocationsInBound: getLocationsInBound
+    getLocationsInBound: getLocationsInBound,
+    postUserLocation: postUserLocation
   };
 
 }());
