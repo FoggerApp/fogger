@@ -27,10 +27,10 @@ if(typeof(Number.prototype.toRad) === "undefined") {
 pointToDistance = function(start, end, decimals) {
     decimals = decimals || 2;
     var earthRadius = 6371; // km
-    lat1 = parseFloat(start.lat());
-    lat2 = parseFloat(end.lat());
-    lon1 = parseFloat(start.lng());
-    lon2 = parseFloat(end.lng());
+    lat1 = parseFloat(start.lat);
+    lat2 = parseFloat(end.lat);
+    lon1 = parseFloat(start.lng);
+    lon2 = parseFloat(end.lng);
 
     var dLat = (lat2 - lat1).toRad();
     var dLon = (lon2 - lon1).toRad();

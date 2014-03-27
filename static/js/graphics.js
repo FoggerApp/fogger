@@ -16,7 +16,8 @@
      * @private radius
      * @type {Integer}
      */
-    radius = 80,
+    iRadius = 80,
+    radius = null,
     /**
      * @private height
      * @type {Float}
@@ -28,17 +29,32 @@
      */
     width = null;
 
+  function getCtx() {
+    return ctx;
+  }
+
+  function zoomScale(o, p) {
+    return pointToDistance(o, p);
+  }
+
   /**
    * Sets the circles in the mask
    * data = { content = [loc1, loc2 .. ], errors = [] }
    * loc = { "loc": {"lat": lat, "lng": lng}, "uid": uid }
    * @method setMask
-   * @param {RESTful Api Object} data
+   * @param {RESTful Api Object} d
    * @param {Coord} o
    * @param {Float} w
    * @param {Float} h
    */
-  function setMask(d, o, w, h) {
+  function setMask(d, geo) {
+    var o = geo.nw,
+        w = geo.dLng,
+        h = geo.dLat,
+        p = geo.ne;
+    /* Calculate the circle radius for zoom */
+    radius = iRadius/zoomScale(o, p);
+
     /**
      * Move from the geographic point of reference
      * to the x, y grid point of reference.
@@ -71,23 +87,23 @@
     ctx.fill();
     
     ctx.globalCompositeOperation = 'destination-out';
+    
     // sets blur properties
     ctx.translate(-width-radius, 0);
     ctx.shadowOffsetX = width + radius;    
     ctx.shadowOffsetY = 0;
     ctx.shadowColor = 'black'; 
-    ctx.shadowBlur = 100; 
+    ctx.shadowBlur = 100/zoomScale(o, p);
 
     /* Loop through all circles */
     ctx.beginPath();
     for(var i = 0; i < d.length; i++) {
-        console.log(d);
         var coord = scale(d[i], o, mapBound, svgFrame);
         ctx.arc(coord.x, coord.y, radius, 0, 2 * Math.PI);
         ctx.moveTo(coord.x, coord.y);
     }
-    ctx.arc(width/2, height/2, radius, 0, 2 * Math.PI);
     ctx.fill();
+    ctx.save();
   }
 
   /**
@@ -101,20 +117,27 @@
   function init(success) {
     $('#map-canvas').width($('#map-canvas').width());
     $('#map-canvas').height(window.innerHeight - $('.navbar').height());
+
     width = $('#map-canvas').width();
     height = $('#map-canvas').height();
+
     canvas = d3.select("#map-canvas-container").insert("canvas", ":first-child")
       .attr("id", "map-mask")
       .attr("width", width)
       .attr("height", height);
+
     canvas = document.getElementById('map-mask');
     ctx = canvas.getContext('2d');
+
     success();
   }
+
   fogger.graphics = {
     init: init,
     setMask: setMask,
-    clearMask: clearMask
+    clearMask: clearMask,
+    getCtx: getCtx,
+    zoomScale: zoomScale,
   };
 
 
