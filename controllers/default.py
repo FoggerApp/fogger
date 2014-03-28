@@ -133,30 +133,16 @@ def api():
                          'location?nelat=100&nelng=100&swlat=-100&swlng=-100------------------for locations of all users']
             )
         elif request.args[0] == "points":
-            count=db.geolocation.uid.count()
+            uid=None
             if len(request.args) == 2:
                 uid=request.args[1]
-                return dict(
-                        content=dict(
-                            Url=URL(),
-                            Locations=db(db.geolocation.uid == uid).select(
-                                db.geolocation.uid,
-                                count,
-                                groupby=db.geolocation.uid)
-                        ),
+            return dict(
+                    content=dict(
+                        url=URL(),
+                        locations=get_points(uid),
                         errors=[]
                     )
-            elif len(request.args) == 1:
-                return dict(
-                        content=dict(
-                            url=URL(),
-                            locations=db(db.geolocation).select(
-                                db.geolocation.uid,
-                                count,
-                                groupby=db.geolocation.uid)
-                        ),
-                        errors=[]
-                    )
+            )
         return dict(
                     content=None,
                     errors=['Invalid parameters.',
@@ -218,7 +204,19 @@ def api():
         return dict()
     return locals()
 
-
+def get_points(uid):
+            count=db.geolocation.uid.count()
+            query=None
+            if uid is not None:
+                query=(db.geolocation.uid == uid)
+            result =  db(query).select(
+                            db.geolocation.uid,
+                            count,
+                            groupby=db.geolocation.uid)
+            pts=list()
+            for row in result:
+                pts.append(dict(uid=row.geolocation.uid, pts=row._extra.as_dict()['COUNT(geolocation.uid)']))
+            return pts
 def user():
     """
     exposes:
@@ -239,7 +237,7 @@ def user():
 
 @auth.requires_login()
 def profile():
-    return dict()
+    return dict(points=get_points(auth.user.id)[0]['pts'])
 
 @auth.requires_login()
 def person():
