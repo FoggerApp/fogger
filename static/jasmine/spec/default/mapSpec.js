@@ -1,3 +1,20 @@
+    /**
+     *
+     * Menu Tests
+     *
+     */
+    describe("menu test", function() {
+       it("display's the test once it's clicked", function() {
+          expect($('#drop6').length).toBe(1);
+          expect($('#menu3').is(":visible")).toBe(false);
+          $('#drop6').click();
+          expect($('#menu3').is(":visible")).toBe(true);
+          $('#drop6').click();
+          expect($('#menu3').is(":visible")).toBe(false);
+       });
+    });
+
+
 /**
  * @module test
  * @class MapSpec
@@ -23,6 +40,9 @@
           });
       });
     });
+
+
+
 
 
     /**

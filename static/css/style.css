@@ -2,7 +2,7 @@
 	width: 75px;
 	height: 22px;
 	z-index: 1200;
-	position: absolute;
+	position: fixed;
 	top: 8px;
 	left: 26px;
 }
@@ -40,6 +40,7 @@ body {
 	background-color: #171717;
 }
 body {
+	padding-top: 30px;
 	padding-bottom: 66px;
 }
 .caret {
@@ -55,4 +56,7 @@ body {
 .nav-icon {
 	margin-top: 5px;
 	width: 60px;
+}
+#map-canvas-container {
+	margin-top: -30px;
 }
