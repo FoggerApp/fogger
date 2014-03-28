@@ -127,11 +127,43 @@ def api():
                 content=None,
                 errors=['Invalid parameters.',
                         'Try:',
-                         'location/uid#/recent?nelat=100&nelng=100&swlat=-100&swlng=-100---for most recent position of user\n',
-                         'location/uid#?nelat=100&nelng=100&swlat=-100&swlng=-100------------for all positions of user \n',
-                         'location/recent?nelat=100&nelng=100&swlat=-100&swlng=-100---------for recent positions of all users \n',
+                         'location/uid#/recent?nelat=100&nelng=100&swlat=-100&swlng=-100---for most recent position of user',
+                         'location/uid#?nelat=100&nelng=100&swlat=-100&swlng=-100------------for all positions of user',
+                         'location/recent?nelat=100&nelng=100&swlat=-100&swlng=-100---------for recent positions of all users',
                          'location?nelat=100&nelng=100&swlat=-100&swlng=-100------------------for locations of all users']
             )
+        elif request.args[0] == "points":
+            count=db.geolocation.uid.count()
+            if len(request.args) == 2:
+                uid=request.args[1]
+                return dict(
+                        content=dict(
+                            Url=URL(),
+                            Locations=db(db.geolocation.uid == uid).select(
+                                db.geolocation.uid,
+                                count,
+                                groupby=db.geolocation.uid)
+                        ),
+                        errors=[]
+                    )
+            elif len(request.args) == 1:
+                return dict(
+                        content=dict(
+                            url=URL(),
+                            locations=db(db.geolocation).select(
+                                db.geolocation.uid,
+                                count,
+                                groupby=db.geolocation.uid)
+                        ),
+                        errors=[]
+                    )
+        return dict(
+                    content=None,
+                    errors=['Invalid parameters.',
+                            'Try:',
+                             'points/uid#---for a users individual points',
+                             'points---------for all users points']
+                )
     def POST(*args, **vars):
         # Import JSON parser
         import gluon.contrib.simplejson as json
