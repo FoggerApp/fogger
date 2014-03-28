@@ -81,6 +81,8 @@
 
     clearMask();
 
+    ctx.save()
+    
     // Create rectangle
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, width, height);
@@ -96,24 +98,20 @@
     ctx.shadowBlur = 100/zoomScale(o, p);
 
     /* Loop through all circles */
-    ctx.beginPath();
     for(var i = 0; i < d.length; i++) {
         var coord = scale(d[i], o, mapBound, svgFrame);
         ctx.arc(coord.x, coord.y, radius, 0, 2 * Math.PI);
         ctx.moveTo(coord.x, coord.y);
     }
     ctx.fill();
+    ctx.restore();
 
-    ctx.shadowOffsetX = 0;    
-    ctx.shadowOffsetY = 0;
-    ctx.shadowColor = undefined; 
-    ctx.shadowBlur = undefined;
-    //rectangle to cover offset circles
-    ctx.globalCompositeOperation = 'destination-over';
-    ctx.translate(-radius, -radius);
-    ctx.fillStyle = "blue";
-    ctx.fillRect(0, 0, 2 * radius + width, 2 * radius + width);
-
+    // Color in offset circles
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+    ctx.fill();
   }
 
   /**
