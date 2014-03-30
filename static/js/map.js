@@ -33,7 +33,8 @@
      * @private userMarker
      */
     userMarker = null,
-    myLocs = new Array();
+    myLocs = new Array(),
+    moveTimeout = null;
 
   /* FUNCTIONS */
   /**
@@ -247,6 +248,14 @@
     fogger.graphics.setMask(myLocs, geoBounds());
   }
 
+  function updateFogAfterMove() {
+    if (moveTimeout) {
+      window.clearTimeout(moveTimeout);
+    }
+
+    moveTimeout = window.setTimeout(updateFog, 500);
+  }
+
   /**
    * Sets events for the map module.
    * @method setEvents
@@ -259,6 +268,11 @@
       map,
       'bounds_changed',
       reloadFog
+    );
+    google.maps.event.addDomListener(
+      map,
+      'bounds_changed',
+      updateFogAfterMove
     );
   }
 
