@@ -6,9 +6,9 @@
   "use strict";
 
   /**
-   * 
+   *
    * Test the import of modules
-   * 
+   *
    */
   describe("default/map view import test", function() {
 
@@ -54,8 +54,64 @@
    *
    */
   describe("RestAPI test", function() {
-    it("GET from RestAPI", function(done) {
+   jasmine.DEFAULT_TIMEOUT_INTERVAL=60000;
+   it("GET from RestAPI single users locations within bounds", function(done) {
       $.get("/fogger/default/api.json/location/1?nelat=60&nelng=60&swlat=40&swlng=40")
+        .done(function(d, txt) {
+          expect(txt).toEqual("success");
+          done();
+        })
+        .fail(function() {
+          expect("").toBe("API fail callback called.");
+          done();
+        });
+    });
+    it("GET from RestAPI all users locations within bounds", function(done) {
+      $.get("/fogger/default/api.json/location?nelat=60&nelng=60&swlat=40&swlng=40")
+        .done(function(d, txt) {
+          expect(txt).toEqual("success");
+          done();
+        })
+        .fail(function() {
+          expect("").toBe("API fail callback called.");
+          done();
+        });
+    });
+    it("GET from RestAPI single users most recent location within bounds", function(done) {
+      $.get("/fogger/default/api.json/location/1/recent?nelat=60&nelng=60&swlat=40&swlng=40")
+        .done(function(d, txt) {
+          expect(txt).toEqual("success");
+          done();
+        })
+        .fail(function() {
+          expect("").toBe("API fail callback called.");
+          done();
+        });
+    });
+    it("GET from RestAPI all users most recent locations within bounds", function(done) {
+      $.get("/fogger/default/api.json/location/recent?nelat=60&nelng=60&swlat=40&swlng=40")
+        .done(function(d, txt) {
+          expect(txt).toEqual("success");
+          done();
+        })
+        .fail(function() {
+          expect("").toBe("API fail callback called.");
+          done();
+        });
+    });
+    it("GET from RestAPI single users points", function(done) {
+      $.get("/fogger/default/api.json/points/1")
+        .done(function(d, txt) {
+          expect(txt).toEqual("success");
+          done();
+        })
+        .fail(function() {
+          expect("").toBe("API fail callback called.");
+          done();
+        });
+    });
+    it("GET from RestAPI all users points", function(done) {
+      $.get("/fogger/default/api.json/points")
         .done(function(d, txt) {
           expect(txt).toEqual("success");
           done();
@@ -106,9 +162,9 @@
   });
 
   /**
-   * 
+   *
    * Mock navigator module test
-   * 
+   *
    */
   describe("default/map view mock navigator test", function() {
     var init = false;
