@@ -32,19 +32,16 @@ def api():
 
         # GET /default/api/location/uid?nelat=...&...
         #                   arg0   arg1 vars['nelat']
-        if len(request.args) > 2:
+        if len(request.args) > 3:
             return dict(
                 content=None,
                 errors=['Invalid request arguments. Too many arguments']
             )
         if request.args[0] == "location":
-            if len(request.args) ==2:
-                uid = request.args[1]
             if ("nelat" in request.vars
                     and "nelng" in request.vars
                     and "swlat" in request.vars
-                    and "swlng" in request.vars
-                    and len(request.args) == 2):
+                    and "swlng" in request.vars):
                 nelat = float(request.vars["nelat"])
                 nelng = float(request.vars["nelng"])
                 swlat = float(request.vars["swlat"])
@@ -60,53 +57,99 @@ def api():
                     (swlat, swlng)
                 )
                 contains = sp.st_within(polygon)
-                return dict(
-                    content=dict(
-                        url=URL(),
-                        locations=db(
-                            (db.geolocation.uid == uid) & (contains)
-                        ).select(
-                            db.geolocation.id,
-                            db.geolocation.uid,
-                            splat,
-                            splng)
-                    ),
+
+                if len(request.args) == 3 and request.args[2] == "recent":
+                    uid = request.args[1]
+                    return dict(
+                        content=dict(
+                            url=URL(),
+                            locations=db(
+                                         (db.geolocation.uid == uid) & (contains)
+                            ).select(
+                                db.geolocation.uid,
+                                db.geolocation.created,
+                                splat,
+                                splng,
+                                orderby=db.geolocation.uid|~db.geolocation.created,
+                                distinct=db.geolocation.uid
+                                )
+                        ),
                     errors=[]
-                )
-            else:
-                nelat = float(request.vars["nelat"])
-                nelng = float(request.vars["nelng"])
-                swlat = float(request.vars["swlat"])
-                swlng = float(request.vars["swlng"])
-                sp = db.geolocation.loc
-                splat = sp.st_x().with_alias('lat')
-                splng = sp.st_y().with_alias('lng')
-                polygon = geoPolygon(
-                    (swlat, swlng),
-                    (nelat, swlng),
-                    (nelat, nelng),
-                    (swlat, nelng),
-                    (swlat, swlng)
-                )
-                contains = sp.st_within(polygon)
-                return dict(
-                    content=dict(
-                        url=URL(),
-                        locations=db(contains)
-                        .select(
-                            db.geolocation.id,
-                            db.geolocation.uid,
-                            db.geolocation.created,
-                            splat,
-                            splng)
-                    ),
+                    )
+                elif len(request.args) == 2 and request.args[1] == "recent":
+                    return dict(
+                        content=dict(
+                            url=URL(),
+                            locations=db(contains)
+                            .select(
+                                db.geolocation.uid,
+                                db.geolocation.created,
+                                splat,
+                                splng,
+                                orderby=db.geolocation.uid|~db.geolocation.created,
+                                distinct=db.geolocation.uid
+                                )
+                        ),
                     errors=[]
-                )
+                    )
+                elif len(request.args) == 2:
+                    uid = request.args[1]
+                    return dict(
+                        content=dict(
+                            url=URL(),
+                            locations=db(
+                                (db.geolocation.uid == uid) & (contains)
+                            ).select(
+                                db.geolocation.id,
+                                db.geolocation.uid,
+                                db.geolocation.created,
+                                splat,
+                                splng)
+                        ),
+                        errors=[]
+                    )
+                elif len(request.args) == 1:
+                     return dict(
+                        content=dict(
+                            url=URL(),
+                            locations=db(contains)
+                            .select(
+                                db.geolocation.id,
+                                db.geolocation.uid,
+                                db.geolocation.created,
+                                splat,
+                                splng)
+                        ),
+                        errors=[]
+                    )
+
             return dict(
                 content=None,
-                errors=['Invalid amount of variables.']
+                errors=['Invalid parameters.',
+                        'Try:',
+                         'location/uid#/recent?nelat=100&nelng=100&swlat=-100&swlng=-100---for most recent position of user',
+                         'location/uid#?nelat=100&nelng=100&swlat=-100&swlng=-100------------for all positions of user',
+                         'location/recent?nelat=100&nelng=100&swlat=-100&swlng=-100---------for recent positions of all users',
+                         'location?nelat=100&nelng=100&swlat=-100&swlng=-100------------------for locations of all users']
             )
-
+        elif request.args[0] == "points":
+            uid=None
+            if len(request.args) == 2:
+                uid=request.args[1]
+            return dict(
+                    content=dict(
+                        url=URL(),
+                        locations=get_points(uid),
+                        errors=[]
+                    )
+            )
+        return dict(
+                    content=None,
+                    errors=['Invalid parameters.',
+                            'Try:',
+                             'points/uid#---for a users individual points',
+                             'points---------for all users points']
+                )
     def POST(*args, **vars):
         # Import JSON parser
         import gluon.contrib.simplejson as json
@@ -161,7 +204,19 @@ def api():
         return dict()
     return locals()
 
-
+def get_points(uid):
+            count=db.geolocation.uid.count()
+            query=None
+            if uid is not None:
+                query=(db.geolocation.uid == uid)
+            result =  db(query).select(
+                            db.geolocation.uid,
+                            count,
+                            groupby=db.geolocation.uid)
+            pts=list()
+            for row in result:
+                pts.append(dict(uid=row.geolocation.uid, pts=row._extra.as_dict()['COUNT(geolocation.uid)']))
+            return pts
 def user():
     """
     exposes:
@@ -182,7 +237,7 @@ def user():
 
 @auth.requires_login()
 def profile():
-    return dict()
+    return dict(points=get_points(auth.user.id)[0]['pts'])
 
 @auth.requires_login()
 def person():
