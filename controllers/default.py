@@ -127,13 +127,21 @@ def api():
                 content=None,
                 errors=['Invalid parameters.',
                         'Try:',
-                         'location/uid#/recent?nelat=100&nelng=100&swlat=-100&swlng=-100---for most recent position of user',
-                         'location/uid#?nelat=100&nelng=100&swlat=-100&swlng=-100------------for all positions of user',
-                         'location/recent?nelat=100&nelng=100&swlat=-100&swlng=-100---------for recent positions of all users',
-                         'location?nelat=100&nelng=100&swlat=-100&swlng=-100------------------for locations of all users']
+                         'location/uid#/recent?nelat=100&nelng=100&swlat=-100&swlng=-100---for most recent position of user within bounds',
+                         'location/recent?nelat=100&nelng=100&swlat=-100&swlng=-100---------for most recent positions of all users within bounds',
+                         'location/uid#?nelat=100&nelng=100&swlat=-100&swlng=-100------------for all positions of user within bounds',
+                         'location?nelat=100&nelng=100&swlat=-100&swlng=-100------------------for all positions of all users within bounds']
             )
         elif request.args[0] == "points":
             uid=None
+            if len(request.args) > 2:
+                return dict(
+                    content=None,
+                    errors=['Invalid parameters.',
+                            'Try:',
+                             'points/uid#---for a users individual points',
+                             'points---------for all users points']
+                )
             if len(request.args) == 2:
                 uid=request.args[1]
             return dict(
@@ -143,13 +151,7 @@ def api():
                         errors=[]
                     )
             )
-        return dict(
-                    content=None,
-                    errors=['Invalid parameters.',
-                            'Try:',
-                             'points/uid#---for a users individual points',
-                             'points---------for all users points']
-                )
+
     def POST(*args, **vars):
         # Import JSON parser
         import gluon.contrib.simplejson as json

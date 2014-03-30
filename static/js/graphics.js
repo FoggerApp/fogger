@@ -91,8 +91,8 @@
     ctx.globalCompositeOperation = 'destination-out';
     
     // sets blur properties
-    ctx.translate(-width-radius, 0);
-    ctx.shadowOffsetX = width + radius;    
+    ctx.translate(-width-radius-1000000, 0);
+    ctx.shadowOffsetX = width + radius + 1000000;    
     ctx.shadowOffsetY = 0;
     ctx.shadowColor = 'black'; 
     ctx.shadowBlur = 100/zoomScale(o, p);
