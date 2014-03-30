@@ -8,6 +8,7 @@
 #map-mask{
 	position:absolute;
 	z-index:1000;
+    pointer-events: none;
 }
 body {
   padding: 0;

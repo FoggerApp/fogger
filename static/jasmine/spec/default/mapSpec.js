@@ -120,8 +120,8 @@
       var pos = {
         timestamp: 123,
         coords: {
-          latitude: 65.1,
-          longitude: -45.01
+          latitude: 44.63741290000001,
+          longitude: -63.5873095
         }
       };
       fogger.navigator.setPosition(pos);
@@ -142,28 +142,28 @@
       fogger.navigator.setCurrentPosition({
         timestamp: 123,
         coords: {
-          latitude: 65.1,
-          longitude: -45.01
+          latitude: 44.63741290000001,
+          longitude: -63.5873095
         }
       });
       expect(pos.timestamp).toEqual(123);
-      expect(pos.coords.latitude).toEqual(65.1);
-      expect(pos.coords.longitude).toEqual(-45.01);
+      expect(pos.coords.latitude).toEqual(44.63741290000001);
+      expect(pos.coords.longitude).toEqual(-63.5873095);
     });
 
     it("gets user position on getCurrentPosition", function(done) {
       var pos = {
         timestamp: 123,
         coords: {
-          latitude: 65.1,
-          longitude: -45.01
+          latitude: 44.63741290000001,
+          longitude: -63.5873095
         }
       };
       fogger.navigator.setPosition(pos);
       fogger.navigator.geolocation.getCurrentPosition(function() {
         expect(pos.timestamp).not.toEqual(123);
-        expect(pos.coords.latitude).not.toEqual(65.1);
-        expect(pos.coords.longitude).not.toEqual(-45.01);
+        expect(pos.coords.latitude).not.toEqual(44.63741290000001);
+        expect(pos.coords.longitude).not.toEqual(-63.5873095);
         done();
       });
     });
@@ -219,10 +219,10 @@
     it("centered map to user location", function(done) {
       google.maps.event.addDomListenerOnce(fogger.map.getMap(), 'idle', function() {
         expect(
-          Math.abs(fogger.map.getMap().getCenter().lat() - fogger.map.getUserLocation().lat()) < 0.0000001
+          Math.abs(fogger.map.getMap().getCenter().lat() - fogger.map.getUserLocation().lat()) < 0.000001
         ).toBe(true);
         expect(
-          Math.abs(fogger.map.getMap().getCenter().lng() - fogger.map.getUserLocation().lng()) < 0.0000001
+          Math.abs(fogger.map.getMap().getCenter().lng() - fogger.map.getUserLocation().lng()) < 0.000001
         ).toBe(true);
         done();
       });
@@ -232,8 +232,8 @@
       google.maps.event.addDomListenerOnce(fogger.map.getMap(), 'idle', function() {
         var marker = fogger.map.getUserMarker();
         expect(marker).not.toBeNull();
-        expect(marker.getPosition().lat() - fogger.map.getUserLocation().lat()).not.toBeGreaterThan(0.0000001);
-        expect(marker.getPosition().lng() - fogger.map.getUserLocation().lng()).not.toBeGreaterThan(0.0000001);
+        expect(marker.getPosition().lat() - fogger.map.getUserLocation().lat()).not.toBeGreaterThan(0.000001);
+        expect(marker.getPosition().lng() - fogger.map.getUserLocation().lng()).not.toBeGreaterThan(0.000001);
         done();
       });
     });
@@ -252,22 +252,22 @@
         cMap = fogger.map.getMap().getCenter();
         expect(
           userLocation.lat() - cUserLocation.lat()
-        ).not.toBeGreaterThan(0.0000001);
+        ).not.toBeGreaterThan(0.001);
         expect(
           userLocation.lng() - cUserLocation.lng()
-        ).not.toBeGreaterThan(0.0000001);
+        ).not.toBeGreaterThan(0.001);
         expect(
           userMarker.lat() - cUserMarker.lat()
-        ).not.toBeGreaterThan(0.0000001);
+        ).not.toBeGreaterThan(0.001);
         expect(
           userMarker.lng() - cUserMarker.lng()
-        ).not.toBeGreaterThan(0.0000001);
+        ).not.toBeGreaterThan(0.001);
         expect(
           map.lat() - cMap.lat()
-        ).not.toBeGreaterThan(0.0000001);
+        ).not.toBeGreaterThan(0.001);
         expect(
           map.lng() - cMap.lng()
-        ).not.toBeGreaterThan(0.0000001);
+        ).not.toBeGreaterThan(0.001);
         done();
       });
     });

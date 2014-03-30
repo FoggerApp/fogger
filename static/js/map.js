@@ -32,7 +32,9 @@
     /**
      * @private userMarker
      */
-    userMarker = null;
+    userMarker = null,
+    myLocs = new Array(),
+    moveTimeout = null;
 
   /* FUNCTIONS */
   /**
@@ -180,8 +182,25 @@
       if (userMarker !== null) {
         userMarker.setPosition(uloc);
       }
-      panToUserLoc();
+      //panToUserLoc();
     });
+  }
+
+  function geoBounds() {
+    //Get map bounds
+    var ne = fogger.map.getMap().getBounds().getNorthEast();
+    var sw = fogger.map.getMap().getBounds().getSouthWest();
+
+    //Calculate delta lat and delta lng
+    var dLng = ne.lng() - sw.lng();
+    var dLat = sw.lat() - ne.lat();
+
+    return {
+      nw: { lat: ne.lat(), lng: sw.lng() },
+      ne: { lat: ne.lat(), lng: ne.lng() },
+      dLat: dLat,
+      dLng: dLng
+    };
   }
 
   /**
@@ -201,27 +220,40 @@
       }
     };
 
-
-    //Get map bounds
-    var ne = fogger.map.getMap().getBounds().getNorthEast();
-    var sw = fogger.map.getMap().getBounds().getSouthWest();
-    //Create the North West coordidate
-    var nw = {
-      lat: ne.lat(),
-      lng: sw.lng()
-    };
-    //Calculate delta lat and delta lng
-    var dLng = ne.lng() - sw.lng();
-    var dLat = sw.lat() - ne.lat();
-
     //Contact API
-    postUserLocation(data, function(d) {
-    });
-    getLocationsInBound(fogger.user.id, function(d) {
-      fogger.graphics.setMask(d.content.locations, nw, dLng, dLat);
-    });
+    postUserLocation( data, function(d) { } );
 
+    //Move user marker
     moveUserMarker();
+
+    //Get new mask
+    updateFog();
+  }
+
+  //updates the mask
+  function updateFog() {
+    getLocationsInBound(fogger.user.id, function(d) {
+      myLocs = d.content.locations;
+      /* Add sight radius at the user's marker */
+      var mPos = getUserMarker().getPosition();
+      myLocs.push( { lat: mPos.lat(), lng: mPos.lng() } );
+
+      /* reload the fog */
+      reloadFog();
+    });
+  }
+
+  // MAP INTERACTION
+  function reloadFog() {
+    fogger.graphics.setMask(myLocs, geoBounds());
+  }
+
+  function updateFogAfterMove() {
+    if (moveTimeout) {
+      window.clearTimeout(moveTimeout);
+    }
+
+    moveTimeout = window.setTimeout(updateFog, 500);
   }
 
   /**
@@ -231,6 +263,16 @@
   function setEvents() {
     fogger.navigator.geolocation.watchPosition(
       updateLocation
+    );
+    google.maps.event.addDomListener(
+      map,
+      'bounds_changed',
+      reloadFog
+    );
+    google.maps.event.addDomListener(
+      map,
+      'bounds_changed',
+      updateFogAfterMove
     );
   }
 
@@ -261,7 +303,8 @@
         userMarker = new google.maps.Marker({
           position: uloc,
           map: map,
-          title: 'You'
+          title: 'You',
+          zIndex: 1200
         });
       }
     });
@@ -279,7 +322,9 @@
       streetViewControl: false,
       scaleControl: false,
       rotateControl: false,
-      overviewMapControl: false
+      overviewMapControl: false,
+      mapTypeControl: false,
+      mapTypeId: google.maps.MapTypeId.SATELLITE
     };
     reDim();
     map = new google.maps.Map(document.getElementById("map-canvas"),
@@ -297,6 +342,7 @@
       placeUserMarker();
       setEvents();
     });
+
     if(callback !== undefined) {
       callback();
     }
@@ -314,6 +360,8 @@
     setUserLocation: setUserLocation,
     setUserMarker: setUserMarker,
     setEvents: setEvents,
+    reloadFog: reloadFog,
+    updateFog: updateFog,
     addMapEvent: addMapEvent,
     reDim: reDim,
     getLocation: getLocation,
