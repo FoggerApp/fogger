@@ -34,7 +34,10 @@
      */
     userMarker = null,
     myLocs = new Array(),
-    moveTimeout = null;
+    worldLocs = new Array(),
+    moveTimeout = null,
+    view = 'user',
+    mapType = null;
 
   /* FUNCTIONS */
   /**
@@ -63,6 +66,29 @@
   function getUserMarker() {
     return userMarker;
   }
+
+  function getView() {
+    return view;
+  }
+
+  function setView(v) {
+    view = v;
+  }
+
+  function getMapType() {
+    return mapType;
+  }
+
+  function setMapType(mt) {
+    if( mt === "satellite" ) {
+      mapType = google.maps.MapTypeId.SATELLITE;
+    } else if ( mt === "roadmap" ){
+      mapType = google.maps.MapTypeId.ROADMAP;
+    }
+
+    map.setMapTypeId(mapType);
+  }
+
   /**
    * Sets the map.
    * @method setMap
@@ -168,6 +194,7 @@
   function panToUserLoc() {
     getLocation(function(uloc) {
       if (map !== null) {
+        map.setZoom(17);
         map.panTo(uloc);
       }
     });
@@ -232,20 +259,43 @@
 
   //updates the mask
   function updateFog() {
-    getLocationsInBound(fogger.user.id, function(d) {
-      myLocs = d.content.locations;
-      /* Add sight radius at the user's marker */
-      var mPos = getUserMarker().getPosition();
-      myLocs.push( { lat: mPos.lat(), lng: mPos.lng() } );
+    if( view == 'user' ) {
+      getLocationsInBound(fogger.user.id, function(d) {
+        myLocs = d.content.locations;
+        worldLocs = new Array();
+        /* Add sight radius at the user's marker */
+        var mPos = getUserMarker().getPosition();
+        myLocs.push( { lat: mPos.lat(), lng: mPos.lng() } );
 
-      /* reload the fog */
-      reloadFog();
-    });
+        /* reload the fog */
+        reloadFog();
+      });
+    } else if ( view == 'world') {
+      getAllLocationsInBound(function(d) {
+        console.log(d);
+        var allLocs = d.content.locations;
+        /* Sort your locations from other locations */
+        for( var i = 0; i < allLocs.length; i++ ) {
+          if( allLocs[i].uid == fogger.user.id ) {
+            myLocs.append(allLocs[i]);
+          } else {
+            worldLocs.append(allLocs[i]);
+          }
+        }
+        /* Add sight radius at the user's marker */
+        var mPos = getUserMarker().getPosition();
+        myLocs.push( { lat: mPos.lat(), lng: mPos.lng() } );
+
+        /* reload the fog */
+        reloadFog();
+      });
+    }
+    
   }
 
   // MAP INTERACTION
   function reloadFog() {
-    fogger.graphics.setMask(myLocs, geoBounds());
+    fogger.graphics.setMask(myLocs, worldLocs, geoBounds());
   }
 
   function updateFogAfterMove() {
@@ -324,7 +374,7 @@
       rotateControl: false,
       overviewMapControl: false,
       mapTypeControl: false,
-      mapTypeId: google.maps.MapTypeId.SATELLITE
+      mapTypeId: mapType
     };
     reDim();
     map = new google.maps.Map(document.getElementById("map-canvas"),
@@ -336,6 +386,7 @@
    * @method init
    */
   function init(callback) {
+    mapType = google.maps.MapTypeId.SATELLITE;
     initializeMap();
     google.maps.event.addDomListenerOnce(map, 'idle', function() {
       panToUserLoc();
@@ -356,6 +407,10 @@
     getMap: getMap,
     getUserLocation: getUserLocation,
     getUserMarker: getUserMarker,
+    getView: getView,
+    setView: setView,
+    getMapType: getMapType,
+    setMapType: setMapType,
     setMap: setMap,
     setUserLocation: setUserLocation,
     setUserMarker: setUserMarker,
@@ -372,6 +427,7 @@
     initializeMap: initializeMap,
     updateLocation: updateLocation,
     getLocationsInBound: getLocationsInBound,
+    getAllLocationsInBound: getAllLocationsInBound,
     postUserLocation: postUserLocation
   };
 
