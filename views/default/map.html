@@ -31,7 +31,9 @@
     $(function(){
       fogger.navigator.init(function(){
         fogger.graphics.init(function(){
-          fogger.map.init();  
+          fogger.map.init(function(){
+            fogger.interact.init();
+          });
         });
       });
     });

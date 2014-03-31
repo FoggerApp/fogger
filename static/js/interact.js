@@ -99,10 +99,18 @@
 
   /* Events */
   function setEvents() {
-    $('#map-goto').on('click', fogger.map.panToUserLoc);
+    $('#map-goto').on('click', function(){
+      fogger.map.panToUserLoc();
+      setTimeout(function(){
+        fogger.map.setFollow(true);
+      }, 200);
+    });
     $('#map-terrain .btn').on('click', function(){
       console.log("Here!", $(this).attr("data-type"));
       fogger.map.setMapType($(this).attr("data-type"));
+    });
+    $('#map-canvas-container').on('mousedown', function(){
+      fogger.map.setFollow(false);
     });
   }
 

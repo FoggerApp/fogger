@@ -37,7 +37,8 @@
     worldLocs = new Array(),
     moveTimeout = null,
     view = 'user',
-    mapType = null;
+    mapType = null,
+    follow = true;
 
   /* FUNCTIONS */
   /**
@@ -87,6 +88,14 @@
     }
 
     map.setMapTypeId(mapType);
+  }
+
+  function getFollow() {
+    return follow;
+  }
+
+  function setFollow(f) {
+    follow = f;
   }
 
   /**
@@ -209,7 +218,7 @@
       if (userMarker !== null) {
         userMarker.setPosition(uloc);
       }
-      //panToUserLoc();
+      if( follow ) { panToUserLoc() };
     });
   }
 
@@ -317,7 +326,7 @@
     google.maps.event.addDomListener(
       map,
       'bounds_changed',
-      reloadFog
+        reloadFog
     );
     google.maps.event.addDomListener(
       map,
@@ -411,6 +420,8 @@
     setView: setView,
     getMapType: getMapType,
     setMapType: setMapType,
+    getFollow: getFollow,
+    setFollow: setFollow,
     setMap: setMap,
     setUserLocation: setUserLocation,
     setUserMarker: setUserMarker,
