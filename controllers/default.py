@@ -251,7 +251,7 @@ def person():
     person = db.auth_user[uid]
     gen = local_import('title_generator')
     person.username += ' ' + gen.generate()
-    return dict(person=person)
+    return dict(person=person, points=get_points(uid)[0]['pts'])
 
 @auth.requires_login()
 def people():
