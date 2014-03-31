@@ -21,6 +21,7 @@
 <script src="/fogger/static/js/distance.js"></script>
 <script src="/fogger/static/js/map.js"></script>
 <script src="/fogger/static/js/graphics.js"></script>
+<script src="/fogger/static/js/interact.js"></script>
 <script>
   /* 
   * load the navigator module and trigger 
@@ -37,7 +38,9 @@
   {{else:}}
     $(function(){
       fogger.graphics.init(function(){
-        fogger.map.init();
+        fogger.map.init(function(){
+          fogger.interact.init();
+        });
       });
     });
   {{pass}}

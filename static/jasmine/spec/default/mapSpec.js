@@ -50,6 +50,17 @@
 
   /**
    *
+   * Interface Tests
+   *
+   */
+  describe("menu test", function() {
+     it("creates the Interface layer", function() {
+        expect($('#map-interface').length).toBe(1);
+     });
+  });
+
+  /**
+   *
    * Restful API Tests
    *
    */

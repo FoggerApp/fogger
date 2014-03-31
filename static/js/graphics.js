@@ -47,7 +47,7 @@
    * @param {Float} w
    * @param {Float} h
    */
-  function setMask(d, geo) {
+  function setMask(d, world, geo) {
     var o = geo.nw,
         w = geo.dLng,
         h = geo.dLat,
@@ -91,17 +91,25 @@
     ctx.globalCompositeOperation = 'destination-out';
     
     // sets blur properties
-    ctx.translate(-width-radius, 0);
-    ctx.shadowOffsetX = width + radius;    
+    ctx.translate(-width-radius-1000000, 0);
+    ctx.shadowOffsetX = width + radius + 1000000;    
     ctx.shadowOffsetY = 0;
     ctx.shadowColor = 'black'; 
     ctx.shadowBlur = 100/zoomScale(o, p);
 
-    /* Loop through all circles */
+    /* Loop through user locations */
     for(var i = 0; i < d.length; i++) {
         var coord = scale(d[i], o, mapBound, svgFrame);
-        ctx.arc(coord.x, coord.y, radius, 0, 2 * Math.PI);
         ctx.moveTo(coord.x, coord.y);
+        ctx.arc(coord.x, coord.y, radius, 0, 2 * Math.PI);
+        // ctx.moveTo(coord.x, coord.y);
+    }
+
+    /* Loop through world locations */
+    for(var i = 0; i < world.length; i++) {
+        var coord = scale(world[i], o, mapBound, svgFrame);
+        ctx.moveTo(coord.x, coord.y);
+        ctx.arc(coord.x, coord.y, radius, 0, 2 * Math.PI);
     }
     ctx.fill();
     ctx.restore();
@@ -124,7 +132,7 @@
 
   function init(success) {
     $('#map-canvas').width($('#map-canvas').width());
-    $('#map-canvas').height(window.innerHeight - $('.navbar').height());
+    $('#map-canvas').height(window.innerHeight - $('#bottom-menu').height());
 
     width = $('#map-canvas').width();
     height = $('#map-canvas').height();
