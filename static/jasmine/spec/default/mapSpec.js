@@ -30,6 +30,10 @@
       expect(typeof fogger.map).toBe('object');
     });
 
+    it("loads the interact module", function() {
+      expect(typeof fogger.interact).toBe('object');
+    });
+
   });
 
   /**
@@ -38,13 +42,17 @@
    *
    */
   describe("menu test", function() {
-     it("display's the test once it's clicked", function() {
+     it("display's the test once it's clicked", function(done) {
         expect($('#drop6').length).toBe(1);
         expect($('#menu3').is(":visible")).toBe(false);
-        $('#drop6').click();
+        $('#drop6').mouseover();
         expect($('#menu3').is(":visible")).toBe(true);
-        $('#drop6').click();
-        expect($('#menu3').is(":visible")).toBe(false);
+        $('#drop6').mouseout();
+        /* wait for transition */
+        setTimeout(function(){
+          expect($('#menu3').is(":visible")).toBe(false);
+          done();
+        }, 1000);
      });
   });
 
@@ -53,10 +61,35 @@
    * Interface Tests
    *
    */
-  describe("menu test", function() {
-     it("creates the Interface layer", function() {
-        expect($('#map-interface').length).toBe(1);
-     });
+  describe("interface test", function() {
+    it("creates the Interface layer", function() {
+      expect($('#map-interface').length).toBe(1);
+      expect($('#map-view').length).toBe(1);
+      expect($('#map-terrain').length).toBe(1);
+    });
+    it("centered map to user location", function(done) {
+      google.maps.event.addDomListenerOnce(fogger.map.getMap(), 'idle', function() {
+        expect(
+          Math.abs(fogger.map.getMap().getCenter().lat() - fogger.map.getUserLocation().lat()) < 0.000001
+        ).toBe(true);
+        expect(
+          Math.abs(fogger.map.getMap().getCenter().lng() - fogger.map.getUserLocation().lng()) < 0.000001
+        ).toBe(true);
+        done();
+      });
+    });
+    it("initially sets follow to true", function(){
+      expect(fogger.map.getFollow()).toBe(true);
+    });
+    it("unfollows on mouse down and follows on goTo click", function(done){
+     $("#map-canvas-container").mousedown();
+     expect(fogger.map.getFollow()).toBe(false);
+     $("#map-goto").click();
+     setTimeout(function(){
+        expect(fogger.map.getFollow()).toBe(true);
+        done();
+      }, 400);
+    });
   });
 
   /**
@@ -65,7 +98,7 @@
    *
    */
   describe("RestAPI test", function() {
-   jasmine.DEFAULT_TIMEOUT_INTERVAL=60000;
+   jasmine.DEFAULT_TIMEOUT_INTERVAL=20000;
    it("GET from RestAPI single users locations within bounds", function(done) {
       $.get("/fogger/default/api.json/location/1?nelat=60&nelng=60&swlat=40&swlng=40")
         .done(function(d, txt) {
@@ -214,14 +247,14 @@
       fogger.navigator.setPosition({
         timestamp: 321,
         coords: {
-          latitude: 10.4,
-          longitude: 25.10284
+          latitude: 44.638,
+          longitude: -63.901
         }
       });
       pos = fogger.navigator.getPosition();
       expect(pos.timestamp).toEqual(321);
-      expect(pos.coords.latitude).toEqual(10.4);
-      expect(pos.coords.longitude).toEqual(25.10284);
+      expect(pos.coords.latitude).toEqual(44.638);
+      expect(pos.coords.longitude).toEqual(-63.901);
       fogger.navigator.setCurrentPosition({
         timestamp: 123,
         coords: {
@@ -278,16 +311,6 @@
    * 
    */
   describe("default/map view map module test", function() {
-    var init = false;
-    beforeEach(function(done) {
-      if (init) {
-        done();
-      } else {
-        fogger.map.init(done);
-        init = true;
-      }
-    });
-
     it("initialized the map", function() {
       expect(fogger.map.getMap()).not.toBeNull();
     });
@@ -297,18 +320,6 @@
         expect($('#map-canvas').height())
           .toBe(window.innerHeight - $('.navbar').height());
       });
-
-    it("centered map to user location", function(done) {
-      google.maps.event.addDomListenerOnce(fogger.map.getMap(), 'idle', function() {
-        expect(
-          Math.abs(fogger.map.getMap().getCenter().lat() - fogger.map.getUserLocation().lat()) < 0.000001
-        ).toBe(true);
-        expect(
-          Math.abs(fogger.map.getMap().getCenter().lng() - fogger.map.getUserLocation().lng()) < 0.000001
-        ).toBe(true);
-        done();
-      });
-    });
 
     it("placed a user marker", function(done) {
       google.maps.event.addDomListenerOnce(fogger.map.getMap(), 'idle', function() {

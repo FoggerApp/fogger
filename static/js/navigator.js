@@ -22,8 +22,8 @@
   var position = {
     timestamp: null,
     coords: {
-      latitude: null,
-      longitude: null
+      latitude: 44.63741290000001,
+      longitude: -63.5873095
     }
   };
 
@@ -103,7 +103,6 @@
         numSteps = randomNumSteps();
         direction = randomDirection();
       }
-      console.log(numSteps, currStep, direction);
       var coord = polarToCartesian(direction, 0.0001);
       position.coords.latitude += coord.y;
       position.coords.longitude += coord.x;
@@ -128,10 +127,6 @@
     var interval = setInterval(function () {
       getCurrentPosition(success, error, options);
     }, 800);
-
-    // setTimeout(function () {
-    //   clearInterval(interval);
-    // }, 60000);
   }
 
   /**
@@ -140,20 +135,7 @@
   * @method init
   */
   function init(success, error) {
-    navigator.geolocation.getCurrentPosition(
-      function (uloc) {
-        setCurrentPosition(uloc);
-        success();
-      },
-      function (err) {
-        if (error === 'undefined') {
-          console.log("Failed to load navigator module.");
-          console.log(err.code, err.message);
-        } else {
-          error(err);
-        }
-      }
-    );
+    success();
   }
 
   /* set the global namespace */
