@@ -141,8 +141,8 @@
     /* Add world overlay if world isn't empty */
     if(world.length > 0) {
       ctx.globalCompositeOperation = 'source-atop';
-      ctx.shadowColor = 'yellow';
-      ctx.fillStyle = "yellow";
+      ctx.shadowColor = 'grey';
+      ctx.fillStyle = "grey";
       addCirclesForLocs(world, geo);
       ctx.fill();
     }
@@ -167,6 +167,7 @@
     /* Loop through locs */
     for(var i = 0; i < locs.length; i++) {
         var coord = scale(locs[i], geo);
+        //console.log("COORDCOORDCOORD", coord);
         ctx.moveTo(coord.x, coord.y);
         ctx.arc(coord.x, coord.y, radius, 0, 2 * Math.PI);
     }
@@ -224,6 +225,7 @@
     setMask: setMask,
     clearMask: clearMask,
     getCtx: getCtx,
+    scale: scale,
     zoomScale: zoomScale,
   };
 

@@ -34,7 +34,47 @@
        * Reference to the layer.
        * @type {Object}
        */
-      layer = null;
+      layer = null,
+      imageBase = '/fogger/static/images/ranks/';
+
+  /**
+   * Generates a Map Marker.
+   */
+  function generateMarker(id, pos, image, size) {
+    var offset = {
+      x: size.width/2,
+      y: size.height/2
+    };
+    var marker = layer.append("div")
+        .style(
+          "background-image",
+          "url(" + imageBase + image + ".png" + ")"
+        ).style("background-repeat", "no-repeat")
+        .style("background-size", "contain")
+        .style("position", "absolute")
+        .style("z-index", 1500)
+        .style("top", (pos.x - offset.x) + "px")
+        .style("left", (pos.y - offset.y) + "px")
+        .style("width", size.width + "px")
+        .style("height", size.height + "px");
+  }
+  /**
+   * Generates the user's marker
+   */
+  function generateUserMarker() {
+    var mPos = fogger.map.getUserLocation();
+    var pos = fogger.graphics.scale(
+      { lat: mPos.lat(), lng: mPos.lng() },
+      fogger.map.geoBounds()
+    );
+    //console.log("POSPOSPOS", pos);
+    generateMarker(
+      "map-marker-user",
+      pos,
+      "smiley_happy",
+      { width: 32, height: 32 }
+    );
+  }
 
   /**
    * Generates a button to center the map to the user location
@@ -59,15 +99,19 @@
   /**
    * Generates a toggle button.
    * @method generateToggle
+   * @param  {string} id  HTML id attribute
+   * @param  {Array} ops toggle operations
+   * @param  {Number} x   x pos rel to right
+   * @param  {Number} y   y pos rel to top
    */
-  function generateToggle(id, ops) {
+  function generateToggle(id, ops, x, y) {
     var toggle = layer.append("div")
       .attr("id", id)
       .attr("class", "btn-group")
       .style("position", "absolute")
       .style("z-index", 1500)
-      .style("top", "10px")
-      .style("right", "10px");
+      .style("top", y + "px")
+      .style("right", x + "px");
     
     for(var i = 0; i < ops.length; i++) {
       toggle.append("button")
@@ -89,7 +133,8 @@
       [
         ["satellite", "glyphicon-tree-conifer"],
         ["roadmap", "glyphicon-road"]
-      ]
+      ],
+      10, 10
     );
   }
   
@@ -103,7 +148,8 @@
       [
         ["user", "glyphicon-user"],
         ["world", "glyphicon-globe"]
-      ]
+      ],
+      120, 10
     );
   }
 
@@ -120,11 +166,13 @@
         .attr("id", "map-interface")
         .style("position", "absolute")
         .style("width", width + "px")
-        .style("height", height + "px");
+        .style("height", height + "px")
+        .style("overflow", "hidden");
 
     generateGoToButton();
     generateTerrainToggle();
     generateViewToggle();
+    /*generateUserMarker();*/
   }
 
   /**
@@ -148,6 +196,8 @@
     /* Set map view toggle event */
     $('#map-view .btn').on('click', function(){
       fogger.map.setView($(this).attr("data-type"));
+      fogger.map.updateFog();
+      console.log("haha");
     });
 
     /* Unset follow as soon as the user clicks on the map */

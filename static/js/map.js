@@ -110,7 +110,7 @@
     if( v === 'world') {
       view = 'world';
     } else {
-      view = user;
+      view = 'user';
     }
   }
 
@@ -270,12 +270,10 @@
    * @method panToUserLoc
    */
   function panToUserLoc() {
-    getLocation(function(uloc) {
-      if (map !== null) {
+    if (map !== null) {
         map.setZoom(17);
-        map.panTo(uloc);
-      }
-    });
+        map.panTo(getUserLocation());
+    }
   }
 
   /**
@@ -283,12 +281,11 @@
    * @method moveUserMarker
    */
   function moveUserMarker() {
-    getLocation(function(uloc) {
-      if (userMarker !== null) {
-        userMarker.setPosition(uloc);
-      }
-      if( follow ) { panToUserLoc() };
-    });
+    var uloc = getUserLocation();
+    if (userMarker !== null) {
+      userMarker.setPosition(uloc);
+    }
+    if( follow ) { panToUserLoc() };
   }
 
   /**
@@ -443,16 +440,15 @@
    * @method placeUserMarker
    */
   function placeUserMarker() {
-    getLocation(function(uloc) {
-      if (map !== null) {
-        userMarker = new google.maps.Marker({
-          position: uloc,
-          map: map,
-          title: 'You',
-          zIndex: 1200
-        });
-      }
-    });
+    var uloc = getUserLocation();
+    if (map !== null) {
+      userMarker = new google.maps.Marker({
+        position: uloc,
+        map: map,
+        title: 'You',
+        zIndex: 1200
+      });
+    }
   }
 
   /**
@@ -484,14 +480,15 @@
     mapType = google.maps.MapTypeId.SATELLITE;
     initializeMap();
     google.maps.event.addDomListenerOnce(map, 'idle', function() {
-      panToUserLoc();
-      placeUserMarker();
-      setEvents();
+      getLocation(function(){
+        panToUserLoc();
+        placeUserMarker();
+        setEvents();
+        if(callback !== undefined) {
+          callback();
+        }
+      });
     });
-
-    if(callback !== undefined) {
-      callback();
-    }
   }
 
   /**
@@ -518,6 +515,7 @@
     addMapEvent: addMapEvent,
     reDim: reDim,
     getLocation: getLocation,
+    geoBounds: geoBounds,
     coordsToLatLng: coordsToLatLng,
     panToUserLoc: panToUserLoc,
     placeUserMarker: placeUserMarker,
