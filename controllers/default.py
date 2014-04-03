@@ -151,6 +151,28 @@ def api():
                         errors=[]
                     )
             )
+        elif request.args[0] == "bomb":
+            uid=None
+            if len(request.args) != 2:
+                return dict(
+                    content=None,
+                    errors=['Invalid parameters.',
+                            'Try:',
+                             'bomb/uid#---for a users individual points']
+                )
+            uid=request.args[1]
+            locations=db(db.geolocation.uid == uid).select(
+                                db.geolocation.id,
+                                db.geolocation.uid,
+                                db.geolocation.created,
+                                orderby=~db.geolocation.created,
+                                limitby=(0,10)
+                            )
+            for loc in locations:
+                del db.geolocation[loc.id]
+            return dict(content='Points Deleted',
+                        errors=[]
+                    )
 
     def POST(*args, **vars):
         # Import JSON parser
@@ -205,6 +227,25 @@ def api():
     def DELETE(*args, **vars):
         return dict()
     return locals()
+
+def bomb_person(uid):
+    if uid is not None:
+        query=(db.geolocation.uid == uid)
+    else:
+        return dict(content='Invalid Bomb Call')
+    locations=db(query).select(
+                        db.geolocation.id,
+                        db.geolocation.uid,
+                        db.geolocation.created,
+                        orderby=~db.geolocation.created,
+                        limitby=(0,10)
+                    )
+    for loc in locations:
+        del db.geolocation[loc.id]
+    return dict(content='Points Deleted',
+                errors=[]
+            )
+
 
 def get_points(uid):
             count=db.geolocation.uid.count()
