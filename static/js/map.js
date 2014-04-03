@@ -8,6 +8,7 @@
 (function() {
   "use strict";
 
+  /* Check dependancies */
   if (!window.hasOwnProperty("fogger")) {
     throw new Error("Requires fogger global");
   }
@@ -33,13 +34,37 @@
      * @private userMarker
      */
     userMarker = null,
+    /**
+     * Array of user locations.
+     * @type {Array}
+     */
     myLocs = new Array(),
+    /**
+     * Array of other users' locations.
+     * @type {Array}
+     */
     worldLocs = new Array(),
+    /**
+     * Timeout to delay map reload.
+     * @type {Integer}
+     */
     moveTimeout = null,
+    /**
+     * Map viewing mode (user or world).
+     * @type {String}
+     */
     view = 'user',
-    mapType = null;
+    /**
+     * Map viewing type (satellite or roadmap)
+     * @type {google.maps.MapTypeId}
+     */
+    mapType = null,
+    /**
+     * Set the map to follow the user.
+     * @type {Boolean}
+     */
+    follow = true;
 
-  /* FUNCTIONS */
   /**
    * Gets the map.
    * @method getMap
@@ -67,18 +92,42 @@
     return userMarker;
   }
 
+  /**
+   * Gets the view.
+   * @method getView
+   * @return {string} User or world view.
+   */
   function getView() {
     return view;
   }
 
+  /**
+   * Sets the view
+   * @method setView
+   * @param {string} v Specify "user" or "world" view
+   */
   function setView(v) {
-    view = v;
+    if( v === 'world') {
+      view = 'world';
+    } else {
+      view = user;
+    }
   }
 
+  /**
+   * Get the mapType
+   * @method getMapType
+   * @return {google.maps.MapTypeId} 
+   */
   function getMapType() {
     return mapType;
   }
 
+  /**
+   * Sets the mapType.
+   * @method setMapType
+   * @param {google.maps.MapTypeId} mt
+   */
   function setMapType(mt) {
     if( mt === "satellite" ) {
       mapType = google.maps.MapTypeId.SATELLITE;
@@ -87,6 +136,24 @@
     }
 
     map.setMapTypeId(mapType);
+  }
+
+  /**
+   * Checks if map is set to follow user.
+   * @method getFollow
+   * @return {boolean}
+   */
+  function getFollow() {
+    return follow;
+  }
+
+  /**
+   * Sets map to follow / unfollow user
+   * @method setFollow
+   * @param {boolean} f Set to true to follow user
+   */
+  function setFollow(f) {
+    follow = f;
   }
 
   /**
@@ -109,17 +176,26 @@
 
   /**
    * GET locations from database within the map's bounds.
+   * @method getLocationsInBound
    * @param  {Integer} uid
    * @param  {callback} success
    * @param  {callback} fail
    */
   function getLocationsInBound(uid, success, fail) {
-    $.get(fogger.api + 'location/' + fogger.user.id + '?nelat=' + map.getBounds().getNorthEast().lat() + '&nelng=' + map.getBounds().getNorthEast().lng() + '&swlat=' + map.getBounds().getSouthWest().lat() + '&swlng=' + map.getBounds().getSouthWest().lng())
-      .done(success)
-      .fail(fail);
+    $.get(
+        fogger.api
+        + 'location/'
+        + fogger.user.id
+        + '?nelat=' + map.getBounds().getNorthEast().lat()
+        + '&nelng=' + map.getBounds().getNorthEast().lng()
+        + '&swlat=' + map.getBounds().getSouthWest().lat()
+        + '&swlng=' + map.getBounds().getSouthWest().lng()
+    ).done(success).fail(fail);
   }
+
   /**
    * GET all locations from database within the map's bounds.
+   * @method getAllLocationsInBound
    * @param  {callback} success
    * @param  {callback} fail
    */
@@ -132,6 +208,7 @@
    * POST given location to the RESTful api.
    * Data must have the following form:
    *   { loc: { lat: lat, lng: lng }, uid: uid }
+   * @method postUserLocation
    * @param  {Location} data
    * @param  {callback} success
    * @param  {callback} fail
@@ -181,6 +258,7 @@
 
   /**
    * Gets the bound object from the map.
+   * @method getBounds
    * @return {google.maps.LatLngBounds}
    */
   function getBounds() {
@@ -209,10 +287,16 @@
       if (userMarker !== null) {
         userMarker.setPosition(uloc);
       }
-      //panToUserLoc();
+      if( follow ) { panToUserLoc() };
     });
   }
 
+  /**
+   * Get the geographical bounds of a map
+   * @method geoBounds
+   * @return {Object} Returns to corners (NE, NW) of a map
+   *   and the width ahd height.
+   */
   function geoBounds() {
     //Get map bounds
     var ne = fogger.map.getMap().getBounds().getNorthEast();
@@ -257,9 +341,12 @@
     updateFog();
   }
 
-  //updates the mask
+  /**
+   * Updates the fog by querying the database than reloading the fog.
+   * @method updateFog
+   */
   function updateFog() {
-    if( view == 'user' ) {
+    if( view === 'user' ) {
       getLocationsInBound(fogger.user.id, function(d) {
         myLocs = d.content.locations;
         worldLocs = new Array();
@@ -270,16 +357,17 @@
         /* reload the fog */
         reloadFog();
       });
-    } else if ( view == 'world') {
+    } else if ( view === 'world') {
       getAllLocationsInBound(function(d) {
-        console.log(d);
         var allLocs = d.content.locations;
+        myLocs = new Array();
+        worldLocs = new Array();
         /* Sort your locations from other locations */
         for( var i = 0; i < allLocs.length; i++ ) {
-          if( allLocs[i].uid == fogger.user.id ) {
-            myLocs.append(allLocs[i]);
+          if( allLocs[i].geolocation.uid === fogger.user.id ) {
+            myLocs.push(allLocs[i]);
           } else {
-            worldLocs.append(allLocs[i]);
+            worldLocs.push(allLocs[i]);
           }
         }
         /* Add sight radius at the user's marker */
@@ -293,11 +381,18 @@
     
   }
 
-  // MAP INTERACTION
+  /**
+   * Reloads the fog without querying the database.
+   * @method reloadFog
+   */
   function reloadFog() {
     fogger.graphics.setMask(myLocs, worldLocs, geoBounds());
   }
 
+  /**
+   * Callback to update the fog after a user moves.
+   * @method updateFogAfterMove
+   */
   function updateFogAfterMove() {
     if (moveTimeout) {
       window.clearTimeout(moveTimeout);
@@ -317,7 +412,7 @@
     google.maps.event.addDomListener(
       map,
       'bounds_changed',
-      reloadFog
+        reloadFog
     );
     google.maps.event.addDomListener(
       map,
@@ -327,7 +422,7 @@
   }
 
   /**
-   * Add map event.
+   * Add a map event.
    * @method addEvent()
    */
   function addMapEvent(event, callback) {
@@ -401,6 +496,7 @@
 
   /**
    * Sets the glopal name space
+   * @type {attribute}
    */
   fogger.map = {
     init: init,
@@ -411,6 +507,8 @@
     setView: setView,
     getMapType: getMapType,
     setMapType: setMapType,
+    getFollow: getFollow,
+    setFollow: setFollow,
     setMap: setMap,
     setUserLocation: setUserLocation,
     setUserMarker: setUserMarker,
