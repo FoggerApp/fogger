@@ -259,6 +259,8 @@ def get_points(uid):
             pts=list()
             for row in result:
                 pts.append(dict(uid=row.geolocation.uid, pts=row._extra.as_dict()['COUNT(geolocation.uid)']))
+            if len(pts) == 0:
+                return [dict(pts=0)]
             return pts
 def user():
     """
@@ -280,7 +282,11 @@ def user():
 
 @auth.requires_login()
 def profile():
-    return dict(points=get_points(auth.user.id)[0]['pts'])
+    gen=local_import('levels_generator', reload=True)
+    points=get_points(auth.user.id)[0]['pts']
+    level=gen.pointsToLevel(points)["name"]
+    return dict(points=points, level=level)
+    
 
 @auth.requires_login()
 def person():
@@ -297,7 +303,11 @@ def person():
         pts=result[0]['pts']
     else:
         pts=0
-    return dict(person=person, points=pts)
+
+    gen = local_import('levels_generator', reload=True)
+    points=get_points(uid)[0]['pts']
+    level=gen.pointsToLevel(points)["name"]
+    return dict(person=person, points=pts, level=level)
 
 @auth.requires_login()
 def people():
