@@ -218,6 +218,8 @@ def get_points(uid):
             pts=list()
             for row in result:
                 pts.append(dict(uid=row.geolocation.uid, pts=row._extra.as_dict()['COUNT(geolocation.uid)']))
+            if len(pts) == 0:
+                return [dict(pts=0)]
             return pts
 def user():
     """
