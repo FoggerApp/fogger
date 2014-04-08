@@ -57,6 +57,8 @@
             
                 <li><a href="../modules/fogger.html">fogger</a></li>
             
+                <li><a href="../modules/graphics.html">graphics</a></li>
+            
                 <li><a href="../modules/Grunt.html">Grunt</a></li>
             
                 <li><a href="../modules/test.html">test</a></li>
@@ -165,8 +167,6 @@ module.exports = function(grunt) {
          */
         clean:
             [&#x27;docs&#x27;]
-
-
     });
  
     // Load the plugins
@@ -176,7 +176,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks(&#x27;grunt-contrib-clean&#x27;);
 
     // Default task(s).
-    grunt.registerTask(&#x27;default&#x27;, [&#x27;yuidoc&#x27;, &#x27;jasmine&#x27;, &#x27;uglify&#x27;]);
+    grunt.registerTask(&#x27;default&#x27;, [&#x27;yuidoc&#x27;, &#x27;jasmine&#x27;]);
 
 };
 

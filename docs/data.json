@@ -19,6 +19,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "static/js/graphics.js": {
+            "name": "static/js/graphics.js",
+            "modules": {
+                "graphics": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "static/js/map.js": {
             "name": "static/js/map.js",
             "modules": {},
@@ -93,6 +102,17 @@
         }
     },
     "modules": {
+        "graphics": {
+            "name": "graphics",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "static/js/graphics.js",
+            "line": 1,
+            "description": "Fogger Graphics Module"
+        },
         "fogger": {
             "name": "fogger",
             "submodules": {},
@@ -218,20 +238,142 @@
             "class": "map"
         },
         {
+            "file": "static/js/graphics.js",
+            "line": 8,
+            "access": "private",
+            "tagname": "mask",
+            "type": "{d3.selection}",
+            "class": "map",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/graphics.js",
+            "line": 14,
+            "description": "Circle Radius",
+            "access": "private",
+            "tagname": "radius",
+            "type": "{Integer}",
+            "class": "map",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/graphics.js",
+            "line": 20,
+            "access": "private",
+            "tagname": "height",
+            "type": "{Float}",
+            "class": "map",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/graphics.js",
+            "line": 25,
+            "access": "private",
+            "tagname": "width",
+            "type": "{Float}",
+            "class": "map",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/graphics.js",
+            "line": 31,
+            "description": "Sets the circles in the mask\ndata = { content = [loc1, loc2 .. ], errors = [] }\nloc = { \"loc\": {\"lat\": lat, \"lng\": lng}, \"uid\": uid }",
+            "itemtype": "method",
+            "name": "setMask",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "RESTful Api Object"
+                },
+                {
+                    "name": "o",
+                    "description": "",
+                    "type": "Coord"
+                },
+                {
+                    "name": "w",
+                    "description": "",
+                    "type": "Float"
+                },
+                {
+                    "name": "h",
+                    "description": "",
+                    "type": "Float"
+                }
+            ],
+            "class": "map",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/graphics.js",
+            "line": 42,
+            "description": "Move from the geographic point of reference\nto the x, y grid point of reference.",
+            "itemtype": "method",
+            "name": "scale",
+            "params": [
+                {
+                    "name": "lat,",
+                    "description": "{Float} lng } } loc",
+                    "type": "Point =  Float"
+                },
+                {
+                    "name": "lat,",
+                    "description": "{Float} lng } } nw",
+                    "type": "Point =  Float"
+                },
+                {
+                    "name": "width,",
+                    "description": "{Float} height } } mapBound",
+                    "type": "Frame =  Float"
+                },
+                {
+                    "name": "width,",
+                    "description": "{Float} height } } svgFrame",
+                    "type": "Frame =  Float"
+                }
+            ],
+            "return": {
+                "description": "x, {Float} y } }",
+                "type": "Point =  Float"
+            },
+            "class": "map",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/graphics.js",
+            "line": 88,
+            "description": "Removes the",
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "map",
+            "module": "graphics"
+        },
+        {
             "file": "static/js/map.js",
-            "line": 21,
+            "line": 19,
             "access": "private",
             "tagname": "map",
-            "type": "google.maps.Map",
+            "type": "{google.maps.Map}",
             "class": "map",
             "module": "fogger"
         },
         {
             "file": "static/js/map.js",
-            "line": 27,
-            "description": "Object that is returned by \nnavigator.geolocation.getCurrentPosition()",
+            "line": 25,
+            "description": "Object that is returned by\nnavigator.geolocation.getCurrentPosition()",
             "access": "private",
             "tagname": "userLocation",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 32,
+            "access": "private",
+            "tagname": "userMarker",
             "class": "map",
             "module": "fogger"
         },
@@ -309,6 +451,54 @@
         {
             "file": "static/js/map.js",
             "line": 83,
+            "description": "GET locations from database within the map's bounds.",
+            "params": [
+                {
+                    "name": "uid",
+                    "description": "",
+                    "type": "Integer"
+                },
+                {
+                    "name": "success",
+                    "description": "",
+                    "type": "Callback"
+                },
+                {
+                    "name": "fail",
+                    "description": "",
+                    "type": "Callback"
+                }
+            ],
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 95,
+            "description": "POST given location to the RESTful api.\nData must have the following form:\n  { loc: { lat: lat, lng: lng }, uid: uid }",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Location"
+                },
+                {
+                    "name": "success",
+                    "description": "",
+                    "type": "Callback"
+                },
+                {
+                    "name": "fail",
+                    "description": "",
+                    "type": "Callback"
+                }
+            ],
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 109,
             "description": "Sets the user marker.",
             "itemtype": "method",
             "name": "setUserMarker",
@@ -324,7 +514,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 92,
+            "line": 118,
             "description": "Conventing the google object to latitude and longitude.",
             "itemtype": "method",
             "name": "setUserMarker",
@@ -340,7 +530,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 102,
+            "line": 128,
             "description": "Gets the user location.",
             "itemtype": "method",
             "name": "getLocation",
@@ -356,7 +546,18 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 120,
+            "line": 146,
+            "description": "Gets the bound object from the map.",
+            "return": {
+                "description": "",
+                "type": "google.maps.LatLngBounds"
+            },
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 154,
             "description": "Pans the map to the user current location.",
             "itemtype": "method",
             "name": "panToUserLoc",
@@ -365,7 +566,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 132,
+            "line": 166,
             "description": "Moves the user marker on the map.",
             "itemtype": "method",
             "name": "moveUserMarker",
@@ -374,7 +575,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 145,
+            "line": 179,
             "description": "Updates the user location.",
             "itemtype": "method",
             "name": "updateLocation",
@@ -390,7 +591,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 155,
+            "line": 219,
             "description": "Sets events for the map module.",
             "itemtype": "method",
             "name": "setEvents",
@@ -399,7 +600,16 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 166,
+            "line": 229,
+            "description": "Add map event.",
+            "itemtype": "method",
+            "name": "addEvent()",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 237,
             "description": "Sets the width and height of the map.",
             "itemtype": "method",
             "name": "reDim",
@@ -408,7 +618,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 175,
+            "line": 246,
             "description": "Places the user marker on the map.",
             "itemtype": "method",
             "name": "placeUserMarker",
@@ -417,7 +627,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 191,
+            "line": 262,
             "description": "Initializes the map",
             "itemtype": "method",
             "name": "initializeMap",
@@ -426,7 +636,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 214,
+            "line": 281,
             "description": "Initializes the map module.",
             "itemtype": "method",
             "name": "init",
@@ -435,7 +645,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 225,
+            "line": 294,
             "description": "Sets the glopal name space",
             "class": "map",
             "module": "fogger"
@@ -746,6 +956,20 @@
             "module": "fogger"
         },
         {
+            "file": "static/jasmine/spec/default/mapSpec.js",
+            "line": 8,
+            "description": "Resfult API Tests",
+            "class": "MapSpec",
+            "module": "test"
+        },
+        {
+            "file": "static/jasmine/spec/default/mapSpec.js",
+            "line": 28,
+            "description": "Graphics Module Tests",
+            "class": "MapSpec",
+            "module": "test"
+        },
+        {
             "file": "Gruntfile.js",
             "line": 21,
             "description": "Reads the package.json file.",
@@ -793,15 +1017,51 @@
         },
         {
             "message": "Missing item type",
-            "line": " static/js/map.js:21"
+            "line": " static/js/graphics.js:8"
         },
         {
-            "message": "Missing item type\nObject that is returned by \nnavigator.geolocation.getCurrentPosition()",
-            "line": " static/js/map.js:27"
+            "message": "Missing item type\nCircle Radius",
+            "line": " static/js/graphics.js:14"
+        },
+        {
+            "message": "Missing item type",
+            "line": " static/js/graphics.js:20"
+        },
+        {
+            "message": "Missing item type",
+            "line": " static/js/graphics.js:25"
+        },
+        {
+            "message": "Missing item type\nRemoves the",
+            "line": " static/js/graphics.js:88"
+        },
+        {
+            "message": "Missing item type",
+            "line": " static/js/map.js:19"
+        },
+        {
+            "message": "Missing item type\nObject that is returned by\nnavigator.geolocation.getCurrentPosition()",
+            "line": " static/js/map.js:25"
+        },
+        {
+            "message": "Missing item type",
+            "line": " static/js/map.js:32"
+        },
+        {
+            "message": "Missing item type\nGET locations from database within the map's bounds.",
+            "line": " static/js/map.js:83"
+        },
+        {
+            "message": "Missing item type\nPOST given location to the RESTful api.\nData must have the following form:\n  { loc: { lat: lat, lng: lng }, uid: uid }",
+            "line": " static/js/map.js:95"
+        },
+        {
+            "message": "Missing item type\nGets the bound object from the map.",
+            "line": " static/js/map.js:146"
         },
         {
             "message": "Missing item type\nSets the glopal name space",
-            "line": " static/js/map.js:225"
+            "line": " static/js/map.js:294"
         },
         {
             "message": "Missing item type\nObject that is returned by \nnavigator.geolocation.getCurrentPosition()",
@@ -938,6 +1198,14 @@
         {
             "message": "Missing item type\nHelper function for readability above.",
             "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:173"
+        },
+        {
+            "message": "Missing item type\nResfult API Tests",
+            "line": " static/jasmine/spec/default/mapSpec.js:8"
+        },
+        {
+            "message": "Missing item type\nGraphics Module Tests",
+            "line": " static/jasmine/spec/default/mapSpec.js:28"
         }
     ]
 }

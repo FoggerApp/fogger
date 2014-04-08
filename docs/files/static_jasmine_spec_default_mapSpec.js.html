@@ -57,6 +57,8 @@
             
                 <li><a href="../modules/fogger.html">fogger</a></li>
             
+                <li><a href="../modules/graphics.html">graphics</a></li>
+            
                 <li><a href="../modules/Grunt.html">Grunt</a></li>
             
                 <li><a href="../modules/test.html">test</a></li>
@@ -104,202 +106,340 @@
  * @module test
  * @class MapSpec
  */
+(function() {
+    &quot;use strict&quot;;
 
-describe(&quot;default/map view import test&quot;, function () {
-
-  it(&quot;loads the fogger global&quot;, function () {
-    expect(typeof fogger).toBe(&#x27;object&#x27;);
-  });
-  
-  it(&quot;loads the mock navigator module&quot;, function () {
-    expect(typeof fogger.navigator).toBe(&#x27;object&#x27;);
-    expect(typeof fogger.navigator.mock).toBe(&#x27;boolean&#x27;);
-    expect(fogger.navigator.mock).toBe(true);
-  });
-
-  it(&quot;loads the mock navigator module&quot;, function () {
-    expect(typeof pointToDistance).toBe(&#x27;function&#x27;);
-  });
-
-  it(&quot;loads the map module&quot;, function () {
-    expect(typeof fogger.map).toBe(&#x27;object&#x27;);
-  });
-
-});
-
-describe(&quot;default/map view mock navigator test&quot;, function() {
-  var init = false;
-  beforeEach(function (done) {
-    if(init) {
-      done();
-    } else {
-      fogger.navigator.init(done);
-      init = true;
-    }
-  });
-
-  it(&quot;initializes currentPosition on init&quot;, function () {
-    var position = fogger.navigator.getPosition();
-    expect(position).not.toBeNull();
-    expect(position.hasOwnProperty(&quot;timestamp&quot;)).toBe(true);
-    expect(position.hasOwnProperty(&quot;coords&quot;)).toBe(true);
-    expect(position.coords.hasOwnProperty(&quot;latitude&quot;)).toBe(true);
-    expect(position.coords.hasOwnProperty(&quot;longitude&quot;)).toBe(true);
-    expect(position.coords.latitude).not.toBeNull();
-    expect(position.coords.longitude).not.toBeNull();
-  });
-
-  it(&quot;sets position on setPosition and setCurrentPosition&quot;, function () {
-    var pos = {
-      timestamp: 123,
-      coords: {
-        latitude: 65.1,
-        longitude: -45.01
-      }
-    };
-    fogger.navigator.setPosition(pos);
-    expect(fogger.navigator.getPosition()).toBe(pos);
-    fogger.navigator.setPosition(null);
-    expect(fogger.navigator.getPosition()).toBeNull();
-    fogger.navigator.setPosition({
-      timestamp: 321,
-      coords: {
-        latitude: 10.4,
-        longitude: 25.10284
-      }
-    });
-    var pos = fogger.navigator.getPosition();
-    expect(pos.timestamp).toEqual(321);
-    expect(pos.coords.latitude).toEqual(10.4);
-    expect(pos.coords.longitude).toEqual(25.10284);
-    fogger.navigator.setCurrentPosition({
-      timestamp: 123,
-      coords: {
-        latitude: 65.1,
-        longitude: -45.01
-      }
-    });
-    expect(pos.timestamp).toEqual(123);
-    expect(pos.coords.latitude).toEqual(65.1);
-    expect(pos.coords.longitude).toEqual(-45.01);
-  });
-
-  it(&quot;gets user position on getCurrentPosition&quot;, function (done) {
-    var pos = {
-      timestamp: 123,
-      coords: {
-        latitude: 65.1,
-        longitude: -45.01
-      }
-    };
-    fogger.navigator.setPosition(pos);
-    fogger.navigator.geolocation.getCurrentPosition(function(){
-      expect(pos.timestamp).not.toEqual(123);
-      expect(pos.coords.latitude).not.toEqual(65.1);
-      expect(pos.coords.longitude).not.toEqual(-45.01);
-      done();
-    });
-  });
-
-  it(&quot;updates your location on watchPosition&quot;, function (done) {
-    var prev = null;
-    var isDone = false;
-    var success = function (curr) {
-      if( (prev !== null) &amp;&amp; !(isDone) ) {
-        expect(
-          Math.abs(curr.coords.latitude - prev.coords.latitude) &lt; 0.01
-          ).toBe(true);
-        expect(
-          Math.abs(curr.coords.longitude - prev.coords.longitude) &lt; 0.01
-          ).toBe(true);
-        done();
-        isDone = true;
-      } else {
-        prev = curr;
-      }
-    };
-    fogger.navigator.geolocation.watchPosition(success);
-  });
-
-});
-
-describe(&quot;default/map view map module test&quot;, function() {
-  var init = false;
-  beforeEach(function (done) {
-    if(init) {
-      done();
-    } else {
-      console.log(&quot;done map init&quot;);
-      fogger.map.init(done);
-      init = true;
-    }
-  });
-
-  it(&quot;initialized the map&quot;, function () {
-    expect(fogger.map.getMap()).not.toBeNull();
-  });
-
-  it(&quot;set the height of the map-container&quot;,
-    function () {
-      expect($(&#x27;#map-canvas&#x27;).height())
-        .toBe(window.innerHeight - $(&#x27;.navbar&#x27;).height());
-    });
-
-  it(&quot;centered map to user location&quot;, function () {
-    expect(
-      Math.abs(fogger.map.getMap().getCenter().lat()
-        - fogger.map.getUserLocation().lat()) &lt; 0.0000001
-      ).toBe(true);
-    expect(
-      Math.abs(fogger.map.getMap().getCenter().lng()
-        - fogger.map.getUserLocation().lng()) &lt; 0.0000001
-      ).toBe(true);
-  });
-
-  it(&quot;placed a user marker&quot;, function () {
-    var marker = fogger.map.getUserMarker();
-    expect(marker).not.toBeNull();
-    expect(marker.getPosition().lat()
-      - fogger.map.getUserLocation().lat()
-      ).not.toBeGreaterThan(0.0000001);
-    expect(marker.getPosition().lng()
-        - fogger.map.getUserLocation().lng()
-      ).not.toBeGreaterThan(0.0000001);
-  });
-
-  it(&quot;simulates user movement&quot;, function(done) {
-      fogger.navigator.geolocation.getCurrentPosition(function(pos) {
-        var userLocation = fogger.map.getUserLocation();
-        var userMarker = fogger.map.getUserMarker().getPosition();
-        var map = fogger.map.getMap().getCenter();
-        fogger.map.updateLocation(pos);
-        var cUserLocation = fogger.map.getUserLocation();
-        var cUserMarker = fogger.map.getUserMarker().getPosition();
-        var cMap = fogger.map.getMap().getCenter();
-        expect(
-          userLocation.lat() - cUserLocation.lat()
-          ).not.toBeGreaterThan(0.0000001);
-        expect(
-          userLocation.lng() - cUserLocation.lng()
-          ).not.toBeGreaterThan(0.0000001);
-        expect(
-          userMarker.lat() - cUserMarker.lat()
-          ).not.toBeGreaterThan(0.0000001);
-        expect(
-          userMarker.lng() - cUserMarker.lng()
-          ).not.toBeGreaterThan(0.0000001);
-        expect(
-          map.lat() - cMap.lat()
-          ).not.toBeGreaterThan(0.0000001);
-        expect(
-          map.lng() - cMap.lng()
-          ).not.toBeGreaterThan(0.0000001);
-        done();
+    /**
+     *
+     * Resfult API Tests
+     *
+     */
+    describe(&quot;RestAPI test Get&quot;, function() {
+      it(&quot;accesses RESTful API&quot;, function(done) {
+        $.get(&quot;/fogger/default/api.json/location/1?nelat=60&amp;nelng=60&amp;swlat=40&amp;swlng=40&quot;)
+          .done(function(d, txt) {
+            expect(txt).toEqual(&quot;success&quot;);
+            done();
+          })
+          .fail(function() {
+            expect(&quot;&quot;).toBe(&quot;API failed callback executed.&quot;);
+            done();
+          });
       });
-  });
+    });
 
-});
 
+    /**
+     *
+     * Graphics Module Tests
+     *
+     */
+    describe(&quot;test 3.a&quot;, function() {
+       it(&quot;creates a rectangle&quot;, function() {
+          expect($(&#x27;#map-mask&#x27;).length).toBe(1);
+          expect(window.innerHeight - $(&#x27;.navbar&#x27;).height())
+            .toBe($(&#x27;#map-mask&#x27;).attr(&#x27;height&#x27;));
+       });
+    });
+
+    describe(&quot;test 3.b, 3.c, 3.d&quot;, function() {
+       it(&quot;&quot;, function() {
+          expect($(&#x27;#map-mask clipPath&#x27;).length).toBe(1);
+          expect($(&#x27;#map-mask clipPath&#x27;).children().length).toBeGreaterThan(0);
+       });
+    });
+    
+    describe(&quot;check svg circles&quot;, function() {
+      it(&quot;creates circles&quot;, function() {
+
+        var fakeData = {
+          content: [],
+          errors: []
+        };
+
+        function generateFakeContents(success) {
+          fogger.map.addMapEvent(&#x27;idle&#x27;, function() {
+            var ne = fogger.map.getMap().getBounds().getNorthEast();
+            var sw = fogger.map.getMap().getBounds().getSouthWest();
+            var org = {
+              lat: ne.lat(),
+              lng: sw.lng()
+            };
+            var width = ne.lng() - sw.lng();
+            var height = sw.lat() - ne.lat();
+            for (var i = 0; i &lt; 10; i++) {
+              var loc = {
+                loc: {
+                  lat: org.lng + Math.random() * width,
+                  lng: org.lat + Math.random() * height
+                },
+                uid: 1
+              };
+              fakeData.content.push(loc);
+            }
+            console.log(&quot;FAKE STUFF&quot;, fakeData);
+            success(org, width, height);
+          });
+        }
+
+        generateFakeContents(function(org, width, height) {
+          fogger.graphics.setMask(fakeData, org, width, height);
+        });
+
+      });
+    });
+
+    describe(&quot;check d3 library&quot;, function() {
+      it(&quot;imports d3 library&quot;, function() {
+        expect(typeof d3).not.toBe(&quot;undefined&quot;);
+      });
+      it(&quot;uses d3 library&quot;, function() {
+        d3.select(&quot;#map-canvas&quot;).attr(&quot;test&quot;, &quot;true&quot;);
+        var d3Test = false;
+        d3Test = document.getElementById(&quot;map-canvas&quot;).getAttribute(&quot;test&quot;);
+        expect(d3Test).toBe(&quot;true&quot;);
+      });
+    });
+    describe(&quot;default/map view import test&quot;, function() {
+
+      it(&quot;loads the fogger global&quot;, function() {
+        expect(typeof fogger).toBe(&#x27;object&#x27;);
+      });
+
+      it(&quot;loads the mock navigator module&quot;, function() {
+        expect(typeof fogger.navigator).toBe(&#x27;object&#x27;);
+        expect(typeof fogger.navigator.mock).toBe(&#x27;boolean&#x27;);
+        expect(fogger.navigator.mock).toBe(true);
+      });
+    });
+
+      describe(&quot;RestAPI test Post&quot;, function() {
+        it(&quot;posts the user location to the database&quot;, function(done) {
+          var data = {
+            &quot;loc&quot;: {
+              &quot;lat&quot;: 50,
+              &quot;lng&quot;: 50
+            },
+            &quot;uid&quot;: 1
+          };
+          $.post(&quot;/fogger/default/api.json/location&quot;, JSON.stringify(data))
+            .done(function(d, txt) {
+              //console.log(d.content);
+              expect(d.content.id).toBeGreaterThan(-1);
+              expect(d.errors.length).toEqual(0);
+              expect(txt).toEqual(&quot;success&quot;);
+              done();
+            })
+            .fail(function() {
+              expect(&quot;&quot;).toBe(&quot;API taking too long&quot;);
+              done();
+            });
+        });
+      });
+
+
+      describe(&quot;default/map view import test&quot;, function() {
+
+        it(&quot;loads the fogger global&quot;, function() {
+          expect(typeof fogger).toBe(&#x27;object&#x27;);
+        });
+
+        it(&quot;loads the mock navigator module&quot;, function() {
+          expect(typeof fogger.navigator).toBe(&#x27;object&#x27;);
+          expect(typeof fogger.navigator.mock).toBe(&#x27;boolean&#x27;);
+          expect(fogger.navigator.mock).toBe(true);
+        });
+
+        it(&quot;loads the mock navigator module&quot;, function() {
+          expect(typeof pointToDistance).toBe(&#x27;function&#x27;);
+        });
+
+        it(&quot;loads the map module&quot;, function() {
+          expect(typeof fogger.map).toBe(&#x27;object&#x27;);
+        });
+
+      });
+
+      describe(&quot;default/map view mock navigator test&quot;, function() {
+        var init = false;
+        beforeEach(function(done) {
+          if (init) {
+            done();
+          } else {
+            fogger.navigator.init(done);
+            init = true;
+          }
+        });
+
+        it(&quot;initializes currentPosition on init&quot;, function() {
+          var position = fogger.navigator.getPosition();
+          expect(position).not.toBeNull();
+          expect(position.hasOwnProperty(&quot;timestamp&quot;)).toBe(true);
+          expect(position.hasOwnProperty(&quot;coords&quot;)).toBe(true);
+          expect(position.coords.hasOwnProperty(&quot;latitude&quot;)).toBe(true);
+          expect(position.coords.hasOwnProperty(&quot;longitude&quot;)).toBe(true);
+          expect(position.coords.latitude).not.toBeNull();
+          expect(position.coords.longitude).not.toBeNull();
+        });
+
+        it(&quot;sets position on setPosition and setCurrentPosition&quot;, function() {
+          var pos = {
+            timestamp: 123,
+            coords: {
+              latitude: 65.1,
+              longitude: -45.01
+            }
+          };
+          fogger.navigator.setPosition(pos);
+          expect(fogger.navigator.getPosition()).toBe(pos);
+          fogger.navigator.setPosition(null);
+          expect(fogger.navigator.getPosition()).toBeNull();
+          fogger.navigator.setPosition({
+            timestamp: 321,
+            coords: {
+              latitude: 10.4,
+              longitude: 25.10284
+            }
+          });
+          pos = fogger.navigator.getPosition();
+          expect(pos.timestamp).toEqual(321);
+          expect(pos.coords.latitude).toEqual(10.4);
+          expect(pos.coords.longitude).toEqual(25.10284);
+          fogger.navigator.setCurrentPosition({
+            timestamp: 123,
+            coords: {
+              latitude: 65.1,
+              longitude: -45.01
+            }
+          });
+          expect(pos.timestamp).toEqual(123);
+          expect(pos.coords.latitude).toEqual(65.1);
+          expect(pos.coords.longitude).toEqual(-45.01);
+        });
+
+        it(&quot;gets user position on getCurrentPosition&quot;, function(done) {
+          var pos = {
+            timestamp: 123,
+            coords: {
+              latitude: 65.1,
+              longitude: -45.01
+            }
+          };
+          fogger.navigator.setPosition(pos);
+          fogger.navigator.geolocation.getCurrentPosition(function() {
+            expect(pos.timestamp).not.toEqual(123);
+            expect(pos.coords.latitude).not.toEqual(65.1);
+            expect(pos.coords.longitude).not.toEqual(-45.01);
+            done();
+          });
+        });
+
+        it(&quot;updates your location on watchPosition&quot;, function(done) {
+          var prev = null,
+            isDone = false,
+            success = function(curr) {
+              if ((prev !== null) &amp;&amp; !isDone) {
+                expect(
+                  Math.abs(curr.coords.latitude - prev.coords.latitude) &lt; 0.01
+                ).toBe(true);
+                expect(
+                  Math.abs(curr.coords.longitude - prev.coords.longitude) &lt; 0.01
+                ).toBe(true);
+                done();
+                isDone = true;
+              } else {
+                prev = curr;
+              }
+            };
+          fogger.navigator.geolocation.watchPosition(success);
+        });
+
+      });
+
+      describe(&quot;default/map view map module test&quot;, function() {
+        var init = false;
+        beforeEach(function(done) {
+          if (init) {
+            done();
+          } else {
+            console.log(&quot;done map init&quot;);
+            fogger.map.init(done);
+            init = true;
+          }
+        });
+
+        it(&quot;initialized the map&quot;, function() {
+          expect(fogger.map.getMap()).not.toBeNull();
+        });
+
+        it(&quot;set the height of the map-container&quot;,
+          function() {
+            expect($(&#x27;#map-canvas&#x27;).height())
+              .toBe(window.innerHeight - $(&#x27;.navbar&#x27;).height());
+          });
+
+        it(&quot;centered map to user location&quot;, function() {
+          expect(
+            Math.abs(fogger.map.getMap().getCenter().lat() - fogger.map.getUserLocation().lat()) &lt; 0.0000001
+          ).toBe(true);
+          expect(
+            Math.abs(fogger.map.getMap().getCenter().lng() - fogger.map.getUserLocation().lng()) &lt; 0.0000001
+          ).toBe(true);
+        });
+
+        it(&quot;placed a user marker&quot;, function() {
+          var marker = fogger.map.getUserMarker();
+          expect(marker).not.toBeNull();
+          expect(marker.getPosition().lat() - fogger.map.getUserLocation().lat()).not.toBeGreaterThan(0.0000001);
+          expect(marker.getPosition().lng() - fogger.map.getUserLocation().lng()).not.toBeGreaterThan(0.0000001);
+        });
+
+        it(&quot;simulates user movement&quot;, function(done) {
+          fogger.navigator.geolocation.getCurrentPosition(function(pos) {
+            var userLocation = fogger.map.getUserLocation(),
+              userMarker = fogger.map.getUserMarker().getPosition(),
+              map = fogger.map.getMap().getCenter(),
+              cUserLocation,
+              cUserMarker,
+              cMap;
+            fogger.map.updateLocation(pos);
+            cUserLocation = fogger.map.getUserLocation();
+            cUserMarker = fogger.map.getUserMarker().getPosition();
+            cMap = fogger.map.getMap().getCenter();
+            expect(
+              userLocation.lat() - cUserLocation.lat()
+            ).not.toBeGreaterThan(0.0000001);
+            expect(
+              userLocation.lng() - cUserLocation.lng()
+            ).not.toBeGreaterThan(0.0000001);
+            expect(
+              userMarker.lat() - cUserMarker.lat()
+            ).not.toBeGreaterThan(0.0000001);
+            expect(
+              userMarker.lng() - cUserMarker.lng()
+            ).not.toBeGreaterThan(0.0000001);
+            expect(
+              map.lat() - cMap.lat()
+            ).not.toBeGreaterThan(0.0000001);
+            expect(
+              map.lng() - cMap.lng()
+            ).not.toBeGreaterThan(0.0000001);
+            done();
+          });
+        });
+
+        it(&quot;posts the user&#x27;s current position&quot;, function(done) {
+          fogger.map.postCurrentPosition(function(d) {
+            expect(d.content.id &gt; 0).toBe(true);
+            done();
+          }, function() {
+            expect(true).toBe(false);
+          });
+        });
+
+      }); //end describe default/map view map module test
+
+    }()); //end module
     </pre>
 </div>
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>UserSpec - Fogger</title>
+    <title>static/js/graphics.js - Fogger</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -98,66 +98,127 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>UserSpec Class</h1>
-<div class="box meta">
+                        <h1 class="file-heading">File: static/js/graphics.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ * Fogger Graphics Module
+ * @module graphics
+ */
+
+(function() {
+
+  /**
+   * @private mask
+   * @type {d3.selection}
+   */
+  var canvas = null,
+    ctx = null,
+    /**
+     * Circle Radius
+     * @private radius
+     * @type {Integer}
+     */
+    radius = 150,
+    /**
+     * @private height
+     * @type {Float}
+     */
+    height = null,
+    /**
+     * @private width
+     * @type {Float}
+     */
+    width = null;
+
+  /**
+   * Sets the circles in the mask
+   * data = { content = [loc1, loc2 .. ], errors = [] }
+   * loc = { &quot;loc&quot;: {&quot;lat&quot;: lat, &quot;lng&quot;: lng}, &quot;uid&quot;: uid }
+   * @method setMask
+   * @param {RESTful Api Object} data
+   * @param {Coord} o
+   * @param {Float} w
+   * @param {Float} h
+   */
+  function setMask(d, o, w, h) {
+    /**
+     * Move from the geographic point of reference
+     * to the x, y grid point of reference.
+     * @method scale
+     * @param { Point = { {Float} lat, {Float} lng } } loc
+     * @param { Point = { {Float} lat, {Float} lng } } nw
+     * @param { Frame = { {Float} width, {Float} height } } mapBound
+     * @param { Frame = { {Float} width, {Float} height } } svgFrame
+     * @return { Point = { {Float} x, {Float} y } }
+     */
+    function scale(loc, nw, mapBound, svgFrame) {
+      return {
+        x: ((loc.lng - nw.lng) / mapBound.width) * svgFrame.width,
+        y: ((loc.lat - nw.lat) / mapBound.height) * svgFrame.height
+      };
+    }
+    var mapBound = {
+      width: w,
+      height: h
+    }, svgFrame = {
+        width: width,
+        height: height
+      };
+
+    clearMask();
+    // This is the canvas where you want to draw
+    // I&#x27;ll use a skyblue background that covers everything
+    // Just to demonstrate
     
+    ctx.fillStyle = &quot;black&quot;;
+    ctx.fillRect(0, 0, width, height);
+    ctx.fill();
 
-    
+    // Change color for xor operation
+    ctx.fillStyle = &quot;white&quot;;
+    ctx.globalCompositeOperation = &#x27;xor&#x27;;
+    /* Loop through all circles */
+    for(var i = 0; i &lt; d.length; i++) {
+        console.log(d);
+        var coord = scale(d[i], o, mapBound, svgFrame);
+        ctx.arc(coord.x, coord.y, radius, 0, 2 * Math.PI);
+    }
+    ctx.arc(width/2, height/2, radius, 0, 2 * Math.PI);
+    ctx.fill();
+  }
 
-    
-        <div class="foundat">
-            Defined in: <a href="../files/static_jasmine_spec_default_userSpec.js.html#l6"><code>static&#x2F;jasmine&#x2F;spec&#x2F;default&#x2F;userSpec.js:6</code></a>
-        </div>
-    
+  /**
+   * Removes the 
+   * @return {[type]} [description]
+   */
+  function clearMask() {
+    canvas.width = canvas.width;
+  }
 
-    
-        
-            Module: <a href="../modules/test.html">test</a>
-        
-    
+  function init(success) {
+    $(&#x27;#map-canvas&#x27;).width($(&#x27;#map-canvas&#x27;).width());
+    $(&#x27;#map-canvas&#x27;).height(window.innerHeight - $(&#x27;.navbar&#x27;).height());
+    width = $(&#x27;#map-canvas&#x27;).width();
+    height = $(&#x27;#map-canvas&#x27;).height();
+    canvas = d3.select(&quot;#map-canvas-container&quot;).insert(&quot;canvas&quot;, &quot;:first-child&quot;)
+      .attr(&quot;id&quot;, &quot;map-mask&quot;)
+      .attr(&quot;width&quot;, width)
+      .attr(&quot;height&quot;, height);
+    canvas = document.getElementById(&#x27;map-mask&#x27;);
+    ctx = canvas.getContext(&#x27;2d&#x27;);
+    success();
+  }
+  fogger.graphics = {
+    init: init,
+    setMask: setMask,
+    clearMask: clearMask
+  };
 
-    
-</div>
 
-
-
-<div class="box intro">
-    
-</div>
-
-
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-        
-        
-        
-        
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-            
-
-            
-
-            
-
-            
-        </div>
-
-        
-
-        
-
-        
-
-        
-    </div>
+}());
+    </pre>
 </div>
 
                     </div>
