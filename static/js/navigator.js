@@ -22,8 +22,8 @@
   var position = {
     timestamp: null,
     coords: {
-      latitude: null,
-      longitude: null
+      latitude: 44.63741290000001,
+      longitude: -63.5873095
     }
   };
 
@@ -58,6 +58,21 @@
     position.coords.longitude = pos.coords.longitude;
   }
 
+  function randomDirection(){
+    return Math.PI * Math.random();
+  }
+
+  function randomNumSteps(){
+    return 15 * Math.random() + 5;
+  }
+
+  function polarToCartesian(a, r){
+    return {
+      x: r * Math.cos(a),
+      y: r * Math.sin(a)
+    }
+  }
+
   /* 
   * Mocks a navigator call by incrementing the
   * position coords
@@ -68,6 +83,9 @@
   * failure to retrieve geolocation.
   * @async
   */
+  var numSteps = randomNumSteps();
+  var currStep = 0;
+  var direction = randomDirection();
   function getCurrentPosition(success, error) {
     if (position === null) {
       var err = {
@@ -80,8 +98,15 @@
         error(err);
       }
     } else {
-      position.coords.latitude += 0.0001;
-      position.coords.longitude += 0.0001;
+      if(currStep > numSteps){
+        currStep = 0;
+        numSteps = randomNumSteps();
+        direction = randomDirection();
+      }
+      var coord = polarToCartesian(direction, 0.0001);
+      position.coords.latitude += coord.y;
+      position.coords.longitude += coord.x;
+      currStep++;
       position.timestamp = new Date().getTime();
       success(position);
     }
@@ -101,11 +126,7 @@
     getCurrentPosition(success, error, options);
     var interval = setInterval(function () {
       getCurrentPosition(success, error, options);
-    }, 920);
-
-    setTimeout(function () {
-      clearInterval(interval);
-    }, 60000);
+    }, 800);
   }
 
   /**
@@ -114,20 +135,7 @@
   * @method init
   */
   function init(success, error) {
-    navigator.geolocation.getCurrentPosition(
-      function (uloc) {
-        setCurrentPosition(uloc);
-        success();
-      },
-      function (err) {
-        if (error === 'undefined') {
-          console.log("Failed to load navigator module.");
-          console.log(err.code, err.message);
-        } else {
-          error(err);
-        }
-      }
-    );
+    success();
   }
 
   /* set the global namespace */

@@ -1,0 +1,8 @@
+body {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+#site-logo {
+	margin-top: 0px !important;
+	position: fixed !important;
+}

@@ -24,14 +24,27 @@
 				person.username.title()
 			),
 			H5(
-				'Level: 123121'
+				'Points: ', points
 			),
-			H5(
-				'Stats: 123121'
+      H5(
+				'Level: ', level
 			),
-			H5(
-				'Achievements: 123121'
-			),
-		)
+		    DIV("Bomb this person!-->",
+			  I(
+                _class="glyphicon glyphicon-certificate",
+                _style="font-size: 2em"
+               ),
+            _class="btn btn-danger btn-lg",
+            _id="bomb"
+            )
+        )	
 	)
 )}}
+
+<script>
+    $('#bomb').click(function(){
+        $.get("/fogger/default/api/bomb/"+window.location.pathname.split("/")[4]).done(function(){
+          location.reload();
+        });
+    });
+</script>
