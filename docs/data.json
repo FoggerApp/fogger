@@ -28,6 +28,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "static/js/interact.js": {
+            "name": "static/js/interact.js",
+            "modules": {},
+            "classes": {
+                "interact": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "static/js/map.js": {
             "name": "static/js/map.js",
             "modules": {},
@@ -117,6 +126,7 @@
             "name": "fogger",
             "submodules": {},
             "classes": {
+                "interact": 1,
                 "map": 1,
                 "navigator": 1
             },
@@ -157,6 +167,20 @@
         }
     },
     "classes": {
+        "interact": {
+            "name": "interact",
+            "shortname": "interact",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "fogger",
+            "namespace": "",
+            "file": "static/js/interact.js",
+            "line": 1,
+            "description": "Provides the map with an interaction layer"
+        },
         "map": {
             "name": "map",
             "shortname": "map",
@@ -230,59 +254,161 @@
             "file": "static/js/dd_belatedpng.js",
             "line": 1,
             "description": "DD_belatedPNG: Adds IE6 support: PNG images for CSS background-image and HTML <IMG/>.\nAuthor: Drew Diller\nEmail: drew.diller@gmail.com\nURL: http://www.dillerdesign.com/experiment/DD_belatedPNG/\nVersion: 0.0.8a\nLicensed under the MIT License: http://dillerdesign.com/experiment/DD_belatedPNG/#license\n\nExample usage:\nDD_belatedPNG.fix('.png_bg'); // argument is a CSS selector\nDD_belatedPNG.fixPng( someNode ); // argument is an HTMLDomElement",
-            "class": "map"
+            "class": "interact"
         },
         {
             "file": "static/js/distance.js",
             "line": 17,
-            "class": "map"
+            "class": "interact"
         },
         {
             "file": "static/js/graphics.js",
-            "line": 8,
+            "line": 7,
+            "description": "Mask Canvas",
             "access": "private",
             "tagname": "mask",
             "type": "{d3.selection}",
-            "class": "map",
+            "class": "interact",
             "module": "graphics"
         },
         {
             "file": "static/js/graphics.js",
-            "line": 14,
+            "line": 13,
+            "description": "Canvas context",
+            "type": "{Object}",
+            "class": "interact",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/graphics.js",
+            "line": 18,
             "description": "Circle Radius",
             "access": "private",
             "tagname": "radius",
             "type": "{Integer}",
-            "class": "map",
+            "class": "interact",
             "module": "graphics"
         },
         {
             "file": "static/js/graphics.js",
-            "line": 20,
+            "line": 24,
+            "description": "Relative Radius Size",
+            "type": "{Number}",
+            "class": "interact",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/graphics.js",
+            "line": 29,
+            "description": "Canvas height",
             "access": "private",
             "tagname": "height",
             "type": "{Float}",
-            "class": "map",
+            "class": "interact",
             "module": "graphics"
         },
         {
             "file": "static/js/graphics.js",
-            "line": 25,
+            "line": 35,
+            "description": "Canvas width",
             "access": "private",
             "tagname": "width",
             "type": "{Float}",
-            "class": "map",
+            "class": "interact",
             "module": "graphics"
         },
         {
             "file": "static/js/graphics.js",
-            "line": 31,
+            "line": 42,
+            "description": "Get the context of the canvas.",
+            "return": {
+                "description": "Canvas context",
+                "type": "Object"
+            },
+            "class": "interact",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/graphics.js",
+            "line": 50,
+            "description": "Gets the scale factor of the map, \nthis basically corresponds to the\nwidth of the canvas, in meters.",
+            "params": [
+                {
+                    "name": "geo",
+                    "description": "GeoBounds of the map",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "scale factor",
+                "type": "Float"
+            },
+            "class": "interact",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/graphics.js",
+            "line": 61,
+            "description": "Move from the geographic point of reference\nto the x, y pixel grid point of reference.",
+            "itemtype": "method",
+            "name": "scale",
+            "params": [
+                {
+                    "name": "lat,",
+                    "description": "{Float} lng } } loc",
+                    "type": "Point =  Float"
+                },
+                {
+                    "name": "geo",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "x, {Float} y } }    2D Point",
+                "type": "Point =  Float"
+            },
+            "class": "interact",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/graphics.js",
+            "line": 81,
+            "description": "Get the bounds of map in delta geolocation format.",
+            "params": [
+                {
+                    "name": "geo",
+                    "description": "geoBounds Object",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "height, {Float} width } }",
+                "type": "MapBound =  Float"
+            },
+            "class": "interact",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/graphics.js",
+            "line": 93,
+            "description": "Get the canvas frame in width/height format.",
+            "return": {
+                "description": "height, {Float} width } }",
+                "type": "CanvasFrame =  Float"
+            },
+            "class": "interact",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/graphics.js",
+            "line": 104,
             "description": "Sets the circles in the mask\ndata = { content = [loc1, loc2 .. ], errors = [] }\nloc = { \"loc\": {\"lat\": lat, \"lng\": lng}, \"uid\": uid }",
             "itemtype": "method",
             "name": "setMask",
             "params": [
                 {
-                    "name": "data",
+                    "name": "d",
                     "description": "",
                     "type": "RESTful Api Object"
                 },
@@ -302,58 +428,209 @@
                     "type": "Float"
                 }
             ],
-            "class": "map",
+            "class": "interact",
             "module": "graphics"
         },
         {
             "file": "static/js/graphics.js",
-            "line": 42,
-            "description": "Move from the geographic point of reference\nto the x, y grid point of reference.",
-            "itemtype": "method",
-            "name": "scale",
+            "line": 161,
+            "description": "Add circles to the canvas for a location on the map.",
             "params": [
                 {
                     "name": "lat,",
-                    "description": "{Float} lng } } loc",
-                    "type": "Point =  Float"
+                    "description": "{Float} lng } ] } locs Array of Point Objects",
+                    "type": "[ Point =  Float"
                 },
                 {
-                    "name": "lat,",
-                    "description": "{Float} lng } } nw",
-                    "type": "Point =  Float"
-                },
-                {
-                    "name": "width,",
-                    "description": "{Float} height } } mapBound",
-                    "type": "Frame =  Float"
-                },
-                {
-                    "name": "width,",
-                    "description": "{Float} height } } svgFrame",
-                    "type": "Frame =  Float"
+                    "name": "geo",
+                    "description": "geoBounds Object for scaling",
+                    "type": "Object"
                 }
             ],
-            "return": {
-                "description": "x, {Float} y } }",
-                "type": "Point =  Float"
-            },
-            "class": "map",
+            "class": "interact",
             "module": "graphics"
         },
         {
             "file": "static/js/graphics.js",
-            "line": 88,
-            "description": "Removes the",
+            "line": 176,
+            "description": "Add a canvas to the HTML layout.",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "HTML id attribute to assign the page canvas element.",
+                    "type": "String"
+                }
+            ],
             "return": {
-                "description": "[description]",
-                "type": "[type]"
+                "description": "D3 selector",
+                "type": "Object"
             },
-            "class": "map",
+            "class": "interact",
             "module": "graphics"
         },
         {
+            "file": "static/js/graphics.js",
+            "line": 189,
+            "description": "Resets the canvas mask.",
+            "class": "interact",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/graphics.js",
+            "line": 196,
+            "description": "Initializes the module",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "Called after the module is loaded",
+                    "type": "Callback"
+                }
+            ],
+            "class": "interact",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/graphics.js",
+            "line": 219,
+            "description": "Module global namespace",
+            "type": "{Global}",
+            "class": "interact",
+            "module": "graphics"
+        },
+        {
+            "file": "static/js/interact.js",
+            "line": 23,
+            "description": "Width of the interaction layer",
+            "type": "{Number}",
+            "class": "interact",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/interact.js",
+            "line": 28,
+            "description": "Height of the interaction layer",
+            "type": "{Number}",
+            "class": "interact",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/interact.js",
+            "line": 33,
+            "description": "Reference to the layer.",
+            "type": "{Object}",
+            "class": "interact",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/interact.js",
+            "line": 40,
+            "description": "Generates a Map Marker.",
+            "class": "interact",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/interact.js",
+            "line": 61,
+            "description": "Generates the user's marker",
+            "class": "interact",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/interact.js",
+            "line": 79,
+            "description": "Generates a button to center the map to the user location\n  and to turn on following.",
+            "itemtype": "method",
+            "name": "generateGoToButton",
+            "class": "interact",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/interact.js",
+            "line": 99,
+            "description": "Generates a toggle button.",
+            "itemtype": "method",
+            "name": "generateToggle",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "HTML id attribute",
+                    "type": "String"
+                },
+                {
+                    "name": "ops",
+                    "description": "toggle operations",
+                    "type": "Array"
+                },
+                {
+                    "name": "x",
+                    "description": "x pos rel to right",
+                    "type": "Number"
+                },
+                {
+                    "name": "y",
+                    "description": "y pos rel to top",
+                    "type": "Number"
+                }
+            ],
+            "class": "interact",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/interact.js",
+            "line": 126,
+            "description": "Generates a button to toggle between terrain types.",
+            "itemtype": "method",
+            "name": "generateTerrainToggle",
+            "class": "interact",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/interact.js",
+            "line": 141,
+            "description": "Generates a button to toggle between map views.",
+            "itemtype": "method",
+            "name": "generateViewToggle",
+            "class": "interact",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/interact.js",
+            "line": 156,
+            "description": "Generates the interface element",
+            "itemtype": "method",
+            "name": "generateInterface",
+            "class": "interact",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/interact.js",
+            "line": 178,
+            "description": "Sets the events of the interaction layer",
+            "itemtype": "method",
+            "name": "setEvents",
+            "class": "interact",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/interact.js",
+            "line": 209,
+            "description": "Initializes the map module.",
+            "itemtype": "method",
+            "name": "init",
+            "class": "interact",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/interact.js",
+            "line": 221,
+            "description": "Sets the glopal name space",
+            "type": "{Attribute} fogger.interact",
+            "class": "interact",
+            "module": "fogger"
+        },
+        {
             "file": "static/js/map.js",
-            "line": 19,
+            "line": 20,
             "access": "private",
             "tagname": "map",
             "type": "{google.maps.Map}",
@@ -362,7 +639,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 25,
+            "line": 26,
             "description": "Object that is returned by\nnavigator.geolocation.getCurrentPosition()",
             "access": "private",
             "tagname": "userLocation",
@@ -371,7 +648,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 32,
+            "line": 33,
             "access": "private",
             "tagname": "userMarker",
             "class": "map",
@@ -379,7 +656,55 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 38,
+            "line": 37,
+            "description": "Array of user locations.",
+            "type": "{Array}",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 42,
+            "description": "Array of other users' locations.",
+            "type": "{Array}",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 47,
+            "description": "Timeout to delay map reload.",
+            "type": "{Integer}",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 52,
+            "description": "Map viewing mode (user or world).",
+            "type": "{String}",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 57,
+            "description": "Map viewing type (satellite or roadmap)",
+            "type": "{google.maps.MapTypeId}",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 62,
+            "description": "Set the map to follow the user.",
+            "type": "{Boolean}",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 68,
             "description": "Gets the map.",
             "itemtype": "method",
             "name": "getMap",
@@ -392,7 +717,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 47,
+            "line": 77,
             "description": "Gets user location.",
             "itemtype": "method",
             "name": "getUserLocation",
@@ -405,7 +730,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 56,
+            "line": 86,
             "description": "Gets user marker.",
             "itemtype": "method",
             "name": "getUserMarker",
@@ -418,7 +743,94 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 65,
+            "line": 95,
+            "description": "Gets the view.",
+            "itemtype": "method",
+            "name": "getView",
+            "return": {
+                "description": "User or world view.",
+                "type": "String"
+            },
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 104,
+            "description": "Sets the view",
+            "itemtype": "method",
+            "name": "setView",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "Specify \"user\" or \"world\" view",
+                    "type": "String"
+                }
+            ],
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 117,
+            "description": "Get the mapType",
+            "itemtype": "method",
+            "name": "getMapType",
+            "return": {
+                "description": "",
+                "type": "google.maps.MapTypeId"
+            },
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 126,
+            "description": "Sets the mapType.",
+            "itemtype": "method",
+            "name": "setMapType",
+            "params": [
+                {
+                    "name": "mt",
+                    "description": "",
+                    "type": "google.maps.MapTypeId"
+                }
+            ],
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 141,
+            "description": "Checks if map is set to follow user.",
+            "itemtype": "method",
+            "name": "getFollow",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 150,
+            "description": "Sets map to follow / unfollow user",
+            "itemtype": "method",
+            "name": "setFollow",
+            "params": [
+                {
+                    "name": "f",
+                    "description": "Set to true to follow user",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 159,
             "description": "Sets the map.",
             "itemtype": "method",
             "name": "setMap",
@@ -434,7 +846,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 74,
+            "line": 168,
             "description": "Sets the user location.",
             "itemtype": "method",
             "name": "setUserLocation",
@@ -450,8 +862,10 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 83,
+            "line": 177,
             "description": "GET locations from database within the map's bounds.",
+            "itemtype": "method",
+            "name": "getLocationsInBound",
             "params": [
                 {
                     "name": "uid",
@@ -474,8 +888,31 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 95,
+            "line": 196,
+            "description": "GET all locations from database within the map's bounds.",
+            "itemtype": "method",
+            "name": "getAllLocationsInBound",
+            "params": [
+                {
+                    "name": "success",
+                    "description": "",
+                    "type": "Callback"
+                },
+                {
+                    "name": "fail",
+                    "description": "",
+                    "type": "Callback"
+                }
+            ],
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 207,
             "description": "POST given location to the RESTful api.\nData must have the following form:\n  { loc: { lat: lat, lng: lng }, uid: uid }",
+            "itemtype": "method",
+            "name": "postUserLocation",
             "params": [
                 {
                     "name": "data",
@@ -498,7 +935,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 109,
+            "line": 222,
             "description": "Sets the user marker.",
             "itemtype": "method",
             "name": "setUserMarker",
@@ -514,7 +951,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 118,
+            "line": 231,
             "description": "Conventing the google object to latitude and longitude.",
             "itemtype": "method",
             "name": "setUserMarker",
@@ -530,7 +967,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 128,
+            "line": 241,
             "description": "Gets the user location.",
             "itemtype": "method",
             "name": "getLocation",
@@ -546,8 +983,10 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 146,
+            "line": 259,
             "description": "Gets the bound object from the map.",
+            "itemtype": "method",
+            "name": "getBounds",
             "return": {
                 "description": "",
                 "type": "google.maps.LatLngBounds"
@@ -557,7 +996,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 154,
+            "line": 268,
             "description": "Pans the map to the user current location.",
             "itemtype": "method",
             "name": "panToUserLoc",
@@ -566,7 +1005,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 166,
+            "line": 279,
             "description": "Moves the user marker on the map.",
             "itemtype": "method",
             "name": "moveUserMarker",
@@ -575,7 +1014,20 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 179,
+            "line": 291,
+            "description": "Get the geographical bounds of a map",
+            "itemtype": "method",
+            "name": "geoBounds",
+            "return": {
+                "description": "Returns to corners (NE, NW) of a map\n  and the width ahd height.",
+                "type": "Object"
+            },
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 314,
             "description": "Updates the user location.",
             "itemtype": "method",
             "name": "updateLocation",
@@ -591,7 +1043,34 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 219,
+            "line": 341,
+            "description": "Updates the fog by querying the database than reloading the fog.",
+            "itemtype": "method",
+            "name": "updateFog",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 381,
+            "description": "Reloads the fog without querying the database.",
+            "itemtype": "method",
+            "name": "reloadFog",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 389,
+            "description": "Callback to update the fog after a user moves.",
+            "itemtype": "method",
+            "name": "updateFogAfterMove",
+            "class": "map",
+            "module": "fogger"
+        },
+        {
+            "file": "static/js/map.js",
+            "line": 401,
             "description": "Sets events for the map module.",
             "itemtype": "method",
             "name": "setEvents",
@@ -600,8 +1079,8 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 229,
-            "description": "Add map event.",
+            "line": 421,
+            "description": "Add a map event.",
             "itemtype": "method",
             "name": "addEvent()",
             "class": "map",
@@ -609,7 +1088,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 237,
+            "line": 429,
             "description": "Sets the width and height of the map.",
             "itemtype": "method",
             "name": "reDim",
@@ -618,7 +1097,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 246,
+            "line": 438,
             "description": "Places the user marker on the map.",
             "itemtype": "method",
             "name": "placeUserMarker",
@@ -627,7 +1106,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 262,
+            "line": 454,
             "description": "Initializes the map",
             "itemtype": "method",
             "name": "initializeMap",
@@ -636,7 +1115,7 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 281,
+            "line": 475,
             "description": "Initializes the map module.",
             "itemtype": "method",
             "name": "init",
@@ -645,8 +1124,9 @@
         },
         {
             "file": "static/js/map.js",
-            "line": 294,
+            "line": 494,
             "description": "Sets the glopal name space",
+            "type": "{attribute}",
             "class": "map",
             "module": "fogger"
         },
@@ -706,7 +1186,7 @@
         },
         {
             "file": "static/js/navigator.js",
-            "line": 111,
+            "line": 132,
             "description": "Sets initial position to the user's\nactual position.",
             "itemtype": "method",
             "name": "init",
@@ -715,7 +1195,7 @@
         },
         {
             "file": "static/js/navigator.js",
-            "line": 135,
+            "line": 143,
             "description": "Indicates wether the module uses mock coords.",
             "itemtype": "property",
             "name": "mock",
@@ -958,14 +1438,49 @@
         {
             "file": "static/jasmine/spec/default/mapSpec.js",
             "line": 8,
-            "description": "Resfult API Tests",
+            "description": "Test the import of modules",
             "class": "MapSpec",
             "module": "test"
         },
         {
             "file": "static/jasmine/spec/default/mapSpec.js",
-            "line": 28,
+            "line": 39,
+            "description": "Menu Tests",
+            "class": "MapSpec",
+            "module": "test"
+        },
+        {
+            "file": "static/jasmine/spec/default/mapSpec.js",
+            "line": 59,
+            "description": "Interface Tests",
+            "class": "MapSpec",
+            "module": "test"
+        },
+        {
+            "file": "static/jasmine/spec/default/mapSpec.js",
+            "line": 95,
+            "description": "Restful API Tests",
+            "class": "MapSpec",
+            "module": "test"
+        },
+        {
+            "file": "static/jasmine/spec/default/mapSpec.js",
+            "line": 195,
             "description": "Graphics Module Tests",
+            "class": "MapSpec",
+            "module": "test"
+        },
+        {
+            "file": "static/jasmine/spec/default/mapSpec.js",
+            "line": 208,
+            "description": "Mock navigator module test",
+            "class": "MapSpec",
+            "module": "test"
+        },
+        {
+            "file": "static/jasmine/spec/default/mapSpec.js",
+            "line": 308,
+            "description": "Map module test",
             "class": "MapSpec",
             "module": "test"
         },
@@ -1016,52 +1531,128 @@
             "line": " static/js/distance.js:17"
         },
         {
-            "message": "Missing item type",
-            "line": " static/js/graphics.js:8"
+            "message": "Missing item type\nMask Canvas",
+            "line": " static/js/graphics.js:7"
+        },
+        {
+            "message": "Missing item type\nCanvas context",
+            "line": " static/js/graphics.js:13"
         },
         {
             "message": "Missing item type\nCircle Radius",
-            "line": " static/js/graphics.js:14"
+            "line": " static/js/graphics.js:18"
         },
         {
-            "message": "Missing item type",
-            "line": " static/js/graphics.js:20"
+            "message": "Missing item type\nRelative Radius Size",
+            "line": " static/js/graphics.js:24"
         },
         {
-            "message": "Missing item type",
-            "line": " static/js/graphics.js:25"
+            "message": "Missing item type\nCanvas height",
+            "line": " static/js/graphics.js:29"
         },
         {
-            "message": "Missing item type\nRemoves the",
-            "line": " static/js/graphics.js:88"
+            "message": "Missing item type\nCanvas width",
+            "line": " static/js/graphics.js:35"
         },
         {
-            "message": "Missing item type",
-            "line": " static/js/map.js:19"
+            "message": "Missing item type\nGet the context of the canvas.",
+            "line": " static/js/graphics.js:42"
         },
         {
-            "message": "Missing item type\nObject that is returned by\nnavigator.geolocation.getCurrentPosition()",
-            "line": " static/js/map.js:25"
+            "message": "Missing item type\nGets the scale factor of the map, \nthis basically corresponds to the\nwidth of the canvas, in meters.",
+            "line": " static/js/graphics.js:50"
         },
         {
-            "message": "Missing item type",
-            "line": " static/js/map.js:32"
+            "message": "Missing item type\nGet the bounds of map in delta geolocation format.",
+            "line": " static/js/graphics.js:81"
         },
         {
-            "message": "Missing item type\nGET locations from database within the map's bounds.",
-            "line": " static/js/map.js:83"
+            "message": "Missing item type\nGet the canvas frame in width/height format.",
+            "line": " static/js/graphics.js:93"
         },
         {
-            "message": "Missing item type\nPOST given location to the RESTful api.\nData must have the following form:\n  { loc: { lat: lat, lng: lng }, uid: uid }",
-            "line": " static/js/map.js:95"
+            "message": "Missing item type\nAdd circles to the canvas for a location on the map.",
+            "line": " static/js/graphics.js:161"
         },
         {
-            "message": "Missing item type\nGets the bound object from the map.",
-            "line": " static/js/map.js:146"
+            "message": "Missing item type\nAdd a canvas to the HTML layout.",
+            "line": " static/js/graphics.js:176"
+        },
+        {
+            "message": "Missing item type\nResets the canvas mask.",
+            "line": " static/js/graphics.js:189"
+        },
+        {
+            "message": "Missing item type\nInitializes the module",
+            "line": " static/js/graphics.js:196"
+        },
+        {
+            "message": "Missing item type\nModule global namespace",
+            "line": " static/js/graphics.js:219"
+        },
+        {
+            "message": "Missing item type\nWidth of the interaction layer",
+            "line": " static/js/interact.js:23"
+        },
+        {
+            "message": "Missing item type\nHeight of the interaction layer",
+            "line": " static/js/interact.js:28"
+        },
+        {
+            "message": "Missing item type\nReference to the layer.",
+            "line": " static/js/interact.js:33"
+        },
+        {
+            "message": "Missing item type\nGenerates a Map Marker.",
+            "line": " static/js/interact.js:40"
+        },
+        {
+            "message": "Missing item type\nGenerates the user's marker",
+            "line": " static/js/interact.js:61"
         },
         {
             "message": "Missing item type\nSets the glopal name space",
-            "line": " static/js/map.js:294"
+            "line": " static/js/interact.js:221"
+        },
+        {
+            "message": "Missing item type",
+            "line": " static/js/map.js:20"
+        },
+        {
+            "message": "Missing item type\nObject that is returned by\nnavigator.geolocation.getCurrentPosition()",
+            "line": " static/js/map.js:26"
+        },
+        {
+            "message": "Missing item type",
+            "line": " static/js/map.js:33"
+        },
+        {
+            "message": "Missing item type\nArray of user locations.",
+            "line": " static/js/map.js:37"
+        },
+        {
+            "message": "Missing item type\nArray of other users' locations.",
+            "line": " static/js/map.js:42"
+        },
+        {
+            "message": "Missing item type\nTimeout to delay map reload.",
+            "line": " static/js/map.js:47"
+        },
+        {
+            "message": "Missing item type\nMap viewing mode (user or world).",
+            "line": " static/js/map.js:52"
+        },
+        {
+            "message": "Missing item type\nMap viewing type (satellite or roadmap)",
+            "line": " static/js/map.js:57"
+        },
+        {
+            "message": "Missing item type\nSet the map to follow the user.",
+            "line": " static/js/map.js:62"
+        },
+        {
+            "message": "Missing item type\nSets the glopal name space",
+            "line": " static/js/map.js:494"
         },
         {
             "message": "Missing item type\nObject that is returned by \nnavigator.geolocation.getCurrentPosition()",
@@ -1200,12 +1791,32 @@
             "line": " static/jasmine/lib/jasmine-2.0.0/boot.js:173"
         },
         {
-            "message": "Missing item type\nResfult API Tests",
+            "message": "Missing item type\nTest the import of modules",
             "line": " static/jasmine/spec/default/mapSpec.js:8"
         },
         {
+            "message": "Missing item type\nMenu Tests",
+            "line": " static/jasmine/spec/default/mapSpec.js:39"
+        },
+        {
+            "message": "Missing item type\nInterface Tests",
+            "line": " static/jasmine/spec/default/mapSpec.js:59"
+        },
+        {
+            "message": "Missing item type\nRestful API Tests",
+            "line": " static/jasmine/spec/default/mapSpec.js:95"
+        },
+        {
             "message": "Missing item type\nGraphics Module Tests",
-            "line": " static/jasmine/spec/default/mapSpec.js:28"
+            "line": " static/jasmine/spec/default/mapSpec.js:195"
+        },
+        {
+            "message": "Missing item type\nMock navigator module test",
+            "line": " static/jasmine/spec/default/mapSpec.js:208"
+        },
+        {
+            "message": "Missing item type\nMap module test",
+            "line": " static/jasmine/spec/default/mapSpec.js:308"
         }
     ]
 }

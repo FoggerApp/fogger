@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>static/js/interact.js - Fogger</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title="Fogger"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.1.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/GruntConfiguration.html">GruntConfiguration</a></li>
+            
+                <li><a href="../classes/interact.html">interact</a></li>
+            
+                <li><a href="../classes/map.html">map</a></li>
+            
+                <li><a href="../classes/MapSpec.html">MapSpec</a></li>
+            
+                <li><a href="../classes/navigator.html">navigator</a></li>
+            
+                <li><a href="../classes/UserSpec.html">UserSpec</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/fogger.html">fogger</a></li>
+            
+                <li><a href="../modules/graphics.html">graphics</a></li>
+            
+                <li><a href="../modules/Grunt.html">Grunt</a></li>
+            
+                <li><a href="../modules/test.html">test</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: static/js/interact.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ * Provides the map with an interaction layer
+ *
+ * @module fogger
+ * @class interact
+ * @main interact
+ */
+(function() {
+  &quot;use strict&quot;;
+
+  if (!window.hasOwnProperty(&quot;fogger&quot;)) {
+    throw new Error(&quot;Requires fogger global&quot;);
+  }
+
+  if (!window.fogger.hasOwnProperty(&quot;map&quot;)) {
+    throw new Error(&quot;Requires fogger map module&quot;);
+  }
+
+  if (!window.fogger.hasOwnProperty(&quot;graphics&quot;)) {
+    throw new Error(&quot;Requires fogger graphics module&quot;);
+  }
+
+  /**
+   * Width of the interaction layer
+   * @type {Number}
+   */
+  var width = null,
+      /**
+       * Height of the interaction layer
+       * @type {Number}
+       */
+      height = null,
+      /**
+       * Reference to the layer.
+       * @type {Object}
+       */
+      layer = null,
+      imageBase = &#x27;/fogger/static/images/ranks/&#x27;;
+
+  /**
+   * Generates a Map Marker.
+   */
+  function generateMarker(id, pos, image, size) {
+    var offset = {
+      x: size.width/2,
+      y: size.height/2
+    };
+    var marker = layer.append(&quot;div&quot;)
+        .style(
+          &quot;background-image&quot;,
+          &quot;url(&quot; + imageBase + image + &quot;.png&quot; + &quot;)&quot;
+        ).style(&quot;background-repeat&quot;, &quot;no-repeat&quot;)
+        .style(&quot;background-size&quot;, &quot;contain&quot;)
+        .style(&quot;position&quot;, &quot;absolute&quot;)
+        .style(&quot;z-index&quot;, 1500)
+        .style(&quot;top&quot;, (pos.x - offset.x) + &quot;px&quot;)
+        .style(&quot;left&quot;, (pos.y - offset.y) + &quot;px&quot;)
+        .style(&quot;width&quot;, size.width + &quot;px&quot;)
+        .style(&quot;height&quot;, size.height + &quot;px&quot;);
+  }
+  /**
+   * Generates the user&#x27;s marker
+   */
+  function generateUserMarker() {
+    var mPos = fogger.map.getUserLocation();
+    var pos = fogger.graphics.scale(
+      { lat: mPos.lat(), lng: mPos.lng() },
+      fogger.map.geoBounds()
+    );
+    //console.log(&quot;POSPOSPOS&quot;, pos);
+    generateMarker(
+      &quot;map-marker-user&quot;,
+      pos,
+      &quot;smiley_happy&quot;,
+      { width: 32, height: 32 }
+    );
+  }
+
+  /**
+   * Generates a button to center the map to the user location
+   *   and to turn on following.
+   * @method generateGoToButton
+   */
+  function generateGoToButton() {
+    var goToButton = layer.append(&quot;div&quot;)
+      .attr(&quot;id&quot;, &quot;map-goto&quot;)
+      .attr(&quot;class&quot;, &quot;btn btn-default btn-lg&quot;)
+      .style(&quot;position&quot;, &quot;absolute&quot;)
+      .style(&quot;z-index&quot;, 1500)
+      .style(&quot;bottom&quot;, &quot;15px&quot;)
+      .style(&quot;right&quot;, &quot;10px&quot;);
+    goToButton.append(&quot;span&quot;)
+      .attr(
+        &quot;class&quot;,
+        &quot;glyphicon glyphicon-screenshot&quot;
+      );
+  }
+
+  /**
+   * Generates a toggle button.
+   * @method generateToggle
+   * @param  {string} id  HTML id attribute
+   * @param  {Array} ops toggle operations
+   * @param  {Number} x   x pos rel to right
+   * @param  {Number} y   y pos rel to top
+   */
+  function generateToggle(id, ops, x, y) {
+    var toggle = layer.append(&quot;div&quot;)
+      .attr(&quot;id&quot;, id)
+      .attr(&quot;class&quot;, &quot;btn-group&quot;)
+      .style(&quot;position&quot;, &quot;absolute&quot;)
+      .style(&quot;z-index&quot;, 1500)
+      .style(&quot;top&quot;, y + &quot;px&quot;)
+      .style(&quot;right&quot;, x + &quot;px&quot;);
+    
+    for(var i = 0; i &lt; ops.length; i++) {
+      toggle.append(&quot;button&quot;)
+        .attr(&quot;class&quot;, &quot;btn btn-default btn-lg&quot;)
+        .attr(&quot;type&quot;, &quot;button&quot;)
+        .attr(&quot;data-type&quot;, ops[i][0])
+      .append(&quot;span&quot;)
+        .attr(&quot;class&quot;, &quot;glyphicon &quot; + ops[i][1]);
+    }
+  }
+
+  /**
+   * Generates a button to toggle between terrain types.
+   * @method generateTerrainToggle
+   */
+  function generateTerrainToggle() {
+    generateToggle(
+      &quot;map-terrain&quot;,
+      [
+        [&quot;satellite&quot;, &quot;glyphicon-tree-conifer&quot;],
+        [&quot;roadmap&quot;, &quot;glyphicon-road&quot;]
+      ],
+      10, 10
+    );
+  }
+  
+  /**
+   * Generates a button to toggle between map views.
+   * @method generateViewToggle
+   */
+  function generateViewToggle() {
+    generateToggle(
+      &quot;map-view&quot;,
+      [
+        [&quot;user&quot;, &quot;glyphicon-user&quot;],
+        [&quot;world&quot;, &quot;glyphicon-globe&quot;]
+      ],
+      120, 10
+    );
+  }
+
+  /**
+   * Generates the interface element
+   * @method generateInterface
+   */
+  function generateInterface() {
+    width = $(&#x27;#map-canvas&#x27;).width();
+    height = $(&#x27;#map-canvas&#x27;).height();
+
+    layer = d3.select(&quot;#map-canvas-container&quot;)
+      .insert(&quot;div&quot;, &quot;:first-child&quot;)
+        .attr(&quot;id&quot;, &quot;map-interface&quot;)
+        .style(&quot;position&quot;, &quot;absolute&quot;)
+        .style(&quot;width&quot;, width + &quot;px&quot;)
+        .style(&quot;height&quot;, height + &quot;px&quot;)
+        .style(&quot;overflow&quot;, &quot;hidden&quot;);
+
+    generateGoToButton();
+    generateTerrainToggle();
+    generateViewToggle();
+    /*generateUserMarker();*/
+  }
+
+  /**
+   * Sets the events of the interaction layer
+   * @method setEvents
+   */
+  function setEvents() {
+    /* Set map go to user event.*/
+    $(&#x27;#map-goto&#x27;).on(&#x27;click&#x27;, function(){
+      fogger.map.panToUserLoc();
+      setTimeout(function(){
+        fogger.map.setFollow(true);
+      }, 200);
+    });
+
+    /* Set map terrain toggle event*/
+    $(&#x27;#map-terrain .btn&#x27;).on(&#x27;click&#x27;, function(){
+      fogger.map.setMapType($(this).attr(&quot;data-type&quot;));
+    });
+
+    /* Set map view toggle event */
+    $(&#x27;#map-view .btn&#x27;).on(&#x27;click&#x27;, function(){
+      fogger.map.setView($(this).attr(&quot;data-type&quot;));
+      fogger.map.updateFog();
+      console.log(&quot;haha&quot;);
+    });
+
+    /* Unset follow as soon as the user clicks on the map */
+    $(&#x27;#map-canvas-container&#x27;).on(&#x27;mousedown&#x27;, function(){
+      fogger.map.setFollow(false);
+    });
+  }
+
+  /**
+   * Initializes the map module.
+   * @method init
+   */
+  function init(callback) {
+    generateInterface();
+    setEvents();
+    if(callback !== undefined) {
+      callback();
+    }
+  }
+
+  /**
+   * Sets the glopal name space
+   * @type {Attribute} fogger.interact
+   */
+  fogger.interact = {
+    init: init,
+    generateToggle: generateToggle,
+    generateGoToButton: generateGoToButton,
+    generateTerrainToggle: generateTerrainToggle,
+    generateViewToggle: generateViewToggle,
+    generateInterface: generateInterface,
+    setEvents: setEvents
+  };
+
+}());
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

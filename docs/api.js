@@ -4,6 +4,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "GruntConfiguration",
         "MapSpec",
         "UserSpec",
+        "interact",
         "map",
         "navigator"
     ],
